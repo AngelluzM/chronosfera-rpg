@@ -10,14 +10,15 @@
         .import-section { background: #e8f4f8; padding: 15px; border-radius: 5px; border: 1px dashed #3498db; margin-bottom: 25px; }
         .form-group { margin-bottom: 15px; }
         label { display: block; font-weight: bold; margin-bottom: 5px; color: #555; }
-        input[type="text"], input[type="number"], select, input[type="file"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        input[type="text"], input[type="number"], select, input[type="file"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .grid-atributos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; background: #f9f9fc; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; }
         button { background-color: #3498db; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; transition: background 0.3s; }
         button:hover { background-color: #2980b9; }
         button.novo { background-color: #2ecc71; margin-top: 10px; }
         button.novo:hover { background-color: #27ae60; }
-        textarea { width: 100%; height: 300px; margin-top: 20px; font-family: monospace; padding: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; background-color: #fdfdfd; resize: vertical; border-left: 5px solid #2ecc71; }
+        textarea.json-output { height: 300px; font-family: monospace; background-color: #fdfdfd; border-left: 5px solid #2ecc71; margin-top: 10px; }
+        textarea.inventario-input { height: 100px; resize: vertical; }
         .dica { font-size: 0.85em; color: #7f8c8d; margin-top: 5px; }
     </style>
 </head>
@@ -43,7 +44,7 @@
 
     <div class="grid-2">
         <div class="form-group"><label for="nome">Nome da Personagem</label><input type="text" id="nome"></div>
-        <div class="form-group"><label for="id">ID Único (Para o sistema)</label><input type="text" id="id"></div>
+        <div class="form-group"><label for="id">ID Único (Para o sistema)</label><input type="text" id="id" placeholder="Ex: baltazar"></div>
     </div>
 
     <div class="grid-2">
@@ -63,21 +64,15 @@
         </div>
     </div>
 
-    <div class="grid-2">
-        <div class="form-group">
-            <label for="afinidade">Afinidade Elemental</label>
-            <select id="afinidade">
-                <option value="Fogo">Fogo</option>
-                <option value="Gelo/Água">Gelo/Água</option>
-                <option value="Luz">Luz</option>
-                <option value="Sombra">Sombra</option>
-                <option value="Neutro">Neutro</option>
-            </select>
-        </div>
-        <div class="grid-2">
-            <div class="form-group"><label for="psique">Psiquê (%)</label><input type="number" id="psique" value="100"></div>
-            <div class="form-group"><label for="alma">Alma (%)</label><input type="number" id="alma" value="100"></div>
-        </div>
+    <div class="form-group">
+        <label for="afinidade">Afinidade Elemental</label>
+        <select id="afinidade">
+            <option value="Fogo">Fogo</option>
+            <option value="Gelo/Água">Gelo/Água</option>
+            <option value="Luz">Luz</option>
+            <option value="Sombra">Sombra</option>
+            <option value="Neutro">Neutro</option>
+        </select>
     </div>
 
     <h3>Atributos Brutos</h3>
@@ -91,10 +86,15 @@
         <div class="form-group"><label id="lbl_def_magica">Defesa Mágica</label><input type="number" id="def_magica" value="0"></div>
     </div>
 
+    <div class="form-group" style="margin-top: 20px;">
+        <label for="inventario">Inventário</label>
+        <textarea id="inventario" class="inventario-input" placeholder="Liste os itens aqui..."></textarea>
+    </div>
+
     <button onclick="salvarPersonagem()">Guardar na Base e Gerar JSON Atualizado</button>
 
-    <h3 id="ancora-resultado" style="margin-top: 30px; color: #27ae60; display: none;">✅ Guardado!</h3>
-    <textarea id="resultado" readonly placeholder="O ficheiro atualizado aparecerá aqui..."></textarea>
+    <h3 id="ancora-resultado" style="margin-top: 30px; color: #27ae60; display: none;">✅ Guardado e Copiado!</h3>
+    <textarea id="resultado" class="json-output" readonly placeholder="O ficheiro atualizado aparecerá aqui..."></textarea>
 </div>
 
 <script>
@@ -141,25 +141,19 @@
         reader.onload = function(e) {
             try {
                 const dadosLidos = JSON.parse(e.target.result);
-                
                 if (dadosLidos.personagens) {
                     bancoDeDados = dadosLidos;
                     atualizarSeletorHTML();
-                    alert("Base de dados completa carregada! Selecione uma personagem na lista para editar.");
+                    alert("Base de dados carregada!");
                 } else if (dadosLidos.id) {
                     const index = bancoDeDados.personagens.findIndex(p => p.id === dadosLidos.id);
                     if (index > -1) bancoDeDados.personagens[index] = dadosLidos; 
                     else bancoDeDados.personagens.push(dadosLidos); 
-                    
                     atualizarSeletorHTML();
-                    
                     document.getElementById("seletorPersonagem").value = dadosLidos.id;
                     carregarParaEdicao();
-                    alert(`Ficha de ${dadosLidos.dados_basicos.nome} carregada com sucesso e pronta a guardar!`);
                 }
-            } catch (err) {
-                alert("Erro ao ler o ficheiro. Tem a certeza que é um JSON válido?");
-            }
+            } catch (err) { alert("Erro ao ler o ficheiro."); }
         };
         reader.readAsText(file);
     }
@@ -170,14 +164,13 @@
         bancoDeDados.personagens.forEach(p => {
             const opcao = document.createElement("option");
             opcao.value = p.id;
-            opcao.innerText = p.dados_basicos.nome + " (" + p.dados_basicos.classe + ")";
+            opcao.innerText = p.dados_basicos.nome;
             seletor.appendChild(opcao);
         });
     }
 
     function carregarParaEdicao() {
         const idSelecionado = document.getElementById("seletorPersonagem").value;
-        if (!idSelecionado) return;
         const p = bancoDeDados.personagens.find(person => person.id === idSelecionado);
         if (p) {
             document.getElementById("id").value = p.id;
@@ -185,11 +178,9 @@
             document.getElementById("raca").value = p.dados_basicos.raca || "";
             document.getElementById("classe").value = p.dados_basicos.classe || "";
             document.getElementById("afinidade").value = p.dados_basicos.afinidade_elemental || "";
-            document.getElementById("psique").value = p.status.psique !== undefined ? p.status.psique : 100;
-            document.getElementById("alma").value = p.status.alma !== undefined ? p.status.alma : 100;
+            document.getElementById("inventario").value = p.inventario || "";
             
             atualizarDadosMatriz();
-
             document.getElementById("poder").value = p.atributos.poder.bruto;
             document.getElementById("vigor").value = p.atributos.vigor.bruto;
             document.getElementById("velocidade").value = p.atributos.velocidade.bruto;
@@ -205,17 +196,8 @@
         document.getElementById("nome").value = "";
         document.getElementById("raca").value = "";
         document.getElementById("classe").value = "";
-        document.getElementById("afinidade").value = "Neutro";
-        document.getElementById("psique").value = "100";
-        document.getElementById("alma").value = "100";
-        document.getElementById("poder").value = "0";
-        document.getElementById("vigor").value = "0";
-        document.getElementById("velocidade").value = "0";
-        document.getElementById("magia").value = "0";
-        document.getElementById("precisao").value = "0";
-        document.getElementById("esquiva").value = "0";
-        document.getElementById("def_magica").value = "0";
-        document.getElementById("seletorPersonagem").value = "";
+        document.getElementById("inventario").value = "";
+        document.querySelectorAll('input[type="number"]').forEach(i => i.value = 0);
     }
 
     function salvarPersonagem() {
@@ -223,96 +205,52 @@
         const nome = document.getElementById("nome").value;
         const raca = document.getElementById("raca").value || "Desconhecida";
         const classeNome = document.getElementById("classe").value;
-        const afinidade = document.getElementById("afinidade").value;
 
-        if (!id || !classeNome) {
-            alert("Preencha ao menos o ID e a Classe!");
-            return;
-        }
+        if (!id || !classeNome) { alert("ID e Classe são obrigatórios!"); return; }
 
-        const infoClasse = regrasClasses[classeNome];
-
-        const vPoder = parseInt(document.getElementById("poder").value) || 0;
+        const info = regrasClasses[classeNome];
         const vVigor = parseInt(document.getElementById("vigor").value) || 0;
-        const vVelocidade = parseInt(document.getElementById("velocidade").value) || 0;
         const vMagia = parseInt(document.getElementById("magia").value) || 0;
-        const vPrecisao = parseInt(document.getElementById("precisao").value) || 0;
         const vEsquiva = parseInt(document.getElementById("esquiva").value) || 0;
-        const vDefMagica = parseInt(document.getElementById("def_magica").value) || 0;
-        
-        const vPsique = parseInt(document.getElementById("psique").value) || 0;
-        const vAlma = parseInt(document.getElementById("alma").value) || 0;
+        const bEsquiva = calcularFibonacci(vEsquiva);
 
-        const bonusEsquiva = calcularFibonacci(vEsquiva);
-
-        const fichaAtualizada = {
+        const ficha = {
             "id": id,
             "dados_basicos": {
-                "nome": nome,
-                "raca": raca,
-                "nivel": 1,
-                "classe": classeNome,
-                "arquetipo": infoClasse.arquetipo,
-                "afinidade_elemental": afinidade
+                "nome": nome, "raca": raca, "nivel": 1, "classe": classeNome,
+                "arquetipo": info.arquetipo, "afinidade_elemental": document.getElementById("afinidade").value
             },
             "status": {
-                "pv_maximo": vVigor + infoClasse.pv_base,
-                "pm_maximo": vMagia + infoClasse.pm_base,
-                "psique": vPsique,
-                "alma": vAlma,
-                "nd_esquiva_base": 8 + bonusEsquiva
+                "pv_maximo": vVigor + info.pv_base,
+                "pm_maximo": vMagia + info.pm_base,
+                "nd_esquiva_base": 8 + bEsquiva
             },
             "atributos": {
-                "poder": { "dado": infoClasse.dados.poder, "bruto": vPoder, "bonus": calcularFibonacci(vPoder) },
-                "vigor": { "dado": infoClasse.dados.vigor, "bruto": vVigor, "bonus": calcularFibonacci(vVigor) },
-                "velocidade": { "dado": infoClasse.dados.velocidade, "bruto": vVelocidade, "bonus": calcularFibonacci(vVelocidade) },
-                "magia": { "dado": infoClasse.dados.magia, "bruto": vMagia, "bonus": calcularFibonacci(vMagia) },
-                "precisao": { "dado": infoClasse.dados.precisao, "bruto": vPrecisao, "bonus": calcularFibonacci(vPrecisao) },
-                "esquiva": { "dado": infoClasse.dados.esquiva, "bruto": vEsquiva, "bonus": bonusEsquiva },
-                "defesa_magica": { "dado": infoClasse.dados.def_magica, "bruto": vDefMagica, "bonus": calcularFibonacci(vDefMagica) }
+                "poder": { "dado": info.dados.poder, "bruto": parseInt(document.getElementById("poder").value), "bonus": calcularFibonacci(parseInt(document.getElementById("poder").value)) },
+                "vigor": { "dado": info.dados.vigor, "bruto": vVigor, "bonus": calcularFibonacci(vVigor) },
+                "velocidade": { "dado": info.dados.velocidade, "bruto": parseInt(document.getElementById("velocidade").value), "bonus": calcularFibonacci(parseInt(document.getElementById("velocidade").value)) },
+                "magia": { "dado": info.dados.magia, "bruto": vMagia, "bonus": calcularFibonacci(vMagia) },
+                "precisao": { "dado": info.dados.precisao, "bruto": parseInt(document.getElementById("precisao").value), "bonus": calcularFibonacci(parseInt(document.getElementById("precisao").value)) },
+                "esquiva": { "dado": info.dados.esquiva, "bruto": vEsquiva, "bonus": bEsquiva },
+                "defesa_magica": { "dado": info.dados.def_magica, "bruto": parseInt(document.getElementById("def_magica").value), "bonus": calcularFibonacci(parseInt(document.getElementById("def_magica").value)) }
             },
-            "referencias": {
-                "dano_fisico": "Dados da Arma + Atributo Bruto (Poder ou Precisão)",
-                "dano_magico": "Dados da Magia + Magia Bruta"
-            }
+            "inventario": document.getElementById("inventario").value,
+            "referencias": { "dano_fisico": "Dados da Arma + Atributo Bruto", "dano_magico": "Dados da Magia + Magia Bruta" }
         };
 
         const index = bancoDeDados.personagens.findIndex(p => p.id === id);
-        if (index > -1) bancoDeDados.personagens[index] = fichaAtualizada; 
-        else bancoDeDados.personagens.push(fichaAtualizada); 
+        if (index > -1) bancoDeDados.personagens[index] = ficha; 
+        else bancoDeDados.personagens.push(ficha); 
 
         atualizarSeletorHTML();
-        document.getElementById("seletorPersonagem").value = id;
-
-        const txtArea = document.getElementById("resultado");
         const jsonFinal = JSON.stringify(bancoDeDados, null, 4);
-        txtArea.value = jsonFinal;
-        
-        const msgSucesso = document.getElementById("ancora-resultado");
-        msgSucesso.style.display = "block";
-        msgSucesso.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById("resultado").value = jsonFinal;
+        document.getElementById("ancora-resultado").style.display = "block";
 
-        // Tenta usar a cópia moderna
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(jsonFinal).then(() => {
-                msgSucesso.innerText = "✅ Guardado e copiado! É só fazer Ctrl+V no ficheiro banco_de_dados.json no GitHub.";
-            }).catch(err => {
-                // Falhou por permissão, avança para a seleção
-                txtArea.select();
-                msgSucesso.innerText = "✅ Guardado! (O navegador bloqueou a cópia. Faça Ctrl+C no texto selecionado abaixo).";
-            });
-        } else {
-            // Método alternativo para ficheiros locais
-            txtArea.select();
-            try {
-                document.execCommand('copy');
-                msgSucesso.innerText = "✅ Guardado e copiado com sucesso! É só fazer Ctrl+V no seu ficheiro.";
-            } catch (err) {
-                msgSucesso.innerText = "✅ Guardado! O seu navegador requer cópia manual. Pressione Ctrl+C no texto selecionado abaixo.";
-            }
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(jsonFinal).then(() => alert("Copiado!"));
         }
     }
 </script>
-
 </body>
 </html>
