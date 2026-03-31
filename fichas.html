@@ -34,10 +34,9 @@
             background: white; 
             border-radius: 8px; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-            overflow: hidden; /* Para a imagem respeitar as bordas redondas */
+            overflow: hidden; 
         }
         
-        /* Estilo novo da imagem */
         .ficha-imagem {
             width: 100%;
             height: 250px;
@@ -69,14 +68,13 @@
         
         .esquiva-box { text-align: center; background-color: #e8f6f3; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-weight: bold; color: #16a085; }
 
-        /* Estilo para o Inventário */
         .inventario-box {
             background-color: #fcfcfc;
             border: 1px solid #e0e0e0;
             padding: 10px;
             border-radius: 4px;
             font-size: 0.85em;
-            white-space: pre-wrap; /* Mantém as quebras de linha que você digitar */
+            white-space: pre-wrap; 
             color: #555;
         }
         .inventario-box strong { color: #2c3e50; display: block; margin-bottom: 5px; }
@@ -100,7 +98,8 @@
     </div>
 
     <script>
-        fetch('banco_de_dados.json')
+        // O CÓDIGO MÁGICO ANTI-CACHE ESTÁ AQUI NA LINHA ABAIXO (?v=...)
+        fetch('banco_de_dados.json?v=' + new Date().getTime())
             .then(response => {
                 if (!response.ok) throw new Error('Arquivo banco_de_dados.json não encontrado.');
                 return response.json();
@@ -124,12 +123,10 @@
                 const card = document.createElement('div');
                 card.className = 'ficha-card';
 
-                // Lógica da Imagem: Se tem URL, cria a tag <img>, senão não exibe nada
                 const imagemHtml = p.url_imagem && p.url_imagem.trim() !== "" 
                     ? `<img src="${p.url_imagem}" class="ficha-imagem" alt="Imagem do personagem">` 
                     : ``;
 
-                // Lógica do Inventário
                 const inventarioHtml = p.inventario && p.inventario.trim() !== ""
                     ? `<div class="inventario-box"><strong>Inventário:</strong>${p.inventario}</div>`
                     : ``;
