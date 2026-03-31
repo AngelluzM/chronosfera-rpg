@@ -46,6 +46,12 @@
         <div class="form-group"><label for="nome">Nome da Personagem</label><input type="text" id="nome"></div>
         <div class="form-group"><label for="id">ID Único (Para o sistema)</label><input type="text" id="id" placeholder="Ex: baltazar"></div>
     </div>
+    
+    <div class="form-group">
+        <label for="url_imagem">Link da Imagem (Ex: Pinterest)</label>
+        <input type="text" id="url_imagem" placeholder="Ex: https://i.pinimg.com/564x/sua-imagem.jpg">
+        <div class="dica">Clique com o botão direito na imagem no Pinterest e selecione "Copiar endereço da imagem". O link deve terminar em .jpg ou .png.</div>
+    </div>
 
     <div class="grid-2">
         <div class="form-group"><label for="raca">Raça</label><input type="text" id="raca" placeholder="Ex: Humano, Hypello..."></div>
@@ -175,6 +181,7 @@
         if (p) {
             document.getElementById("id").value = p.id;
             document.getElementById("nome").value = p.dados_basicos.nome || "";
+            document.getElementById("url_imagem").value = p.url_imagem || "";
             document.getElementById("raca").value = p.dados_basicos.raca || "";
             document.getElementById("classe").value = p.dados_basicos.classe || "";
             document.getElementById("afinidade").value = p.dados_basicos.afinidade_elemental || "";
@@ -194,6 +201,7 @@
     function limparFormulario() {
         document.getElementById("id").value = "";
         document.getElementById("nome").value = "";
+        document.getElementById("url_imagem").value = "";
         document.getElementById("raca").value = "";
         document.getElementById("classe").value = "";
         document.getElementById("inventario").value = "";
@@ -216,6 +224,7 @@
 
         const ficha = {
             "id": id,
+            "url_imagem": document.getElementById("url_imagem").value,
             "dados_basicos": {
                 "nome": nome, "raca": raca, "nivel": 1, "classe": classeNome,
                 "arquetipo": info.arquetipo, "afinidade_elemental": document.getElementById("afinidade").value
@@ -248,7 +257,9 @@
         document.getElementById("ancora-resultado").style.display = "block";
 
         if (navigator.clipboard) {
-            navigator.clipboard.writeText(jsonFinal).then(() => alert("Copiado!"));
+            navigator.clipboard.writeText(jsonFinal).then(() => {
+                document.getElementById("ancora-resultado").scrollIntoView({ behavior: 'smooth' });
+            });
         }
     }
 </script>
