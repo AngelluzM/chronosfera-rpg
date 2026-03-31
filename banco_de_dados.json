@@ -2,8 +2,10 @@
     "personagens": [
         {
             "id": "baltazar",
+            "url_imagem": "https://i.pinimg.com/736x/c7/d2/96/c7d296b5374dcef0463499e10a48fce5.jpg",
             "dados_basicos": {
                 "nome": "Baltazar",
+                "raca": "Humano",
                 "nivel": 1,
                 "classe": "Feiticeiro",
                 "arquetipo": "Arcana",
@@ -12,8 +14,6 @@
             "status": {
                 "pv_maximo": 30,
                 "pm_maximo": 35,
-                "psique": 100,
-                "alma": 100,
                 "nd_esquiva_base": 8
             },
             "atributos": {
@@ -53,8 +53,9 @@
                     "bonus": 1
                 }
             },
+            "inventario": "Túnica Arcana, Cajado de Quartzo Bruto",
             "referencias": {
-                "dano_fisico": "Dados da Arma + Atributo Bruto (Poder ou Precisão)",
+                "dano_fisico": "Dados da Arma + Atributo Bruto",
                 "dano_magico": "Dados da Magia + Magia Bruta"
             }
         }
