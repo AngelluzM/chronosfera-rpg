@@ -1,219 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Chronosfera RPG - Painel do Mestre</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 20px; }
-        .import-section { background: #e8f4f8; padding: 15px; border-radius: 5px; border: 1px dashed #3498db; margin-bottom: 25px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; color: #555; }
-        input[type="text"], input[type="number"], select, input[type="file"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .grid-atributos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; background: #f9f9fc; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; }
-        button { background-color: #3498db; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; transition: background 0.3s; }
-        button:hover { background-color: #2980b9; }
-        button.novo { background-color: #2ecc71; margin-top: 10px; }
-        button.novo:hover { background-color: #27ae60; }
-        textarea { width: 100%; height: 300px; margin-top: 20px; font-family: monospace; padding: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; background-color: #fdfdfd; resize: vertical; }
-        .dica { font-size: 0.85em; color: #7f8c8d; margin-top: 5px; }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h1>Painel do Mestre - Chronosfera RPG</h1>
-    
-    <div class="import-section">
-        <div class="form-group">
-            <label for="arquivoImport">1. Importar JSON (Banco de Dados ou Ficha de Jogador)</label>
-            <input type="file" id="arquivoImport" accept=".json" onchange="importarJSON(event)">
-        </div>
-        
-        <div class="form-group">
-            <label for="seletorPersonagem">2. Personagens Carregados</label>
-            <select id="seletorPersonagem" onchange="carregarParaEdicao()">
-                <option value="">Nenhum personagem carregado...</option>
-            </select>
-        </div>
-        <button class="novo" onclick="limparFormulario()">Limpar para Criar Novo Personagem</button>
-    </div>
-
-    <div class="grid-2">
-        <div class="form-group">
-            <label for="nome">Nome do Personagem</label>
-            <input type="text" id="nome" placeholder="Ex: Caelum">
-        </div>
-        <div class="form-group">
-            <label for="id">ID Único (Para o sistema)</label>
-            <input type="text" id="id" placeholder="Ex: caelum (sem espaços)">
-        </div>
-    </div>
-
-    <div class="grid-2">
-        <div class="form-group">
-            <label for="classe">Classe</label>
-            <select id="classe" onchange="atualizarDadosMatriz()">
-                <option value="">Selecione a Classe...</option>
-                <option value="Cavaleiro">Cavaleiro</option>
-                <option value="Construto">Construto</option>
-                <option value="Espadachim">Espadachim</option>
-                <option value="Selvagem">Selvagem</option>
-                <option value="Mecânico">Mecânico</option>
-                <option value="Suporte">Suporte</option>
-                <option value="Feiticeiro">Feiticeiro</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="afinidade">Afinidade Elemental</label>
-            <select id="afinidade">
-                <option value="Fogo">Fogo</option>
-                <option value="Gelo/Água">Gelo/Água</option>
-                <option value="Luz">Luz</option>
-                <option value="Sombra">Sombra</option>
-                <option value="Neutro">Neutro</option>
-            </select>
-        </div>
-    </div>
-
-    <h3>Atributos Brutos</h3>
-    <div class="grid-atributos">
-        <div class="form-group"><label id="lbl_poder">Poder</label><input type="number" id="poder" value="0"></div>
-        <div class="form-group"><label id="lbl_vigor">Vigor</label><input type="number" id="vigor" value="0"></div>
-        <div class="form-group"><label id="lbl_velocidade">Velocidade</label><input type="number" id="velocidade" value="0"></div>
-        <div class="form-group"><label id="lbl_magia">Magia</label><input type="number" id="magia" value="0"></div>
-        <div class="form-group"><label id="lbl_precisao">Precisão</label><input type="number" id="precisao" value="0"></div>
-        <div class="form-group"><label id="lbl_esquiva">Esquiva</label><input type="number" id="esquiva" value="0"></div>
-        <div class="form-group"><label id="lbl_def_magica">Defesa Mágica</label><input type="number" id="def_magica" value="0"></div>
-    </div>
-
-    <button onclick="salvarPersonagem()">Salvar no Banco e Gerar JSON Atualizado</button>
-
-    <textarea id="resultado" readonly placeholder="O banco_de_dados.json atualizado aparecerá aqui..."></textarea>
-</div>
-
-<script>
-    // Banco de Dados na Memória da Página
-    let bancoDeDados = { personagens: [] };
-
-    const regrasClasses = {
-        "Cavaleiro": { arquetipo: "Combatente", pv_base: 60, pm_base: 8, dados: { vigor: "d12", poder: "d10", magia: "d8", def_magica: "d8", velocidade: "d6", esquiva: "d6", precisao: "d4" } },
-        "Construto": { arquetipo: "Combatente", pv_base: 72, pm_base: 6, dados: { poder: "d10", vigor: "d12", precisao: "d8", def_magica: "d8", magia: "d6", esquiva: "d6", velocidade: "d4" } },
-        "Espadachim": { arquetipo: "Equilibrada", pv_base: 36, pm_base: 4, dados: { velocidade: "d12", poder: "d10", esquiva: "d8", precisao: "d8", vigor: "d6", def_magica: "d6", magia: "d4" } },
-        "Selvagem": { arquetipo: "Equilibrada", pv_base: 48, pm_base: 4, dados: { esquiva: "d12", poder: "d10", velocidade: "d8", vigor: "d8", precisao: "d6", def_magica: "d6", magia: "d4" } },
-        "Mecânico": { arquetipo: "Arcana / Tecnologia", pv_base: 32, pm_base: 20, dados: { precisao: "d12", magia: "d10", def_magica: "d8", vigor: "d8", poder: "d6", esquiva: "d6", velocidade: "d4" } },
-        "Suporte": { arquetipo: "Arcana", pv_base: 24, pm_base: 20, dados: { def_magica: "d12", magia: "d10", precisao: "d8", velocidade: "d8", vigor: "d6", esquiva: "d6", poder: "d4" } },
-        "Feiticeiro": { arquetipo: "Arcana", pv_base: 24, pm_base: 24, dados: { magia: "d12", def_magica: "d10", velocidade: "d8", poder: "d8", esquiva: "d6", vigor: "d6", precisao: "d4" } }
-    };
-
-    function calcularFibonacci(valor) {
-        if (valor >= 1 && valor <= 5) return 0;
-        if (valor >= 6 && valor <= 13) return 1;
-        if (valor >= 14 && valor <= 26) return 2;
-        if (valor >= 27 && valor <= 47) return 3;
-        if (valor >= 48 && valor <= 81) return 4;
-        if (valor >= 82) return 5;
-        return 0;
-    }
-
-    function atualizarDadosMatriz() {
-        const classeSelecionada = document.getElementById("classe").value;
-        if (!classeSelecionada) return;
-        const dados = regrasClasses[classeSelecionada].dados;
-        document.getElementById("lbl_poder").innerText = "Poder (" + dados.poder + ")";
-        document.getElementById("lbl_vigor").innerText = "Vigor (" + dados.vigor + ")";
-        document.getElementById("lbl_velocidade").innerText = "Velocidade (" + dados.velocidade + ")";
-        document.getElementById("lbl_magia").innerText = "Magia (" + dados.magia + ")";
-        document.getElementById("lbl_precisao").innerText = "Precisão (" + dados.precisao + ")";
-        document.getElementById("lbl_esquiva").innerText = "Esquiva (" + dados.esquiva + ")";
-        document.getElementById("lbl_def_magica").innerText = "Defesa Mágica (" + dados.def_magica + ")";
-    }
-
-    // Função 1: Importar JSON (Lê o arquivo do PC)
-    function importarJSON(evento) {
-        const file = evento.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const dadosLidos = JSON.parse(e.target.result);
-                
-                // Verifica se é o banco de dados inteiro ou uma ficha única
-                if (dadosLidos.personagens) {
-                    bancoDeDados = dadosLidos;
-                } else if (dadosLidos.id) {
-                    // É uma ficha única enviada por jogador
-                    const index = bancoDeDados.personagens.findIndex(p => p.id === dadosLidos.id);
-                    if (index > -1) bancoDeDados.personagens[index] = dadosLidos; // Atualiza
-                    else bancoDeDados.personagens.push(dadosLidos); // Adiciona
-                }
-                
-                atualizarSeletorHTML();
-                alert("JSON carregado com sucesso!");
-            } catch (err) {
-                alert("Erro ao ler o arquivo. Tem certeza que é um JSON válido?");
-            }
-        };
-        reader.readAsText(file);
-    }
-
-    // Atualiza a lista dropdown de personagens
-    function atualizarSeletorHTML() {
-        const seletor = document.getElementById("seletorPersonagem");
-        seletor.innerHTML = '<option value="">Selecione para editar...</option>';
-        
-        bancoDeDados.personagens.forEach(p => {
-            const opcao = document.createElement("option");
-            opcao.value = p.id;
-            opcao.innerText = p.dados_basicos.nome + " (" + p.dados_basicos.classe + ")";
-            seletor.appendChild(opcao);
-        });
-    }
-
-    // Função 2: Carregar dados do personagem selecionado para o formulário
-    function carregarParaEdicao() {
-        const idSelecionado = document.getElementById("seletorPersonagem").value;
-        if (!idSelecionado) return;
-
-        const p = bancoDeDados.personagens.find(person => person.id === idSelecionado);
-        if (p) {
-            document.getElementById("id").value = p.id;
-            document.getElementById("nome").value = p.dados_basicos.nome;
-            document.getElementById("classe").value = p.dados_basicos.classe;
-            document.getElementById("afinidade").value = p.dados_basicos.afinidade_elemental;
-            
-            atualizarDadosMatriz();
-
-            document.getElementById("poder").value = p.atributos.poder.bruto;
-            document.getElementById("vigor").value = p.atributos.vigor.bruto;
-            document.getElementById("velocidade").value = p.atributos.velocidade.bruto;
-            document.getElementById("magia").value = p.atributos.magia.bruto;
-            document.getElementById("precisao").value = p.atributos.precisao.bruto;
-            document.getElementById("esquiva").value = p.atributos.esquiva.bruto;
-            document.getElementById("def_magica").value = p.atributos.defesa_magica.bruto;
-        }
-    }
-
-    function limparFormulario() {
-        document.getElementById("id").value = "";
-        document.getElementById("nome").value = "";
-        document.getElementById("classe").value = "";
-        document.getElementById("afinidade").value = "Neutro";
-        document.getElementById("poder").value = "0";
-        document.getElementById("vigor").value = "0";
-        document.getElementById("velocidade").value = "0";
-        document.getElementById("magia").value = "0";
-        document.getElementById("precisao").value = "0";
-        document.getElementById("esquiva").value = "0";
-        document.getElementById("def_magica").value = "0";
-        document.getElementById("seletorPersonagem").value = "";
-    }
-
-    // Função Principal: Salva no Banco Interno e exibe o JSON
-    function salvarPersonagem() {
+function salvarPersonagem() {
         const id = document.getElementById("id").value;
         const nome = document.getElementById("nome").value;
         const classeNome = document.getElementById("classe").value;
@@ -236,7 +21,6 @@
 
         const bonusEsquiva = calcularFibonacci(vEsquiva);
 
-        // Monta o Objeto do Personagem Atualizado
         const fichaAtualizada = {
             "id": id,
             "dados_basicos": {
@@ -268,22 +52,25 @@
             }
         };
 
-        // Procura se o personagem já existe no banco
         const index = bancoDeDados.personagens.findIndex(p => p.id === id);
-        
-        if (index > -1) {
-            bancoDeDados.personagens[index] = fichaAtualizada; // Atualiza
-        } else {
-            bancoDeDados.personagens.push(fichaAtualizada); // Adiciona novo
-        }
+        if (index > -1) bancoDeDados.personagens[index] = fichaAtualizada; 
+        else bancoDeDados.personagens.push(fichaAtualizada); 
 
         atualizarSeletorHTML();
         document.getElementById("seletorPersonagem").value = id;
 
-        // Imprime o JSON COMPLETO do banco de dados na tela
-        document.getElementById("resultado").value = JSON.stringify(bancoDeDados, null, 4);
+        // Joga na tela
+        const txtArea = document.getElementById("resultado");
+        const jsonFinal = JSON.stringify(bancoDeDados, null, 4);
+        txtArea.value = jsonFinal;
+        
+        // COMANDO NOVO: Copia automaticamente para a área de transferência
+        navigator.clipboard.writeText(jsonFinal).then(() => {
+            const msgSucesso = document.getElementById("ancora-resultado");
+            msgSucesso.innerText = "✅ Salvo e copiado! É só dar Ctrl+V no arquivo banco_de_dados.json no GitHub.";
+            msgSucesso.style.display = "block";
+            msgSucesso.scrollIntoView({ behavior: 'smooth' });
+        }).catch(err => {
+            alert("Erro ao copiar automaticamente. Por favor, copie o texto da caixa manualmente.");
+        });
     }
-</script>
-
-</body>
-</html>
