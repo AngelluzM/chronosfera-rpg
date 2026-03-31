@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Chronosfera RPG - Painel do Mestre</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #555; }
+        input[type="text"], input[type="number"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-atributos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; background: #f9f9fc; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; }
+        button { background-color: #3498db; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; transition: background 0.3s; }
+        button:hover { background-color: #2980b9; }
+        textarea { width: 100%; height: 300px; margin-top: 20px; font-family: monospace; padding: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; background-color: #fdfdfd; resize: vertical; }
+        .dica { font-size: 0.85em; color: #7f8c8d; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Painel do Mestre - Gerador de Fichas JSON</h1>
+    
+    <div class="grid-2">
+        <div class="form-group">
+            <label for="nome">Nome do Personagem</label>
+            <input type="text" id="nome" placeholder="Ex: Caelum">
+        </div>
+        <div class="form-group">
+            <label for="id">ID Único (Para o sistema)</label>
+            <input type="text" id="id" placeholder="Ex: caelum (sem espaços ou acentos)">
+            <div class="dica">Usado internamente pelo site. Ex: "caelum"</div>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div class="form-group">
+            <label for="classe">Classe</label>
+            <select id="classe" onchange="atualizarDadosMatriz()">
+                <option value="">Selecione a Classe...</option>
+                <option value="Cavaleiro">Cavaleiro</option>
+                <option value="Construto">Construto</option>
+                <option value="Espadachim">Espadachim</option>
+                <option value="Selvagem">Selvagem</option>
+                <option value="Mecânico">Mecânico</option>
+                <option value="Suporte">Suporte</option>
+                <option value="Feiticeiro">Feiticeiro</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="afinidade">Afinidade Elemental</label>
+            <select id="afinidade">
+                <option value="Fogo">Fogo</option>
+                <option value="Gelo/Água">Gelo/Água</option>
+                <option value="Luz">Luz</option>
+                <option value="Sombra">Sombra</option>
+                <option value="Neutro">Neutro</option>
+            </select>
+        </div>
+    </div>
+
+    <h3>Atributos (Insira apenas o Valor Bruto Rolado)</h3>
+    <p class="dica">O sistema calculará automaticamente o bônus Fibonacci, os PV/PM iniciais e a ND de Esquiva.</p>
+    
+    <div class="grid-atributos">
+        <div class="form-group">
+            <label id="lbl_poder">Poder</label>
+            <input type="number" id="poder" value="0" min="0" max="99">
+        </div>
+        <div class="form-group">
+            <label id="lbl_vigor">Vigor</label>
+            <input type="number" id="vigor" value="0" min="0" max="99">
+        </div>
+        <div class="form-group">
+            <label id="lbl_velocidade">Velocidade</label>
+            <input type="number" id="velocidade" value="0" min="0" max="99">
+        </div>
+        <div class="form-group">
+            <label id="lbl_magia">Magia</label>
+            <input type="number" id="magia" value="0" min="0" max="99">
+        </div>
+        <div class="form-group">
+            <label id="lbl_precisao">Precisão</label>
+            <input type="number" id="precisao" value="0" min="0" max="99">
+        </div>
+        <div class="form-group">
+            <label id="lbl_esquiva">Esquiva</label>
+            <input type="number" id="esquiva" value="0" min="0" max="99">
+        </div>
+        <div class="form-group">
+            <label id="lbl_def_magica">Defesa Mágica</label>
+            <input type="number" id="def_magica" value="0" min="0" max="99">
+        </div>
+    </div>
+
+    <button onclick="gerarJSON()">Gerar Código JSON da Ficha</button>
+
+    <textarea id="resultado" readonly placeholder="O código JSON aparecerá aqui..."></textarea>
+</div>
+
+<script>
+    // Regras do Sistema Chronosfera
+    const regrasClasses = {
+        "Cavaleiro": { arquetipo: "Combatente", pv_base: 60, pm_base: 8, dados: { vigor: "d12", poder: "d10", magia: "d8", def_magica: "d8", velocidade: "d6", esquiva: "d6", precisao: "d4" } },
+        "Construto": { arquetipo: "Combatente", pv_base: 72, pm_base: 6, dados: { poder: "d10", vigor: "d12", precisao: "d8", def_magica: "d8", magia: "d6", esquiva: "d6", velocidade: "d4" } },
+        "Espadachim": { arquetipo: "Equilibrada", pv_base: 36, pm_base: 4, dados: { velocidade: "d12", poder: "d10", esquiva: "d8", precisao: "d8", vigor: "d6", def_magica: "d6", magia: "d4" } },
+        "Selvagem": { arquetipo: "Equilibrada", pv_base: 48, pm_base: 4, dados: { esquiva: "d12", poder: "d10", velocidade: "d8", vigor: "d8", precisao: "d6", def_magica: "d6", magia: "d4" } },
+        "Mecânico": { arquetipo: "Arcana / Tecnologia", pv_base: 32, pm_base: 20, dados: { precisao: "d12", magia: "d10", def_magica: "d8", vigor: "d8", poder: "d6", esquiva: "d6", velocidade: "d4" } },
+        "Suporte": { arquetipo: "Arcana", pv_base: 24, pm_base: 20, dados: { def_magica: "d12", magia: "d10", precisao: "d8", velocidade: "d8", vigor: "d6", esquiva: "d6", poder: "d4" } },
+        "Feiticeiro": { arquetipo: "Arcana", pv_base: 24, pm_base: 24, dados: { magia: "d12", def_magica: "d10", velocidade: "d8", poder: "d8", esquiva: "d6", vigor: "d6", precisao: "d4" } }
+    };
+
+    function calcularFibonacci(valor) {
+        if (valor >= 1 && valor <= 5) return 0;
+        if (valor >= 6 && valor <= 13) return 1;
+        if (valor >= 14 && valor <= 26) return 2;
+        if (valor >= 27 && valor <= 47) return 3;
+        if (valor >= 48 && valor <= 81) return 4;
+        if (valor >= 82) return 5;
+        return 0;
+    }
+
+    function atualizarDadosMatriz() {
+        const classeSelecionada = document.getElementById("classe").value;
+        if (!classeSelecionada) return;
+
+        const dados = regrasClasses[classeSelecionada].dados;
+        document.getElementById("lbl_poder").innerText = "Poder (" + dados.poder + ")";
+        document.getElementById("lbl_vigor").innerText = "Vigor (" + dados.vigor + ")";
+        document.getElementById("lbl_velocidade").innerText = "Velocidade (" + dados.velocidade + ")";
+        document.getElementById("lbl_magia").innerText = "Magia (" + dados.magia + ")";
+        document.getElementById("lbl_precisao").innerText = "Precisão (" + dados.precisao + ")";
+        document.getElementById("lbl_esquiva").innerText = "Esquiva (" + dados.esquiva + ")";
+        document.getElementById("lbl_def_magica").innerText = "Defesa Mágica (" + dados.def_magica + ")";
+    }
+
+    function gerarJSON() {
+        const id = document.getElementById("id").value || "sem_id";
+        const nome = document.getElementById("nome").value || "Desconhecido";
+        const classeNome = document.getElementById("classe").value;
+        const afinidade = document.getElementById("afinidade").value;
+
+        if (!classeNome) {
+            alert("Por favor, selecione uma classe.");
+            return;
+        }
+
+        const infoClasse = regrasClasses[classeNome];
+
+        // Coletar Valores Brutos
+        const vBrutoPoder = parseInt(document.getElementById("poder").value) || 0;
+        const vBrutoVigor = parseInt(document.getElementById("vigor").value) || 0;
+        const vBrutoVelocidade = parseInt(document.getElementById("velocidade").value) || 0;
+        const vBrutoMagia = parseInt(document.getElementById("magia").value) || 0;
+        const vBrutoPrecisao = parseInt(document.getElementById("precisao").value) || 0;
+        const vBrutoEsquiva = parseInt(document.getElementById("esquiva").value) || 0;
+        const vBrutoDefMagica = parseInt(document.getElementById("def_magica").value) || 0;
+
+        // Bônus Fibonacci
+        const bonusEsquiva = calcularFibonacci(vBrutoEsquiva);
+
+        // Estruturar JSON
+        const ficha = {
+            "id": id,
+            "dados_basicos": {
+                "nome": nome,
+                "nivel": 1,
+                "classe": classeNome,
+                "arquetipo": infoClasse.arquetipo,
+                "afinidade_elemental": afinidade
+            },
+            "status": {
+                "pv_maximo": vBrutoVigor + infoClasse.pv_base,
+                "pm_maximo": vBrutoMagia + infoClasse.pm_base,
+                "psique": 100,
+                "alma": 100,
+                "nd_esquiva_base": 8 + bonusEsquiva
+            },
+            "atributos": {
+                "poder": { "dado": infoClasse.dados.poder, "bruto": vBrutoPoder, "bonus": calcularFibonacci(vBrutoPoder) },
+                "vigor": { "dado": infoClasse.dados.vigor, "bruto": vBrutoVigor, "bonus": calcularFibonacci(vBrutoVigor) },
+                "velocidade": { "dado": infoClasse.dados.velocidade, "bruto": vBrutoVelocidade, "bonus": calcularFibonacci(vBrutoVelocidade) },
+                "magia": { "dado": infoClasse.dados.magia, "bruto": vBrutoMagia, "bonus": calcularFibonacci(vBrutoMagia) },
+                "precisao": { "dado": infoClasse.dados.precisao, "bruto": vBrutoPrecisao, "bonus": calcularFibonacci(vBrutoPrecisao) },
+                "esquiva": { "dado": infoClasse.dados.esquiva, "bruto": vBrutoEsquiva, "bonus": bonusEsquiva },
+                "defesa_magica": { "dado": infoClasse.dados.def_magica, "bruto": vBrutoDefMagica, "bonus": calcularFibonacci(vBrutoDefMagica) }
+            },
+            "referencias": {
+                "dano_fisico": "Dados da Arma + Atributo Bruto (Poder ou Precisão)",
+                "dano_magico": "Dados da Magia + Magia Bruta"
+            }
+        };
+
+        // Formatar e jogar na tela (Note que coloco dentro de um array "personagens" para facilitar o copia e cola no seu banco)
+        const saidaJSON = ",\n" + JSON.stringify(ficha, null, 4);
+        
+        document.getElementById("resultado").value = saidaJSON;
+    }
+</script>
+
+</body>
+</html>
