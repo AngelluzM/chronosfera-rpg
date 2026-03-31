@@ -6,14 +6,17 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
         .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 20px; }
+        .import-section { background: #e8f4f8; padding: 15px; border-radius: 5px; border: 1px dashed #3498db; margin-bottom: 25px; }
         .form-group { margin-bottom: 15px; }
         label { display: block; font-weight: bold; margin-bottom: 5px; color: #555; }
-        input[type="text"], input[type="number"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        input[type="text"], input[type="number"], select, input[type="file"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .grid-atributos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; background: #f9f9fc; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; }
         button { background-color: #3498db; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; transition: background 0.3s; }
         button:hover { background-color: #2980b9; }
+        button.novo { background-color: #2ecc71; margin-top: 10px; }
+        button.novo:hover { background-color: #27ae60; }
         textarea { width: 100%; height: 300px; margin-top: 20px; font-family: monospace; padding: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; background-color: #fdfdfd; resize: vertical; }
         .dica { font-size: 0.85em; color: #7f8c8d; margin-top: 5px; }
     </style>
@@ -21,8 +24,23 @@
 <body>
 
 <div class="container">
-    <h1>Painel do Mestre - Gerador de Fichas JSON</h1>
+    <h1>Painel do Mestre - Chronosfera RPG</h1>
     
+    <div class="import-section">
+        <div class="form-group">
+            <label for="arquivoImport">1. Importar JSON (Banco de Dados ou Ficha de Jogador)</label>
+            <input type="file" id="arquivoImport" accept=".json" onchange="importarJSON(event)">
+        </div>
+        
+        <div class="form-group">
+            <label for="seletorPersonagem">2. Personagens Carregados</label>
+            <select id="seletorPersonagem" onchange="carregarParaEdicao()">
+                <option value="">Nenhum personagem carregado...</option>
+            </select>
+        </div>
+        <button class="novo" onclick="limparFormulario()">Limpar para Criar Novo Personagem</button>
+    </div>
+
     <div class="grid-2">
         <div class="form-group">
             <label for="nome">Nome do Personagem</label>
@@ -30,8 +48,7 @@
         </div>
         <div class="form-group">
             <label for="id">ID Único (Para o sistema)</label>
-            <input type="text" id="id" placeholder="Ex: caelum (sem espaços ou acentos)">
-            <div class="dica">Usado internamente pelo site. Ex: "caelum"</div>
+            <input type="text" id="id" placeholder="Ex: caelum (sem espaços)">
         </div>
     </div>
 
@@ -61,47 +78,26 @@
         </div>
     </div>
 
-    <h3>Atributos (Insira apenas o Valor Bruto Rolado)</h3>
-    <p class="dica">O sistema calculará automaticamente o bônus Fibonacci, os PV/PM iniciais e a ND de Esquiva.</p>
-    
+    <h3>Atributos Brutos</h3>
     <div class="grid-atributos">
-        <div class="form-group">
-            <label id="lbl_poder">Poder</label>
-            <input type="number" id="poder" value="0" min="0" max="99">
-        </div>
-        <div class="form-group">
-            <label id="lbl_vigor">Vigor</label>
-            <input type="number" id="vigor" value="0" min="0" max="99">
-        </div>
-        <div class="form-group">
-            <label id="lbl_velocidade">Velocidade</label>
-            <input type="number" id="velocidade" value="0" min="0" max="99">
-        </div>
-        <div class="form-group">
-            <label id="lbl_magia">Magia</label>
-            <input type="number" id="magia" value="0" min="0" max="99">
-        </div>
-        <div class="form-group">
-            <label id="lbl_precisao">Precisão</label>
-            <input type="number" id="precisao" value="0" min="0" max="99">
-        </div>
-        <div class="form-group">
-            <label id="lbl_esquiva">Esquiva</label>
-            <input type="number" id="esquiva" value="0" min="0" max="99">
-        </div>
-        <div class="form-group">
-            <label id="lbl_def_magica">Defesa Mágica</label>
-            <input type="number" id="def_magica" value="0" min="0" max="99">
-        </div>
+        <div class="form-group"><label id="lbl_poder">Poder</label><input type="number" id="poder" value="0"></div>
+        <div class="form-group"><label id="lbl_vigor">Vigor</label><input type="number" id="vigor" value="0"></div>
+        <div class="form-group"><label id="lbl_velocidade">Velocidade</label><input type="number" id="velocidade" value="0"></div>
+        <div class="form-group"><label id="lbl_magia">Magia</label><input type="number" id="magia" value="0"></div>
+        <div class="form-group"><label id="lbl_precisao">Precisão</label><input type="number" id="precisao" value="0"></div>
+        <div class="form-group"><label id="lbl_esquiva">Esquiva</label><input type="number" id="esquiva" value="0"></div>
+        <div class="form-group"><label id="lbl_def_magica">Defesa Mágica</label><input type="number" id="def_magica" value="0"></div>
     </div>
 
-    <button onclick="gerarJSON()">Gerar Código JSON da Ficha</button>
+    <button onclick="salvarPersonagem()">Salvar no Banco e Gerar JSON Atualizado</button>
 
-    <textarea id="resultado" readonly placeholder="O código JSON aparecerá aqui..."></textarea>
+    <textarea id="resultado" readonly placeholder="O banco_de_dados.json atualizado aparecerá aqui..."></textarea>
 </div>
 
 <script>
-    // Regras do Sistema Chronosfera
+    // Banco de Dados na Memória da Página
+    let bancoDeDados = { personagens: [] };
+
     const regrasClasses = {
         "Cavaleiro": { arquetipo: "Combatente", pv_base: 60, pm_base: 8, dados: { vigor: "d12", poder: "d10", magia: "d8", def_magica: "d8", velocidade: "d6", esquiva: "d6", precisao: "d4" } },
         "Construto": { arquetipo: "Combatente", pv_base: 72, pm_base: 6, dados: { poder: "d10", vigor: "d12", precisao: "d8", def_magica: "d8", magia: "d6", esquiva: "d6", velocidade: "d4" } },
@@ -125,7 +121,6 @@
     function atualizarDadosMatriz() {
         const classeSelecionada = document.getElementById("classe").value;
         if (!classeSelecionada) return;
-
         const dados = regrasClasses[classeSelecionada].dados;
         document.getElementById("lbl_poder").innerText = "Poder (" + dados.poder + ")";
         document.getElementById("lbl_vigor").innerText = "Vigor (" + dados.vigor + ")";
@@ -136,33 +131,113 @@
         document.getElementById("lbl_def_magica").innerText = "Defesa Mágica (" + dados.def_magica + ")";
     }
 
-    function gerarJSON() {
-        const id = document.getElementById("id").value || "sem_id";
-        const nome = document.getElementById("nome").value || "Desconhecido";
+    // Função 1: Importar JSON (Lê o arquivo do PC)
+    function importarJSON(evento) {
+        const file = evento.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const dadosLidos = JSON.parse(e.target.result);
+                
+                // Verifica se é o banco de dados inteiro ou uma ficha única
+                if (dadosLidos.personagens) {
+                    bancoDeDados = dadosLidos;
+                } else if (dadosLidos.id) {
+                    // É uma ficha única enviada por jogador
+                    const index = bancoDeDados.personagens.findIndex(p => p.id === dadosLidos.id);
+                    if (index > -1) bancoDeDados.personagens[index] = dadosLidos; // Atualiza
+                    else bancoDeDados.personagens.push(dadosLidos); // Adiciona
+                }
+                
+                atualizarSeletorHTML();
+                alert("JSON carregado com sucesso!");
+            } catch (err) {
+                alert("Erro ao ler o arquivo. Tem certeza que é um JSON válido?");
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    // Atualiza a lista dropdown de personagens
+    function atualizarSeletorHTML() {
+        const seletor = document.getElementById("seletorPersonagem");
+        seletor.innerHTML = '<option value="">Selecione para editar...</option>';
+        
+        bancoDeDados.personagens.forEach(p => {
+            const opcao = document.createElement("option");
+            opcao.value = p.id;
+            opcao.innerText = p.dados_basicos.nome + " (" + p.dados_basicos.classe + ")";
+            seletor.appendChild(opcao);
+        });
+    }
+
+    // Função 2: Carregar dados do personagem selecionado para o formulário
+    function carregarParaEdicao() {
+        const idSelecionado = document.getElementById("seletorPersonagem").value;
+        if (!idSelecionado) return;
+
+        const p = bancoDeDados.personagens.find(person => person.id === idSelecionado);
+        if (p) {
+            document.getElementById("id").value = p.id;
+            document.getElementById("nome").value = p.dados_basicos.nome;
+            document.getElementById("classe").value = p.dados_basicos.classe;
+            document.getElementById("afinidade").value = p.dados_basicos.afinidade_elemental;
+            
+            atualizarDadosMatriz();
+
+            document.getElementById("poder").value = p.atributos.poder.bruto;
+            document.getElementById("vigor").value = p.atributos.vigor.bruto;
+            document.getElementById("velocidade").value = p.atributos.velocidade.bruto;
+            document.getElementById("magia").value = p.atributos.magia.bruto;
+            document.getElementById("precisao").value = p.atributos.precisao.bruto;
+            document.getElementById("esquiva").value = p.atributos.esquiva.bruto;
+            document.getElementById("def_magica").value = p.atributos.defesa_magica.bruto;
+        }
+    }
+
+    function limparFormulario() {
+        document.getElementById("id").value = "";
+        document.getElementById("nome").value = "";
+        document.getElementById("classe").value = "";
+        document.getElementById("afinidade").value = "Neutro";
+        document.getElementById("poder").value = "0";
+        document.getElementById("vigor").value = "0";
+        document.getElementById("velocidade").value = "0";
+        document.getElementById("magia").value = "0";
+        document.getElementById("precisao").value = "0";
+        document.getElementById("esquiva").value = "0";
+        document.getElementById("def_magica").value = "0";
+        document.getElementById("seletorPersonagem").value = "";
+    }
+
+    // Função Principal: Salva no Banco Interno e exibe o JSON
+    function salvarPersonagem() {
+        const id = document.getElementById("id").value;
+        const nome = document.getElementById("nome").value;
         const classeNome = document.getElementById("classe").value;
         const afinidade = document.getElementById("afinidade").value;
 
-        if (!classeNome) {
-            alert("Por favor, selecione uma classe.");
+        if (!id || !classeNome) {
+            alert("Preencha ao menos o ID e a Classe!");
             return;
         }
 
         const infoClasse = regrasClasses[classeNome];
 
-        // Coletar Valores Brutos
-        const vBrutoPoder = parseInt(document.getElementById("poder").value) || 0;
-        const vBrutoVigor = parseInt(document.getElementById("vigor").value) || 0;
-        const vBrutoVelocidade = parseInt(document.getElementById("velocidade").value) || 0;
-        const vBrutoMagia = parseInt(document.getElementById("magia").value) || 0;
-        const vBrutoPrecisao = parseInt(document.getElementById("precisao").value) || 0;
-        const vBrutoEsquiva = parseInt(document.getElementById("esquiva").value) || 0;
-        const vBrutoDefMagica = parseInt(document.getElementById("def_magica").value) || 0;
+        const vPoder = parseInt(document.getElementById("poder").value) || 0;
+        const vVigor = parseInt(document.getElementById("vigor").value) || 0;
+        const vVelocidade = parseInt(document.getElementById("velocidade").value) || 0;
+        const vMagia = parseInt(document.getElementById("magia").value) || 0;
+        const vPrecisao = parseInt(document.getElementById("precisao").value) || 0;
+        const vEsquiva = parseInt(document.getElementById("esquiva").value) || 0;
+        const vDefMagica = parseInt(document.getElementById("def_magica").value) || 0;
 
-        // Bônus Fibonacci
-        const bonusEsquiva = calcularFibonacci(vBrutoEsquiva);
+        const bonusEsquiva = calcularFibonacci(vEsquiva);
 
-        // Estruturar JSON
-        const ficha = {
+        // Monta o Objeto do Personagem Atualizado
+        const fichaAtualizada = {
             "id": id,
             "dados_basicos": {
                 "nome": nome,
@@ -172,20 +247,20 @@
                 "afinidade_elemental": afinidade
             },
             "status": {
-                "pv_maximo": vBrutoVigor + infoClasse.pv_base,
-                "pm_maximo": vBrutoMagia + infoClasse.pm_base,
+                "pv_maximo": vVigor + infoClasse.pv_base,
+                "pm_maximo": vMagia + infoClasse.pm_base,
                 "psique": 100,
                 "alma": 100,
                 "nd_esquiva_base": 8 + bonusEsquiva
             },
             "atributos": {
-                "poder": { "dado": infoClasse.dados.poder, "bruto": vBrutoPoder, "bonus": calcularFibonacci(vBrutoPoder) },
-                "vigor": { "dado": infoClasse.dados.vigor, "bruto": vBrutoVigor, "bonus": calcularFibonacci(vBrutoVigor) },
-                "velocidade": { "dado": infoClasse.dados.velocidade, "bruto": vBrutoVelocidade, "bonus": calcularFibonacci(vBrutoVelocidade) },
-                "magia": { "dado": infoClasse.dados.magia, "bruto": vBrutoMagia, "bonus": calcularFibonacci(vBrutoMagia) },
-                "precisao": { "dado": infoClasse.dados.precisao, "bruto": vBrutoPrecisao, "bonus": calcularFibonacci(vBrutoPrecisao) },
-                "esquiva": { "dado": infoClasse.dados.esquiva, "bruto": vBrutoEsquiva, "bonus": bonusEsquiva },
-                "defesa_magica": { "dado": infoClasse.dados.def_magica, "bruto": vBrutoDefMagica, "bonus": calcularFibonacci(vBrutoDefMagica) }
+                "poder": { "dado": infoClasse.dados.poder, "bruto": vPoder, "bonus": calcularFibonacci(vPoder) },
+                "vigor": { "dado": infoClasse.dados.vigor, "bruto": vVigor, "bonus": calcularFibonacci(vVigor) },
+                "velocidade": { "dado": infoClasse.dados.velocidade, "bruto": vVelocidade, "bonus": calcularFibonacci(vVelocidade) },
+                "magia": { "dado": infoClasse.dados.magia, "bruto": vMagia, "bonus": calcularFibonacci(vMagia) },
+                "precisao": { "dado": infoClasse.dados.precisao, "bruto": vPrecisao, "bonus": calcularFibonacci(vPrecisao) },
+                "esquiva": { "dado": infoClasse.dados.esquiva, "bruto": vEsquiva, "bonus": bonusEsquiva },
+                "defesa_magica": { "dado": infoClasse.dados.def_magica, "bruto": vDefMagica, "bonus": calcularFibonacci(vDefMagica) }
             },
             "referencias": {
                 "dano_fisico": "Dados da Arma + Atributo Bruto (Poder ou Precisão)",
@@ -193,10 +268,20 @@
             }
         };
 
-        // Formatar e jogar na tela (Note que coloco dentro de um array "personagens" para facilitar o copia e cola no seu banco)
-        const saidaJSON = ",\n" + JSON.stringify(ficha, null, 4);
+        // Procura se o personagem já existe no banco
+        const index = bancoDeDados.personagens.findIndex(p => p.id === id);
         
-        document.getElementById("resultado").value = saidaJSON;
+        if (index > -1) {
+            bancoDeDados.personagens[index] = fichaAtualizada; // Atualiza
+        } else {
+            bancoDeDados.personagens.push(fichaAtualizada); // Adiciona novo
+        }
+
+        atualizarSeletorHTML();
+        document.getElementById("seletorPersonagem").value = id;
+
+        // Imprime o JSON COMPLETO do banco de dados na tela
+        document.getElementById("resultado").value = JSON.stringify(bancoDeDados, null, 4);
     }
 </script>
 
