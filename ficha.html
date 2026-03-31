@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Chronosfera RPG - Fichas dos Personagens</title>
+    <style>
+        /* Estilos base da página */
+        body { 
+            font-family: Arial, sans-serif; 
+            line-height: 1.6; 
+            margin: 40px auto; 
+            max-width: 1000px; 
+            padding: 0 20px; 
+            color: #333; 
+            background-color: #f9f9f9; 
+        }
+        nav { 
+            margin-bottom: 30px; 
+            padding: 15px; 
+            background-color: #eee; 
+            border-radius: 5px; 
+        }
+        nav a { 
+            margin-right: 20px; 
+            text-decoration: none; 
+            color: #0056b3; 
+            font-weight: bold; 
+        }
+        nav a:hover { text-decoration: underline; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+
+        /* Estilos dos Cartões (Cards) de Ficha */
+        .grid-fichas { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 20px; 
+            margin-top: 20px; 
+        }
+        .ficha-card { 
+            background: white; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            padding: 20px; 
+            border-top: 5px solid #3498db; 
+        }
+        .ficha-header h2 { margin: 0 0 5px 0; color: #2c3e50; }
+        .ficha-header p { 
+            margin: 0; 
+            color: #7f8c8d; 
+            font-size: 0.9em; 
+            border-bottom: 1px solid #eee; 
+            padding-bottom: 10px; 
+            margin-bottom: 10px; 
+        }
+
+        /* Destaques de Status (PV, PM, Psiquê, Alma) */
+        .status-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px; 
+            margin-bottom: 15px; 
+        }
+        .status-item { 
+            background: #f8f9fa; 
+            padding: 8px; 
+            border-radius: 4px; 
+            text-align: center; 
+            font-weight: bold; 
+            border: 1px solid #eee;
+        }
+        .status-pv { color: #e74c3c; }
+        .status-pm { color: #3498db; }
+        .status-psique { color: #8e44ad; }
+        .status-alma { color: #f39c12; }
+
+        /* Tabela de Atributos */
+        .atributos { 
+            font-size: 0.9em; 
+            border-collapse: collapse; 
+            width: 100%; 
+            margin-bottom: 10px; 
+        }
+        .atributos th, .atributos td { 
+            border: 1px solid #ddd; 
+            padding: 5px; 
+            text-align: center; 
+        }
+        .atributos th { background-color: #f4f4f4; color: #333; }
+        
+        .esquiva-box {
+            text-align: center; 
+            background-color: #e8f6f3; 
+            padding: 10px; 
+            border-radius: 4px; 
+            margin-bottom: 15px; 
+            font-weight: bold;
+            color: #16a085;
+        }
+
+        .erro { color: #e74c3c; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">Início</a>
+        <a href="regras.html">Regras</a>
+        <a href="fichas.html">Fichas dos Jogadores</a>
+    </nav>
+
+    <h1>Fichas dos Personagens</h1>
+    <p>Abaixo estão os heróis e aventureiros ativos no multiverso de Chronosfera.</p>
+
+    <div id="lista-fichas" class="grid-fichas">
+        <p>Procurando dados na linha do tempo...</p>
+    </div>
+
+    <script>
+        // Esta função busca o arquivo JSON que você gerou e salvou no GitHub
+        fetch('banco_de_dados.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Arquivo banco_de_dados.json não encontrado.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                renderizarFichas(data.personagens);
+            })
+            .catch(error => {
+                // Mensagem de erro caso o arquivo não exista ou o navegador bloqueie a leitura local
+                document.getElementById('lista-fichas').innerHTML = `
+                    <div class="erro">
+                        <p>Aviso do Sistema: ${error.message}</p>
+                        <p><strong>Dica Importante:</strong> Se você estiver abrindo este arquivo com dois cliques direto do seu computador, seu navegador pode bloquear a leitura do JSON por questões de segurança. Quando os arquivos estiverem hospedados no GitHub Pages, isso funcionará normalmente.</p>
+                    </div>`;
+            });
+
+        // Função que desenha o HTML para cada personagem encontrado no JSON
+        function renderizarFichas(personagens) {
+            const container = document.getElementById('lista-fichas');
+            container.innerHTML = ''; // Limpa a mensagem de carregamento
+
+            if (!personagens || personagens.length === 0) {
+                container.innerHTML = '<p>Nenhum personagem registrado no banco de dados ainda.</p>';
+                return;
+            }
+
+            personagens.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'ficha-card';
+
+                // Cria o "corpo" da ficha unindo HTML com os dados do JSON
+                const html = `
+                    <div class="ficha-header">
+                        <h2>${p.dados_basicos.nome}</h2>
+                        <p>Nível ${p.dados_basicos.nivel} | ${p.dados_basicos.classe} (${p.dados_basicos.arquetipo})<br>
+                        Afinidade: ${p.dados_basicos.afinidade_elemental}</p>
+                    </div>
+                    
+                    <div class="status-grid">
+                        <div class="status-item status-pv">PV: ${p.status.pv_maximo}</div>
+                        <div class="status-item status-pm">PM: ${p.status.pm_maximo}</div>
+                        <div class="status-item status-psique">Psiquê: ${p.status.psique}%</div>
+                        <div class="status-item status-alma">Alma: ${p.status.alma}%</div>
+                    </div>
+                    
+                    <div class="esquiva-box">
+                        ND de Esquiva Base: ${p.status.nd_esquiva_base}
+                    </div>
+
+                    <table class="atributos">
+                        <tr><th>Atr.</th><th>Dado</th><th>Bruto</th><th>Bônus</th></tr>
+                        <tr><td>Poder</td><td>${p.atributos.poder.dado}</td><td>${p.atributos.poder.bruto}</td><td>+${p.atributos.poder.bonus}</td></tr>
+                        <tr><td>Vigor</td><td>${p.atributos.vigor.dado}</td><td>${p.atributos.vigor.bruto}</td><td>+${p.atributos.vigor.bonus}</td></tr>
+                        <tr><td>Veloc.</td><td>${p.atributos.velocidade.dado}</td><td>${p.atributos.velocidade.bruto}</td><td>+${p.atributos.velocidade.bonus}</td></tr>
+                        <tr><td>Magia</td><td>${p.atributos.magia.dado}</td><td>${p.atributos.magia.bruto}</td><td>+${p.atributos.magia.bonus}</td></tr>
+                        <tr><td>Precisão</td><td>${p.atributos.precisao.dado}</td><td>${p.atributos.precisao.bruto}</td><td>+${p.atributos.precisao.bonus}</td></tr>
+                        <tr><td>Esquiva</td><td>${p.atributos.esquiva.dado}</td><td>${p.atributos.esquiva.bruto}</td><td>+${p.atributos.esquiva.bonus}</td></tr>
+                        <tr><td>Def. Mag.</td><td>${p.atributos.defesa_magica.dado}</td><td>${p.atributos.defesa_magica.bruto}</td><td>+${p.atributos.defesa_magica.bonus}</td></tr>
+                    </table>
+                `;
+                
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
