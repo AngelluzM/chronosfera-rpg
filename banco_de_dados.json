@@ -1,1 +1,58 @@
-
+{
+  "id": "baltazar",
+  "dados_basicos": {
+    "nome": "Baltazar",
+    "nivel": 1,
+    "classe": "Feiticeiro",
+    "arquetipo": "Arcana",
+    "afinidade_elemental": "Gelo/Água"
+  },
+  "status": {
+    "pv_maximo": 30,
+    "pm_maximo": 35,
+    "psique": 100,
+    "alma": 100,
+    "nd_esquiva_base": 8
+  },
+  "atributos": {
+    "poder": {
+      "dado": "d8",
+      "bruto": 4,
+      "bonus": 0
+    },
+    "vigor": {
+      "dado": "d6",
+      "bruto": 6,
+      "bonus": 1
+    },
+    "velocidade": {
+      "dado": "d8",
+      "bruto": 7,
+      "bonus": 1
+    },
+    "magia": {
+      "dado": "d12",
+      "bruto": 11,
+      "bonus": 1
+    },
+    "precisao": {
+      "dado": "d4",
+      "bruto": 3,
+      "bonus": 0
+    },
+    "esquiva": {
+      "dado": "d6",
+      "bruto": 5,
+      "bonus": 0
+    },
+    "defesa_magica": {
+      "dado": "d10",
+      "bruto": 8,
+      "bonus": 1
+    }
+  },
+  "referencias": {
+    "dano_fisico": "Dados da Arma + Atributo Bruto (Poder ou Precisão)",
+    "dano_magico": "Dados da Magia + Magia Bruta"
+  }
+}
