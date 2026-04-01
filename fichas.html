@@ -1,7 +1,200 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <meta charset="UTF-8"><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
     <meta charset="UTF-8">
+    <title>Chronosfera RPG - Fichas dos Personagens</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px auto; max-width: 1100px; padding: 0 20px; color: #333; background-color: #f9f9f9; }
+        nav { margin-bottom: 30px; padding: 15px; background-color: #eee; border-radius: 5px; }
+        nav a { margin-right: 20px; text-decoration: none; color: #0056b3; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
+        .grid-fichas { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin-top: 20px; }
+        .ficha-card { background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; }
+        .ficha-imagem { width: 100%; height: 250px; object-fit: cover; object-position: top; border-bottom: 4px solid #3498db; }
+        .ficha-conteudo { padding: 20px; flex-grow: 1; }
+        
+        .ficha-header h2 { margin: 0 0 5px 0; color: #2c3e50; }
+        .ficha-header p { margin: 0; color: #7f8c8d; font-size: 0.9em; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
+
+        /* Estilo da Barra de XP */
+        .xp-container { margin: 10px 0 15px 0; font-size: 0.85em; font-weight: bold; }
+        .xp-bar-bg { background: #e0e0e0; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 5px; }
+        .xp-bar-fill { background: #f1c40f; height: 100%; transition: 0.5s; }
+
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .status-item { background: #f8f9fa; padding: 8px; border-radius: 4px; text-align: center; font-weight: bold; border: 1px solid #eee; }
+        .status-pv { color: #e74c3c; }
+        .status-pm { color: #3498db; }
+
+        .esquiva-box { text-align: center; background-color: #e8f6f3; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-weight: bold; color: #16a085; }
+
+        .atributos { font-size: 0.9em; border-collapse: collapse; width: 100%; margin-bottom: 15px; }
+        .atributos th, .atributos td { border: 1px solid #ddd; padding: 5px; text-align: center; }
+        .atributos th { background-color: #f4f4f4; color: #333; }
+        
+        .inventario-box { background-color: #fcfcfc; border: 1px solid #e0e0e0; padding: 10px; border-radius: 4px; font-size: 0.85em; white-space: pre-wrap; color: #555; margin-bottom: 15px; }
+        .inventario-box strong { color: #2c3e50; display: block; margin-bottom: 5px; }
+
+        /* Botões laterais no rodapé */
+        .footer-btns { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid #eee; }
+        .btn-action { border: none; padding: 12px; cursor: pointer; font-weight: bold; transition: 0.3s; color: white; }
+        .btn-techs { background: #3498db; }
+        .btn-lacos { background: #9b59b6; }
+        .btn-action:hover { opacity: 0.8; }
+
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
+        .modal-content { background: white; margin: 10% auto; padding: 25px; border-radius: 10px; max-width: 500px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .close { position: absolute; right: 20px; top: 15px; font-size: 28px; font-weight: bold; cursor: pointer; color: #aaa; }
+        .close:hover { color: #333; }
+        #modalBody { white-space: pre-wrap; margin-top: 15px; line-height: 1.5; color: #444; }
+
+        /* Barra de Progresso do Laço */
+        .laco-item { margin-bottom: 15px; }
+        .laco-header { display: flex; justify-content: space-between; font-size: 0.9em; font-weight: bold; margin-bottom: 5px; }
+        .laco-bar-bg { background: #eee; height: 12px; border-radius: 6px; overflow: hidden; }
+        .laco-bar-fill { background: #d35400; height: 100%; }
+        
+        .erro { color: #e74c3c; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">Início</a>
+        <a href="regras.html">Regras</a>
+        <a href="fichas.html">Fichas dos Jogadores</a>
+    </nav>
+
+    <h1>Fichas dos Personagens</h1>
+    <div id="lista-fichas" class="grid-fichas"></div>
+
+    <div id="modalGeral" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h2 id="modalTitle" style="color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0;"></h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        let personagens = [];
+
+        fetch('banco_de_dados.json?v=' + new Date().getTime())
+            .then(r => r.json())
+            .then(data => {
+                personagens = data.personagens;
+                render();
+            })
+            .catch(error => {
+                document.getElementById('lista-fichas').innerHTML = `<div class="erro"><p>Erro: ${error.message}</p></div>`;
+            });
+
+        function render() {
+            const container = document.getElementById('lista-fichas');
+            container.innerHTML = '';
+            
+            if (!personagens || personagens.length === 0) {
+                container.innerHTML = '<p>Nenhum personagem registrado no banco de dados.</p>';
+                return;
+            }
+
+            personagens.forEach(p => {
+                // Previne divisão por zero caso xp_proximo seja 0 ou vazio
+                const xpMax = p.dados_basicos.xp_proximo || 50;
+                const xpAtu = p.dados_basicos.xp_atual || 0;
+                const xpPct = (xpAtu / xpMax) * 100;
+                
+                const card = document.createElement('div');
+                card.className = 'ficha-card';
+                
+                const imagemHtml = p.url_imagem && p.url_imagem.trim() !== "" 
+                    ? `<img src="${p.url_imagem}" class="ficha-imagem" alt="Imagem">` : ``;
+
+                const inventarioHtml = p.inventario && p.inventario.trim() !== ""
+                    ? `<div class="inventario-box"><strong>Inventário:</strong>${p.inventario}</div>` : ``;
+
+                card.innerHTML = `
+                    ${imagemHtml}
+                    <div class="ficha-conteudo">
+                        <div class="ficha-header">
+                            <h2>${p.dados_basicos.nome}</h2>
+                            <p>Nv ${p.dados_basicos.nivel} | ${p.dados_basicos.raca || "Raça Desconhecida"}<br>${p.dados_basicos.classe} (${p.dados_basicos.arquetipo})</p>
+                        </div>
+                        
+                        <div class="xp-container">
+                            Experiência: ${xpAtu} / ${xpMax}
+                            <div class="xp-bar-bg"><div class="xp-bar-fill" style="width: ${xpPct}%"></div></div>
+                        </div>
+
+                        <p style="font-size:0.85em; margin: -5px 0 15px 0; color: #555;"><strong>Afinidade:</strong> ${p.dados_basicos.afinidade_elemental}</p>
+                        
+                        <div class="status-grid">
+                            <div class="status-item status-pv">PV: ${p.status.pv_maximo}</div>
+                            <div class="status-item status-pm">PM: ${p.status.pm_maximo}</div>
+                        </div>
+                        
+                        <div class="esquiva-box">
+                            ND de Esquiva Base: ${p.status.nd_esquiva_base}
+                        </div>
+
+                        <table class="atributos">
+                            <tr><th>Atr.</th><th>Dado</th><th>Bruto</th><th>Bônus</th></tr>
+                            <tr><td>Poder</td><td>${p.atributos.poder.dado}</td><td>${p.atributos.poder.bruto}</td><td>+${p.atributos.poder.bonus}</td></tr>
+                            <tr><td>Vigor</td><td>${p.atributos.vigor.dado}</td><td>${p.atributos.vigor.bruto}</td><td>+${p.atributos.vigor.bonus}</td></tr>
+                            <tr><td>Veloc.</td><td>${p.atributos.velocidade.dado}</td><td>${p.atributos.velocidade.bruto}</td><td>+${p.atributos.velocidade.bonus}</td></tr>
+                            <tr><td>Magia</td><td>${p.atributos.magia.dado}</td><td>${p.atributos.magia.bruto}</td><td>+${p.atributos.magia.bonus}</td></tr>
+                            <tr><td>Precisão</td><td>${p.atributos.precisao.dado}</td><td>${p.atributos.precisao.bruto}</td><td>+${p.atributos.precisao.bonus}</td></tr>
+                            <tr><td>Esquiva</td><td>${p.atributos.esquiva.dado}</td><td>${p.atributos.esquiva.bruto}</td><td>+${p.atributos.esquiva.bonus}</td></tr>
+                            <tr><td>Def. Mag.</td><td>${p.atributos.defesa_magica.dado}</td><td>${p.atributos.defesa_magica.bruto}</td><td>+${p.atributos.defesa_magica.bonus}</td></tr>
+                        </table>
+
+                        ${inventarioHtml}
+                    </div>
+                    <div class="footer-btns">
+                        <button class="btn-action btn-techs" onclick="abrirTechs('${p.id}')">Techs</button>
+                        <button class="btn-action btn-lacos" onclick="abrirLacos('${p.id}')">Laços</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function abrirTechs(id) {
+            const p = personagens.find(x => x.id === id);
+            document.getElementById('modalTitle').innerText = "Techs & Habilidades: " + p.dados_basicos.nome;
+            document.getElementById('modalBody').innerHTML = `<p>${p.techs || 'Nenhuma técnica registada.'}</p>`;
+            document.getElementById('modalGeral').style.display = 'block';
+        }
+
+        function abrirLacos(id) {
+            const p = personagens.find(x => x.id === id);
+            document.getElementById('modalTitle').innerText = "Laços de " + p.dados_basicos.nome;
+            let html = '';
+            if(p.lacos && p.lacos.length > 0) {
+                p.lacos.forEach(l => {
+                    html += `
+                        <div class="laco-item">
+                            <div class="laco-header"><span>${l.nome}</span><span>${l.porcentagem}%</span></div>
+                            <div class="laco-bar-bg"><div class="laco-bar-fill" style="width: ${l.porcentagem}%"></div></div>
+                        </div>
+                    `;
+                });
+            } else { html = '<p>Nenhum laço formado ainda.</p>'; }
+            document.getElementById('modalBody').innerHTML = html;
+            document.getElementById('modalGeral').style.display = 'block';
+        }
+
+        function fecharModal() { document.getElementById('modalGeral').style.display = 'none'; }
+        window.onclick = function(e) { if(e.target.className === 'modal') fecharModal(); }
+    </script>
+</body>
+</html>
     <title>Chronosfera RPG - Fichas</title>
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px auto; max-width: 1100px; padding: 0 20px; color: #333; background-color: #f9f9f9; }
