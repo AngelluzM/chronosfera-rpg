@@ -100,8 +100,9 @@
         <div class="form-group"><label for="techs">Techs / Habilidades</label><textarea id="techs" class="large-input"></textarea></div>
     </div>
 
-    <button onclick="salvarPersonagem()">Guardar e Copiar JSON</button>
-    <textarea id="resultado" class="json-output" readonly></textarea>
+    <button onclick="salvarPersonagem()" style="background-color: #27ae60;">Salvar e Baixar banco_de_dados.json</button>
+    <h3 id="ancora-resultado" style="margin-top: 30px; color: #27ae60; display: none;">✅ Ficheiro exportado! Substitua o antigo na sua pasta local.</h3>
+    <textarea id="resultado" class="json-output" readonly placeholder="O código JSON será exibido aqui após salvar..."></textarea>
 </div>
 
 <script>
@@ -134,8 +135,12 @@
     function importarJSON(e) {
         const reader = new FileReader();
         reader.onload = (ev) => {
-            bancoDeDados = JSON.parse(ev.target.result);
-            atualizarSeletorHTML();
+            try {
+                bancoDeDados = JSON.parse(ev.target.result);
+                atualizarSeletorHTML();
+            } catch (err) {
+                alert("Erro ao ler o ficheiro JSON.");
+            }
         };
         reader.readAsText(e.target.files[0]);
     }
@@ -173,7 +178,6 @@
         document.getElementById("esquiva").value = p.atributos.esquiva.bruto;
         document.getElementById("def_magica").value = p.atributos.defesa_magica.bruto;
         
-        // Carregar Laços
         if(p.lacos) {
             document.getElementById("lacos").value = p.lacos.map(l => `${l.nome}: ${l.porcentagem}`).join('\n');
         } else {
@@ -185,6 +189,11 @@
     function salvarPersonagem() {
         const id = document.getElementById("id").value;
         const classeNome = document.getElementById("classe").value;
+        if (!id || !classeNome) {
+            alert("ID e Classe são obrigatórios!");
+            return;
+        }
+
         const info = regrasClasses[classeNome];
         
         // Parse Laços
@@ -231,11 +240,30 @@
         };
 
         const idx = bancoDeDados.personagens.findIndex(x => x.id === id);
-        if(idx > -1) bancoDeDados.personagens[idx] = ficha; else bancoDeDados.personagens.push(ficha);
+        if(idx > -1) bancoDeDados.personagens[idx] = ficha; 
+        else bancoDeDados.personagens.push(ficha);
 
         const final = JSON.stringify(bancoDeDados, null, 4);
+        
+        // Exibe o JSON na tela (opcional, para visualização rápida)
         document.getElementById("resultado").value = final;
-        navigator.clipboard.writeText(final).then(() => alert("Copiado!"));
+        
+        // --- NOVO: LÓGICA DE EXPORTAÇÃO (DOWNLOAD) ---
+        const blob = new Blob([final], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "banco_de_dados.json"; // Nome exato do ficheiro
+        document.body.appendChild(a);
+        a.click(); // Força o clique invisível para iniciar o download
+        document.body.removeChild(a); // Limpa o botão invisível
+        URL.revokeObjectURL(url); // Libera memória
+        // ---------------------------------------------
+
+        const msgSucesso = document.getElementById("ancora-resultado");
+        msgSucesso.style.display = "block";
+        msgSucesso.scrollIntoView({ behavior: 'smooth' });
     }
 </script>
 </body>
