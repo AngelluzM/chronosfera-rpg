@@ -124,7 +124,9 @@
                     <div class="ficha-conteudo">
                         <div class="ficha-header">
                             <h2>${p.dados_basicos.nome}</h2>
-                            <p>Nv ${p.dados_basicos.nivel} | ${p.dados_basicos.raca || "Raça Desconhecida"}<br>${p.dados_basicos.classe} (${p.dados_basicos.arquetipo})</p>
+                            <p>Nv ${p.dados_basicos.nivel} | ${p.dados_basicos.raca | "Raça Desconhecida"}<br>${p.dados_basicos.classe} (${p.dados_basicos.arquetipo})|<br>
+                            Afinidade: ${p.dados_basicos.afinidade_elemental}
+                            </p>
                         </div>
                         
                         <div class="xp-container">
@@ -132,7 +134,7 @@
                             <div class="xp-bar-bg"><div class="xp-bar-fill" style="width: ${xpPct}%"></div></div>
                         </div>
 
-                        <p style="font-size:0.85em; margin: -5px 0 15px 0; color: #555;"><strong>Afinidade:</strong> ${p.dados_basicos.afinidade_elemental}</p>
+                        <p style="font-size:0.85em; margin: -5px 0 15px 0; color: #555;"></p>
                         
                         <div class="status-grid">
                             <div class="status-item status-pv">PV: ${p.status.pv_maximo}</div>
