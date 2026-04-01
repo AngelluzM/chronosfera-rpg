@@ -3,10 +3,15 @@
         {
             "id": "baltazar",
             "url_imagem": "https://i.pinimg.com/736x/c7/d2/96/c7d296b5374dcef0463499e10a48fce5.jpg",
+            "techs": "Nº| MAGIA        | PM |  DANO/CURA  | DESCRIÇÃO\n1 |ESTACA DE GELO| 2  | 1D8+ATMAGIA |DISPAPARA UMA ESTACA  DE GELO",
+            "inventario": "Túnica Arcana, Cajado de Quartzo Bruto, bota de couro",
+            "lacos": [],
             "dados_basicos": {
                 "nome": "Baltazar",
-                "raca": "Humano",
                 "nivel": 1,
+                "xp_atual": 0,
+                "xp_proximo": 50,
+                "raca": "Humano",
                 "classe": "Feiticeiro",
                 "arquetipo": "Arcana",
                 "afinidade_elemental": "Gelo/Água"
@@ -52,11 +57,6 @@
                     "bruto": 8,
                     "bonus": 1
                 }
-            },
-            "inventario": "Túnica Arcana, Cajado de Quartzo Bruto",
-            "referencias": {
-                "dano_fisico": "Dados da Arma + Atributo Bruto",
-                "dano_magico": "Dados da Magia + Magia Bruta"
             }
         },
         {
