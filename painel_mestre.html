@@ -12,14 +12,12 @@
         label { display: block; font-weight: bold; margin-bottom: 5px; color: #555; }
         input[type="text"], input[type="number"], select, input[type="file"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
         .grid-atributos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; background: #f9f9fc; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; }
         button { background-color: #3498db; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; transition: background 0.3s; }
         button:hover { background-color: #2980b9; }
-        button.novo { background-color: #2ecc71; margin-top: 10px; }
-        button.novo:hover { background-color: #27ae60; }
-        textarea.json-output { height: 300px; font-family: monospace; background-color: #fdfdfd; border-left: 5px solid #2ecc71; margin-top: 10px; }
-        textarea.large-input { height: 120px; resize: vertical; }
-        .dica { font-size: 0.85em; color: #7f8c8d; margin-top: 5px; }
+        textarea.json-output { height: 200px; font-family: monospace; background-color: #fdfdfd; border-left: 5px solid #2ecc71; margin-top: 10px; }
+        textarea.large-input { height: 100px; resize: vertical; }
     </style>
 </head>
 <body>
@@ -29,35 +27,33 @@
     
     <div class="import-section">
         <div class="form-group">
-            <label for="arquivoImport">1. Importar JSON (Base de Dados ou Ficha de Jogador)</label>
+            <label for="arquivoImport">1. Importar Base de Dados (.json)</label>
             <input type="file" id="arquivoImport" accept=".json" onchange="importarJSON(event)">
         </div>
-        
         <div class="form-group">
-            <label for="seletorPersonagem">2. Personagens Carregadas</label>
+            <label for="seletorPersonagem">2. Selecionar Personagem</label>
             <select id="seletorPersonagem" onchange="carregarParaEdicao()">
                 <option value="">Nenhuma personagem carregada...</option>
             </select>
         </div>
-        <button class="novo" onclick="limparFormulario()">Limpar para Criar Nova Personagem</button>
     </div>
 
     <div class="grid-2">
-        <div class="form-group"><label for="nome">Nome da Personagem</label><input type="text" id="nome"></div>
-        <div class="form-group"><label for="id">ID Único (Ficha do Jogador)</label><input type="text" id="id" placeholder="Ex: king"></div>
+        <div class="form-group"><label for="nome">Nome</label><input type="text" id="nome"></div>
+        <div class="form-group"><label for="id">ID Único</label><input type="text" id="id"></div>
     </div>
-    
-    <div class="form-group">
-        <label for="url_imagem">Link da Imagem (Pinterest)</label>
-        <input type="text" id="url_imagem" placeholder="https://i.pinimg.com/...">
+
+    <div class="grid-3">
+        <div class="form-group"><label for="nivel">Nível</label><input type="number" id="nivel" value="1"></div>
+        <div class="form-group"><label for="xp_atual">XP Atual</label><input type="number" id="xp_atual" value="0"></div>
+        <div class="form-group"><label for="xp_proximo">XP Próximo Nível</label><input type="number" id="xp_proximo" value="50"></div>
     </div>
 
     <div class="grid-2">
-        <div class="form-group"><label for="raca">Raça</label><input type="text" id="raca" placeholder="Ex: Humano, Mecanóide..."></div>
+        <div class="form-group"><label for="raca">Raça</label><input type="text" id="raca"></div>
         <div class="form-group">
             <label for="classe">Classe</label>
             <select id="classe" onchange="atualizarDadosMatriz()">
-                <option value="">Selecione a Classe...</option>
                 <option value="Cavaleiro">Cavaleiro</option>
                 <option value="Construto">Construto</option>
                 <option value="Espadachim">Espadachim</option>
@@ -69,15 +65,18 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label for="afinidade">Afinidade Elemental</label>
-        <select id="afinidade">
-            <option value="Fogo">Fogo</option>
-            <option value="Gelo/Água">Gelo/Água</option>
-            <option value="Luz">Luz</option>
-            <option value="Sombra">Sombra</option>
-            <option value="Neutro">Neutro</option>
-        </select>
+    <div class="grid-2">
+        <div class="form-group"><label for="url_imagem">URL da Imagem</label><input type="text" id="url_imagem"></div>
+        <div class="form-group">
+            <label for="afinidade">Afinidade Elemental</label>
+            <select id="afinidade">
+                <option value="Fogo">Fogo</option>
+                <option value="Gelo/Água">Gelo/Água</option>
+                <option value="Luz">Luz</option>
+                <option value="Sombra">Sombra</option>
+                <option value="Neutro">Neutro</option>
+            </select>
+        </div>
     </div>
 
     <h3>Atributos Brutos</h3>
@@ -91,26 +90,22 @@
         <div class="form-group"><label id="lbl_def_magica">Defesa Mágica</label><input type="number" id="def_magica" value="0"></div>
     </div>
 
-    <div class="grid-2" style="margin-top: 20px;">
-        <div class="form-group">
-            <label for="inventario">Inventário</label>
-            <textarea id="inventario" class="large-input" placeholder="Itens e equipamentos..."></textarea>
-        </div>
-        <div class="form-group">
-            <label for="techs">Techs / Habilidades</label>
-            <textarea id="techs" class="large-input" placeholder="Técnicas, magias e passivas..."></textarea>
-        </div>
+    <div class="form-group" style="margin-top:20px;">
+        <label for="lacos">Laços (Formato: Nome: Porcentagem - um por linha)</label>
+        <textarea id="lacos" class="large-input" placeholder="Ex: Baltazar: 20&#10;King: 45"></textarea>
     </div>
 
-    <button onclick="salvarPersonagem()">Guardar na Base e Gerar JSON Atualizado</button>
+    <div class="grid-2">
+        <div class="form-group"><label for="inventario">Inventário</label><textarea id="inventario" class="large-input"></textarea></div>
+        <div class="form-group"><label for="techs">Techs / Habilidades</label><textarea id="techs" class="large-input"></textarea></div>
+    </div>
 
-    <h3 id="ancora-resultado" style="margin-top: 30px; color: #27ae60; display: none;">✅ Guardado e Copiado!</h3>
-    <textarea id="resultado" class="json-output" readonly placeholder="O ficheiro atualizado aparecerá aqui..."></textarea>
+    <button onclick="salvarPersonagem()">Guardar e Copiar JSON</button>
+    <textarea id="resultado" class="json-output" readonly></textarea>
 </div>
 
 <script>
     let bancoDeDados = { personagens: [] };
-
     const regrasClasses = {
         "Cavaleiro": { arquetipo: "Combatente", pv_base: 60, pm_base: 8, dados: { vigor: "d12", poder: "d10", magia: "d8", def_magica: "d8", velocidade: "d6", esquiva: "d6", precisao: "d4" } },
         "Construto": { arquetipo: "Combatente", pv_base: 72, pm_base: 6, dados: { poder: "d10", vigor: "d12", precisao: "d8", def_magica: "d8", magia: "d6", esquiva: "d6", velocidade: "d4" } },
@@ -121,150 +116,126 @@
         "Feiticeiro": { arquetipo: "Arcana", pv_base: 24, pm_base: 24, dados: { magia: "d12", def_magica: "d10", velocidade: "d8", poder: "d8", esquiva: "d6", vigor: "d6", precisao: "d4" } }
     };
 
-    function calcularFibonacci(valor) {
-        if (valor >= 1 && valor <= 5) return 0;
-        if (valor >= 6 && valor <= 13) return 1;
-        if (valor >= 14 && valor <= 26) return 2;
-        if (valor >= 27 && valor <= 47) return 3;
-        if (valor >= 48 && valor <= 81) return 4;
-        if (valor >= 82) return 5;
-        return 0;
-    }
+    function calcularFibonacci(v) { return v>=82?5:v>=48?4:v>=27?3:v>=14?2:v>=6?1:0; }
 
     function atualizarDadosMatriz() {
-        const classeSelecionada = document.getElementById("classe").value;
-        if (!classeSelecionada) return;
-        const dados = regrasClasses[classeSelecionada].dados;
-        document.getElementById("lbl_poder").innerText = "Poder (" + dados.poder + ")";
-        document.getElementById("lbl_vigor").innerText = "Vigor (" + dados.vigor + ")";
-        document.getElementById("lbl_velocidade").innerText = "Velocidade (" + dados.velocidade + ")";
-        document.getElementById("lbl_magia").innerText = "Magia (" + dados.magia + ")";
-        document.getElementById("lbl_precisao").innerText = "Precisão (" + dados.precisao + ")";
-        document.getElementById("lbl_esquiva").innerText = "Esquiva (" + dados.esquiva + ")";
-        document.getElementById("lbl_def_magica").innerText = "Defesa Mágica (" + dados.def_magica + ")";
+        const c = document.getElementById("classe").value;
+        if(!c) return;
+        const d = regrasClasses[c].dados;
+        document.getElementById("lbl_poder").innerText = "Poder ("+d.poder+")";
+        document.getElementById("lbl_vigor").innerText = "Vigor ("+d.vigor+")";
+        document.getElementById("lbl_velocidade").innerText = "Velocidade ("+d.velocidade+")";
+        document.getElementById("lbl_magia").innerText = "Magia ("+d.magia+")";
+        document.getElementById("lbl_precisao").innerText = "Precisão ("+d.precisao+")";
+        document.getElementById("lbl_esquiva").innerText = "Esquiva ("+d.esquiva+")";
+        document.getElementById("lbl_def_magica").innerText = "Defesa Mágica ("+d.def_magica+")";
     }
 
-    function importarJSON(evento) {
-        const file = evento.target.files[0];
-        if (!file) return;
+    function importarJSON(e) {
         const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const dadosLidos = JSON.parse(e.target.result);
-                if (dadosLidos.personagens) {
-                    bancoDeDados = dadosLidos;
-                } else if (dadosLidos.id) {
-                    const index = bancoDeDados.personagens.findIndex(p => p.id === dadosLidos.id);
-                    if (index > -1) bancoDeDados.personagens[index] = dadosLidos;
-                    else bancoDeDados.personagens.push(dadosLidos);
-                }
-                atualizarSeletorHTML();
-                if (dadosLidos.id) {
-                    document.getElementById("seletorPersonagem").value = dadosLidos.id;
-                    carregarParaEdicao();
-                }
-            } catch (err) { alert("Erro ao ler JSON."); }
+        reader.onload = (ev) => {
+            bancoDeDados = JSON.parse(ev.target.result);
+            atualizarSeletorHTML();
         };
-        reader.readAsText(file);
+        reader.readAsText(e.target.files[0]);
     }
 
     function atualizarSeletorHTML() {
-        const seletor = document.getElementById("seletorPersonagem");
-        seletor.innerHTML = '<option value="">Selecione...</option>';
+        const s = document.getElementById("seletorPersonagem");
+        s.innerHTML = '<option value="">Selecionar...</option>';
         bancoDeDados.personagens.forEach(p => {
-            const opcao = document.createElement("option");
-            opcao.value = p.id;
-            opcao.innerText = p.dados_basicos.nome;
-            seletor.appendChild(opcao);
+            const o = document.createElement("option");
+            o.value = p.id; o.innerText = p.dados_basicos.nome;
+            s.appendChild(o);
         });
     }
 
     function carregarParaEdicao() {
-        const idSelecionado = document.getElementById("seletorPersonagem").value;
-        const p = bancoDeDados.personagens.find(person => person.id === idSelecionado);
-        if (p) {
-            document.getElementById("id").value = p.id;
-            document.getElementById("nome").value = p.dados_basicos.nome || "";
-            document.getElementById("url_imagem").value = p.url_imagem || "";
-            document.getElementById("raca").value = p.dados_basicos.raca || "";
-            document.getElementById("classe").value = p.dados_basicos.classe || "";
-            document.getElementById("afinidade").value = p.dados_basicos.afinidade_elemental || "";
-            document.getElementById("inventario").value = p.inventario || "";
-            document.getElementById("techs").value = p.techs || "";
-            
-            atualizarDadosMatriz();
-            document.getElementById("poder").value = p.atributos.poder.bruto;
-            document.getElementById("vigor").value = p.atributos.vigor.bruto;
-            document.getElementById("velocidade").value = p.atributos.velocidade.bruto;
-            document.getElementById("magia").value = p.atributos.magia.bruto;
-            document.getElementById("precisao").value = p.atributos.precisao.bruto;
-            document.getElementById("esquiva").value = p.atributos.esquiva.bruto;
-            document.getElementById("def_magica").value = p.atributos.defesa_magica.bruto;
+        const id = document.getElementById("seletorPersonagem").value;
+        const p = bancoDeDados.personagens.find(x => x.id === id);
+        if(!p) return;
+        document.getElementById("id").value = p.id;
+        document.getElementById("nome").value = p.dados_basicos.nome;
+        document.getElementById("nivel").value = p.dados_basicos.nivel;
+        document.getElementById("xp_atual").value = p.dados_basicos.xp_atual || 0;
+        document.getElementById("xp_proximo").value = p.dados_basicos.xp_proximo || 50;
+        document.getElementById("raca").value = p.dados_basicos.raca;
+        document.getElementById("classe").value = p.dados_basicos.classe;
+        document.getElementById("url_imagem").value = p.url_imagem;
+        document.getElementById("afinidade").value = p.dados_basicos.afinidade_elemental;
+        document.getElementById("inventario").value = p.inventario;
+        document.getElementById("techs").value = p.techs;
+        document.getElementById("poder").value = p.atributos.poder.bruto;
+        document.getElementById("vigor").value = p.atributos.vigor.bruto;
+        document.getElementById("velocidade").value = p.atributos.velocidade.bruto;
+        document.getElementById("magia").value = p.atributos.magia.bruto;
+        document.getElementById("precisao").value = p.atributos.precisao.bruto;
+        document.getElementById("esquiva").value = p.atributos.esquiva.bruto;
+        document.getElementById("def_magica").value = p.atributos.defesa_magica.bruto;
+        
+        // Carregar Laços
+        if(p.lacos) {
+            document.getElementById("lacos").value = p.lacos.map(l => `${l.nome}: ${l.porcentagem}`).join('\n');
+        } else {
+            document.getElementById("lacos").value = "";
         }
-    }
-
-    function limparFormulario() {
-        document.getElementById("id").value = "";
-        document.getElementById("nome").value = "";
-        document.getElementById("url_imagem").value = "";
-        document.getElementById("raca").value = "";
-        document.getElementById("inventario").value = "";
-        document.getElementById("techs").value = "";
-        document.querySelectorAll('input[type="number"]').forEach(i => i.value = 0);
+        atualizarDadosMatriz();
     }
 
     function salvarPersonagem() {
         const id = document.getElementById("id").value;
-        const nome = document.getElementById("nome").value;
         const classeNome = document.getElementById("classe").value;
-        if (!id || !classeNome) { alert("ID e Classe obrigatórios!"); return; }
-
         const info = regrasClasses[classeNome];
-        const vVigor = parseInt(document.getElementById("vigor").value) || 0;
-        const vMagia = parseInt(document.getElementById("magia").value) || 0;
-        const vEsquiva = parseInt(document.getElementById("esquiva").value) || 0;
-        const bEsq = calcularFibonacci(vEsquiva);
+        
+        // Parse Laços
+        const lacosTexto = document.getElementById("lacos").value.split('\n');
+        const lacosArray = lacosTexto.filter(t => t.includes(':')).map(t => {
+            const [n, p] = t.split(':');
+            return { nome: n.trim(), porcentagem: parseInt(p.trim()) || 0 };
+        });
+
+        const vVig = parseInt(document.getElementById("vigor").value);
+        const vMag = parseInt(document.getElementById("magia").value);
+        const vEsq = parseInt(document.getElementById("esquiva").value);
 
         const ficha = {
-            "id": id,
-            "url_imagem": document.getElementById("url_imagem").value,
-            "techs": document.getElementById("techs").value,
-            "dados_basicos": {
-                "nome": nome, "raca": document.getElementById("raca").value,
-                "nivel": 1, "classe": classeNome, "arquetipo": info.arquetipo,
-                "afinidade_elemental": document.getElementById("afinidade").value
+            id: id,
+            url_imagem: document.getElementById("url_imagem").value,
+            techs: document.getElementById("techs").value,
+            inventario: document.getElementById("inventario").value,
+            lacos: lacosArray,
+            dados_basicos: {
+                nome: document.getElementById("nome").value,
+                nivel: parseInt(document.getElementById("nivel").value),
+                xp_atual: parseInt(document.getElementById("xp_atual").value),
+                xp_proximo: parseInt(document.getElementById("xp_proximo").value),
+                raca: document.getElementById("raca").value,
+                classe: classeNome,
+                arquetipo: info.arquetipo,
+                afinidade_elemental: document.getElementById("afinidade").value
             },
-            "status": {
-                "pv_maximo": vVigor + info.pv_base,
-                "pm_maximo": vMagia + info.pm_base,
-                "nd_esquiva_base": 8 + bEsq
+            status: {
+                pv_maximo: vVig + info.pv_base,
+                pm_maximo: vMag + info.pm_base,
+                nd_esquiva_base: 8 + calcularFibonacci(vEsq)
             },
-            "atributos": {
-                "poder": { "dado": info.dados.poder, "bruto": parseInt(document.getElementById("poder").value), "bonus": calcularFibonacci(parseInt(document.getElementById("poder").value)) },
-                "vigor": { "dado": info.dados.vigor, "bruto": vVigor, "bonus": calcularFibonacci(vVigor) },
-                "velocidade": { "dado": info.dados.velocidade, "bruto": parseInt(document.getElementById("velocidade").value), "bonus": calcularFibonacci(parseInt(document.getElementById("velocidade").value)) },
-                "magia": { "dado": info.dados.magia, "bruto": vMagia, "bonus": calcularFibonacci(vMagia) },
-                "precisao": { "dado": info.dados.precisao, "bruto": parseInt(document.getElementById("precisao").value), "bonus": calcularFibonacci(parseInt(document.getElementById("precisao").value)) },
-                "esquiva": { "dado": info.dados.esquiva, "bruto": vEsquiva, "bonus": bEsq },
-                "defesa_magica": { "dado": info.dados.def_magica, "bruto": parseInt(document.getElementById("def_magica").value), "bonus": calcularFibonacci(parseInt(document.getElementById("def_magica").value)) }
-            },
-            "inventario": document.getElementById("inventario").value,
-            "referencias": { "dano_fisico": "Dados Arma + Bruto", "dano_magico": "Dados Magia + Bruto" }
+            atributos: {
+                poder: { dado: info.dados.poder, bruto: parseInt(document.getElementById("poder").value), bonus: calcularFibonacci(parseInt(document.getElementById("poder").value)) },
+                vigor: { dado: info.dados.vigor, bruto: vVig, bonus: calcularFibonacci(vVig) },
+                velocidade: { dado: info.dados.velocidade, bruto: parseInt(document.getElementById("velocidade").value), bonus: calcularFibonacci(parseInt(document.getElementById("velocidade").value)) },
+                magia: { dado: info.dados.magia, bruto: vMag, bonus: calcularFibonacci(vMag) },
+                precisao: { dado: info.dados.precisao, bruto: parseInt(document.getElementById("precisao").value), bonus: calcularFibonacci(parseInt(document.getElementById("precisao").value)) },
+                esquiva: { dado: info.dados.esquiva, bruto: vEsq, bonus: calcularFibonacci(vEsq) },
+                defesa_magica: { dado: info.dados.def_magica, bruto: parseInt(document.getElementById("def_magica").value), bonus: calcularFibonacci(parseInt(document.getElementById("def_magica").value)) }
+            }
         };
 
-        const idx = bancoDeDados.personagens.findIndex(p => p.id === id);
-        if (idx > -1) bancoDeDados.personagens[idx] = ficha; else bancoDeDados.personagens.push(ficha);
+        const idx = bancoDeDados.personagens.findIndex(x => x.id === id);
+        if(idx > -1) bancoDeDados.personagens[idx] = ficha; else bancoDeDados.personagens.push(ficha);
 
-        const jsonFinal = JSON.stringify(bancoDeDados, null, 4);
-        document.getElementById("resultado").value = jsonFinal;
-        document.getElementById("ancora-resultado").style.display = "block";
-
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(jsonFinal).then(() => {
-                alert("Guardado e copiado!");
-                document.getElementById("ancora-resultado").scrollIntoView({ behavior: 'smooth' });
-            });
-        }
+        const final = JSON.stringify(bancoDeDados, null, 4);
+        document.getElementById("resultado").value = final;
+        navigator.clipboard.writeText(final).then(() => alert("Copiado!"));
     }
 </script>
 </body>
