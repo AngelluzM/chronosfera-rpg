@@ -121,13 +121,18 @@
         {
             "id": "orpheu",
             "url_imagem": "https://i.pinimg.com/736x/08/9d/e4/089de4dfbd5949d095e81ba3d95b0dac.jpg",
+            "techs": "undefined",
+            "inventario": "Máscara Doutor da Peste, Luvas Achronos, Vestes Antigas, Sobretudo Antigo, Botas de Couro",
+            "lacos": [],
             "dados_basicos": {
                 "nome": "Orpheu de Lynx",
-                "raca": "Humano",
                 "nivel": 1,
+                "xp_atual": 0,
+                "xp_proximo": 50,
+                "raca": "Humano",
                 "classe": "Suporte",
                 "arquetipo": "Arcana",
-                "afinidade_elemental": "Neutro"
+                "afinidade_elemental": "Luz"
             },
             "status": {
                 "pv_maximo": 29,
@@ -170,11 +175,6 @@
                     "bruto": 11,
                     "bonus": 1
                 }
-            },
-            "inventario": "Máscara Doutor da Peste, Luvas Achronos, Vestes Antigas, Sobretudo Antigo, Botas de Couro",
-            "referencias": {
-                "dano_fisico": "Dados da Arma + Atributo Bruto",
-                "dano_magico": "Dados da Magia + Magia Bruta"
             }
         }
     ]
