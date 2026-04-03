@@ -75,119 +75,154 @@
         </div>
     </div>
 
-    <script>
-        let personagens = [];
+<script>
+    let personagens = [];
 
-        fetch('banco_de_dados.json?v=' + new Date().getTime())
-            .then(r => r.json())
-            .then(data => {
-                personagens = data.personagens;
-                render();
-            })
-            .catch(error => {
-                document.getElementById('lista-fichas').innerHTML = `<div class="erro"><p>Erro: ${error.message}</p></div>`;
-            });
+    fetch('banco_de_dados.json?v=' + new Date().getTime())
+        .then(r => r.json())
+        .then(data => {
+            personagens = data.personagens;
+            render();
+        })
+        .catch(error => {
+            document.getElementById('lista-fichas').innerHTML = `<div class="erro"><p>Erro: ${error.message}</p></div>`;
+        });
 
-        function render() {
-            const container = document.getElementById('lista-fichas');
-            container.innerHTML = '';
+    function render() {
+        const container = document.getElementById('lista-fichas');
+        container.innerHTML = '';
+        
+        if (!personagens || personagens.length === 0) {
+            container.innerHTML = '<p>Nenhum personagem registrado no banco de dados.</p>';
+            return;
+        }
+
+        personagens.forEach(p => {
+            const xpMax = p.dados_basicos.xp_proximo || 50;
+            const xpAtu = p.dados_basicos.xp_atual || 0;
+            const xpPct = (xpAtu / xpMax) * 100;
             
-            if (!personagens || personagens.length === 0) {
-                container.innerHTML = '<p>Nenhum personagem registrado no banco de dados.</p>';
-                return;
-            }
+            const card = document.createElement('div');
+            card.className = 'ficha-card';
+            
+            const imagemHtml = p.url_imagem && p.url_imagem.trim() !== "" 
+                ? `<img src="${p.url_imagem}" class="ficha-imagem" alt="Imagem">` : ``;
 
-            personagens.forEach(p => {
-                // Previne divisão por zero caso xp_proximo seja 0 ou vazio
-                const xpMax = p.dados_basicos.xp_proximo || 50;
-                const xpAtu = p.dados_basicos.xp_atual || 0;
-                const xpPct = (xpAtu / xpMax) * 100;
-                
-                const card = document.createElement('div');
-                card.className = 'ficha-card';
-                
-                const imagemHtml = p.url_imagem && p.url_imagem.trim() !== "" 
-                    ? `<img src="${p.url_imagem}" class="ficha-imagem" alt="Imagem">` : ``;
+            const inventarioHtml = p.inventario && p.inventario.trim() !== ""
+                ? `<div class="inventario-box"><strong>Inventário:</strong>${p.inventario}</div>` : ``;
 
-                const inventarioHtml = p.inventario && p.inventario.trim() !== ""
-                    ? `<div class="inventario-box"><strong>Inventário:</strong>${p.inventario}</div>` : ``;
-
-                card.innerHTML = `
-                    ${imagemHtml}
-                    <div class="ficha-conteudo">
-                        <div class="ficha-header">
-                            <h2>${p.dados_basicos.nome}</h2>
-                            <p>Nv ${p.dados_basicos.nivel} | ${p.dados_basicos.raca | "Raça Desconhecida"}<br>${p.dados_basicos.classe} (${p.dados_basicos.arquetipo})|<br>
-                            Afinidade: ${p.dados_basicos.afinidade_elemental}
-                            </p>
-                        </div>
-                        
-                        <div class="xp-container">
-                            Experiência: ${xpAtu} / ${xpMax}
-                            <div class="xp-bar-bg"><div class="xp-bar-fill" style="width: ${xpPct}%"></div></div>
-                        </div>
-
-                        <p style="font-size:0.85em; margin: -5px 0 15px 0; color: #555;"></p>
-                        
-                        <div class="status-grid">
-                            <div class="status-item status-pv">PV: ${p.status.pv_maximo}</div>
-                            <div class="status-item status-pm">PM: ${p.status.pm_maximo}</div>
-                        </div>
-                        
-                        <div class="esquiva-box">
-                            ND de Esquiva Base: ${p.status.nd_esquiva_base}
-                        </div>
-
-                        <table class="atributos">
-                            <tr><th>Atr.</th><th>Dado</th><th>Bruto</th><th>Bônus</th></tr>
-                            <tr><td>Poder</td><td>${p.atributos.poder.dado}</td><td>${p.atributos.poder.bruto}</td><td>+${p.atributos.poder.bonus}</td></tr>
-                            <tr><td>Vigor</td><td>${p.atributos.vigor.dado}</td><td>${p.atributos.vigor.bruto}</td><td>+${p.atributos.vigor.bonus}</td></tr>
-                            <tr><td>Veloc.</td><td>${p.atributos.velocidade.dado}</td><td>${p.atributos.velocidade.bruto}</td><td>+${p.atributos.velocidade.bonus}</td></tr>
-                            <tr><td>Magia</td><td>${p.atributos.magia.dado}</td><td>${p.atributos.magia.bruto}</td><td>+${p.atributos.magia.bonus}</td></tr>
-                            <tr><td>Precisão</td><td>${p.atributos.precisao.dado}</td><td>${p.atributos.precisao.bruto}</td><td>+${p.atributos.precisao.bonus}</td></tr>
-                            <tr><td>Esquiva</td><td>${p.atributos.esquiva.dado}</td><td>${p.atributos.esquiva.bruto}</td><td>+${p.atributos.esquiva.bonus}</td></tr>
-                            <tr><td>Def. Mag.</td><td>${p.atributos.defesa_magica.dado}</td><td>${p.atributos.defesa_magica.bruto}</td><td>+${p.atributos.defesa_magica.bonus}</td></tr>
-                        </table>
-
-                        ${inventarioHtml}
+            card.innerHTML = `
+                ${imagemHtml}
+                <div class="ficha-conteudo">
+                    <div class="ficha-header">
+                        <h2>${p.dados_basicos.nome}</h2>
+                        <p>Nv ${p.dados_basicos.nivel} | ${p.dados_basicos.raca || "Raça Desconhecida"}<br>${p.dados_basicos.classe} (${p.dados_basicos.arquetipo})</p>
                     </div>
-                    <div class="footer-btns">
-                        <button class="btn-action btn-techs" onclick="abrirTechs('${p.id}')">Techs</button>
-                        <button class="btn-action btn-lacos" onclick="abrirLacos('${p.id}')">Laços</button>
+                    
+                    <div class="xp-container">
+                        Experiência: ${xpAtu} / ${xpMax}
+                        <div class="xp-bar-bg"><div class="xp-bar-fill" style="width: ${xpPct}%"></div></div>
+                    </div>
+
+                    <p style="font-size:0.85em; margin: -5px 0 15px 0; color: #555;"><strong>Afinidade:</strong> ${p.dados_basicos.afinidade_elemental}</p>
+                    
+                    <div class="status-grid">
+                        <div class="status-item status-pv">PV: ${p.status.pv_maximo}</div>
+                        <div class="status-item status-pm">PM: ${p.status.pm_maximo}</div>
+                    </div>
+                    
+                    <div class="esquiva-box">
+                        ND de Esquiva Base: ${p.status.nd_esquiva_base}
+                    </div>
+
+                    <table class="atributos">
+                        <tr><th>Atr.</th><th>Dado</th><th>Bruto</th><th>Bônus</th></tr>
+                        <tr><td>Poder</td><td>${p.atributos.poder.dado}</td><td>${p.atributos.poder.bruto}</td><td>+${p.atributos.poder.bonus}</td></tr>
+                        <tr><td>Vigor</td><td>${p.atributos.vigor.dado}</td><td>${p.atributos.vigor.bruto}</td><td>+${p.atributos.vigor.bonus}</td></tr>
+                        <tr><td>Veloc.</td><td>${p.atributos.velocidade.dado}</td><td>${p.atributos.velocidade.bruto}</td><td>+${p.atributos.velocidade.bonus}</td></tr>
+                        <tr><td>Magia</td><td>${p.atributos.magia.dado}</td><td>${p.atributos.magia.bruto}</td><td>+${p.atributos.magia.bonus}</td></tr>
+                        <tr><td>Precisão</td><td>${p.atributos.precisao.dado}</td><td>${p.atributos.precisao.bruto}</td><td>+${p.atributos.precisao.bonus}</td></tr>
+                        <tr><td>Esquiva</td><td>${p.atributos.esquiva.dado}</td><td>${p.atributos.esquiva.bruto}</td><td>+${p.atributos.esquiva.bonus}</td></tr>
+                        <tr><td>Def. Mag.</td><td>${p.atributos.defesa_magica.dado}</td><td>${p.atributos.defesa_magica.bruto}</td><td>+${p.atributos.defesa_magica.bonus}</td></tr>
+                    </table>
+
+                    ${inventarioHtml}
+                </div>
+                <div class="footer-btns">
+                    <button class="btn-action btn-techs" onclick="abrirTechs('${p.id}')">Techs</button>
+                    <button class="btn-action btn-lacos" onclick="abrirLacos('${p.id}')">Laços</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function abrirTechs(id) {
+        const p = personagens.find(x => x.id === id);
+        document.getElementById('modalTitle').innerText = "Techs & Habilidades: " + p.dados_basicos.nome;
+        
+        let html = '';
+        
+        // Verifica se as techs foram salvas no formato novo (Array de Cartinhas)
+        if (Array.isArray(p.techs) && p.techs.length > 0) {
+            p.techs.forEach(t => {
+                // Define a cor baseada no tipo para ficar bonitão
+                let corTipo = "#e74c3c"; // Vermelho para Dano
+                if (t.tipo === "Cura") corTipo = "#2ecc71"; // Verde
+                if (t.tipo === "Bônus") corTipo = "#f1c40f"; // Amarelo
+                if (t.tipo === "Escudo") corTipo = "#3498db"; // Azul
+
+                html += `
+                <div style="border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 15px; background: #fafafa; border-left: 4px solid ${corTipo};">
+                    <h3 style="margin-top: 0; margin-bottom: 10px; color: #2c3e50;">${t.nome}</h3>
+                    <p style="font-size: 0.9em; margin: 0 0 10px 0; color: #555;">
+                        <strong>Custo:</strong> ${t.custo || '-'} | 
+                        <strong>Alvo:</strong> ${t.alvo || '-'} | 
+                        <strong>Elemento:</strong> ${t.elemento || '-'}
+                    </p>
+                    <p style="font-size: 0.9em; margin: 0 0 10px 0; background: #fff; padding: 6px; border: 1px solid #eee; border-radius: 4px;">
+                        <strong style="color: ${corTipo};">${t.tipo}:</strong> ${t.valor || '-'}
+                    </p>
+                    <p style="font-size: 0.9em; margin: 0 0 10px 0;"><strong>Efeito:</strong> ${t.desc || '-'}</p>
+                    ${t.inter ? `<p style="font-size: 0.85em; color: #16a085; margin: 0 0 5px 0;"><strong>⚡ Interação:</strong> ${t.inter}</p>` : ''}
+                    ${t.combo ? `<p style="font-size: 0.85em; color: #8e44ad; margin: 0;"><strong>🔗 Combo:</strong> ${t.combo}</p>` : ''}
+                </div>`;
+            });
+        } 
+        // Caso ainda tenha alguma ficha com o texto antigo salvo
+        else if (typeof p.techs === 'string' && p.techs.trim() !== '') {
+            html = `<p style="white-space:pre-wrap">${p.techs}</p>`;
+        } 
+        // Vazio
+        else {
+            html = '<p>Nenhuma técnica registada.</p>';
+        }
+
+        document.getElementById('modalBody').innerHTML = html;
+        document.getElementById('modalGeral').style.display = 'block';
+    }
+
+    function abrirLacos(id) {
+        const p = personagens.find(x => x.id === id);
+        document.getElementById('modalTitle').innerText = "Laços de " + p.dados_basicos.nome;
+        let html = '';
+        if(p.lacos && p.lacos.length > 0) {
+            p.lacos.forEach(l => {
+                html += `
+                    <div class="laco-item">
+                        <div class="laco-header"><span>${l.nome}</span><span>${l.porcentagem}%</span></div>
+                        <div class="laco-bar-bg"><div class="laco-bar-fill" style="width: ${l.porcentagem}%"></div></div>
                     </div>
                 `;
-                container.appendChild(card);
             });
-        }
+        } else { html = '<p>Nenhum laço formado ainda.</p>'; }
+        document.getElementById('modalBody').innerHTML = html;
+        document.getElementById('modalGeral').style.display = 'block';
+    }
 
-        function abrirTechs(id) {
-            const p = personagens.find(x => x.id === id);
-            document.getElementById('modalTitle').innerText = "Techs & Habilidades: " + p.dados_basicos.nome;
-            document.getElementById('modalBody').innerHTML = `<p>${p.techs || 'Nenhuma técnica registada.'}</p>`;
-            document.getElementById('modalGeral').style.display = 'block';
-        }
-
-        function abrirLacos(id) {
-            const p = personagens.find(x => x.id === id);
-            document.getElementById('modalTitle').innerText = "Laços de " + p.dados_basicos.nome;
-            let html = '';
-            if(p.lacos && p.lacos.length > 0) {
-                p.lacos.forEach(l => {
-                    html += `
-                        <div class="laco-item">
-                            <div class="laco-header"><span>${l.nome}</span><span>${l.porcentagem}%</span></div>
-                            <div class="laco-bar-bg"><div class="laco-bar-fill" style="width: ${l.porcentagem}%"></div></div>
-                        </div>
-                    `;
-                });
-            } else { html = '<p>Nenhum laço formado ainda.</p>'; }
-            document.getElementById('modalBody').innerHTML = html;
-            document.getElementById('modalGeral').style.display = 'block';
-        }
-
-        function fecharModal() { document.getElementById('modalGeral').style.display = 'none'; }
-        window.onclick = function(e) { if(e.target.className === 'modal') fecharModal(); }
-    </script>
+    function fecharModal() { document.getElementById('modalGeral').style.display = 'none'; }
+    window.onclick = function(e) { if(e.target.className === 'modal') fecharModal(); }
+</script>
 </body>
 </html>
     <title>Chronosfera RPG - Fichas</title>
