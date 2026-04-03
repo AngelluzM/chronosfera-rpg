@@ -8,11 +8,11 @@
             font-family: Arial, sans-serif; 
             line-height: 1.6; 
             margin: 40px auto; 
-            max-width: 1000px; 
+            max-width: 1100px; 
             padding: 0 20px; 
             color: #333;
             background-color: #f9f9f9;
-            overflow-y: scroll; /* O SEGREDO: Mantém a barra de rolagem fixa para o layout não dançar */
+            overflow-y: scroll; /* Mantém a barra de rolagem fixa para evitar pulos no layout */
         }
         nav { 
             margin-bottom: 30px; 
@@ -45,20 +45,19 @@
             margin-top: 0;
         }
         
-        /* Oculta as seções por padrão e mostra apenas a ativa com transição suave */
+        /* Controle das seções */
         .secao { display: none; }
         .secao.ativa { display: block; animation: fadeIn 0.3s ease-in-out; }
 
-        /* Animação simplificada apenas na opacidade para evitar engasgos de layout */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
 
-        /* Estilo para os iframes preencherem bem a tela */
+        /* Estilo unificado para os Containers (Iframes) */
         .doc-container {
             width: 100%;
-            height: 75vh; 
+            height: 80vh; 
             border: none;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -69,16 +68,16 @@
 </head>
 <body>
 
-    <nav>
+    <nav id="menu-principal">
         <a onclick="mostrarSecao('inicio', this)" class="ativo">Início</a>
         <a onclick="mostrarSecao('historia', this)">História</a>
         <a onclick="mostrarSecao('regras', this)">Regras</a>
-        <a href="fichas.html">Fichas dos Jogadores</a>
+        <a onclick="mostrarSecao('fichas', this)">Fichas dos Jogadores</a>
     </nav>
 
     <div id="inicio" class="secao ativa">
         <h1>Bem-vindo ao Chronosfera RPG</h1>
-        <p>Este é o portal oficial do nosso sistema. Use o menu acima para navegar pela narrativa do mundo, consultar as regras e ver as fichas atualizadas dos personagens.</p>
+        <p>Este é o portal oficial do nosso sistema. Use o menu acima para navegar pela narrativa do mundo, consultar as regras e ver as fichas atualizadas dos personagens em tempo real.</p>
     </div>
 
     <div id="historia" class="secao">
@@ -91,20 +90,29 @@
         <iframe class="doc-container" src="https://docs.google.com/document/d/1CuajzTWO3LZVEYR3Lg9KR-6W6C8J7iLyWWiHt4lYyDI/preview"></iframe>
     </div>
 
+    <div id="fichas" class="secao">
+        <h1>Fichas dos Personagens</h1>
+        <iframe class="doc-container" src="fichas.html"></iframe>
+    </div>
+
     <script>
         function mostrarSecao(idSecao, elementoClicado) {
-            // Esconde todas as seções
+            // 1. Esconde todas as seções
             document.querySelectorAll('.secao').forEach(secao => {
                 secao.classList.remove('ativa');
             });
-            // Remove a classe 'ativo' dos botões de navegação
-            document.querySelectorAll('nav a[onclick]').forEach(link => {
+            
+            // 2. Remove a classe de destaque de todos os links do menu
+            document.querySelectorAll('#menu-principal a').forEach(link => {
                 link.classList.remove('ativo');
             });
             
-            // Mostra a seção correta e pinta o botão clicado
+            // 3. Mostra a seção desejada e destaca o botão clicado
             document.getElementById(idSecao).classList.add('ativa');
             elementoClicado.classList.add('ativo');
+
+            // 4. Resetar o scroll para o topo ao trocar de aba
+            window.scrollTo(0, 0);
         }
     </script>
 </body>
