@@ -2,14 +2,14 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Chronosfera RPG</title>
+    <title>Chronosfera RPG - Início</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
-            line-height: 1.6; 
             margin: 40px auto; 
-            max-width: 800px; 
+            max-width: 1100px; 
             padding: 0 20px; 
+            background-color: #f9f9f9; 
             color: #333;
         }
         nav { 
@@ -24,10 +24,18 @@
             color: #0056b3; 
             font-weight: bold; 
         }
-        nav a:hover {
-            text-decoration: underline;
-        }
+        nav a:hover { text-decoration: underline; }
         h1 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
+        /* Estilo para o iframe preencher bem a tela */
+        .doc-container {
+            width: 100%;
+            height: 80vh; 
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -35,13 +43,13 @@
     <nav>
         <a href="index.html">Início</a>
         <a href="regras.html">Regras</a>
-        <a href="fichas.html">Fichas dos Jogadores</a>
+        <a href="fichas.html">Fichas</a>
     </nav>
 
-    <h1>Bem-vindo ao Chronosfera RPG</h1>
-    <p>Este é o portal oficial do nosso sistema. Aqui você encontrará todas as regras, mecânicas e as fichas atualizadas dos personagens.</p>
-    
-    <p>Use o menu acima para navegar pelas seções do site.</p>
+    <h1>Chronosfera RPG</h1>
+    <p>Bem-vindo! Leia abaixo a história e a introdução ao nosso multiverso:</p>
+
+    <iframe class="doc-container" src="https://docs.google.com/document/d/1jeW4iKwZaI5UrmxjH9XR32UemYb1x6fQiRJbhDsWhkk/preview"></iframe>
 
 </body>
 </html>
