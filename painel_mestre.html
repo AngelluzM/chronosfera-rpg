@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <title>Chronosfera RPG - Painel do Mestre</title>
@@ -9,15 +9,23 @@
         h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 20px; }
         .import-section { background: #e8f4f8; padding: 15px; border-radius: 5px; border: 1px dashed #3498db; margin-bottom: 25px; }
         .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; color: #555; }
-        input[type="text"], input[type="number"], select, input[type="file"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #555; font-size: 0.9em; }
+        input[type="text"], input[type="number"], select, input[type="file"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit;}
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
         .grid-atributos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; background: #f9f9fc; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; }
+        
         button { background-color: #3498db; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; transition: background 0.3s; }
         button:hover { background-color: #2980b9; }
         textarea.json-output { height: 200px; font-family: monospace; background-color: #fdfdfd; border-left: 5px solid #2ecc71; margin-top: 10px; }
         textarea.large-input { height: 100px; resize: vertical; }
+        
+        /* Estilos do Bloco de Techs */
+        .tech-box { background: #fdfdfd; border: 1px solid #dcdde1; border-left: 4px solid #9b59b6; border-radius: 6px; padding: 15px; margin-bottom: 15px; position: relative;}
+        .btn-remover-tech { background-color: #e74c3c; width: auto; padding: 5px 10px; font-size: 12px; position: absolute; right: 15px; top: 10px; margin: 0;}
+        .btn-remover-tech:hover { background-color: #c0392b; }
+        .btn-add-tech { background-color: #9b59b6; margin-top: 5px;}
+        .btn-add-tech:hover { background-color: #8e44ad; }
     </style>
 </head>
 <body>
@@ -27,11 +35,11 @@
     
     <div class="import-section">
         <div class="form-group">
-            <label for="arquivoImport">1. Importar Base de Dados (.json)</label>
+            <label>1. Importar Base de Dados (.json)</label>
             <input type="file" id="arquivoImport" accept=".json" onchange="importarJSON(event)">
         </div>
         <div class="form-group">
-            <label for="seletorPersonagem">2. Selecionar Personagem</label>
+            <label>2. Selecionar Personagem</label>
             <select id="seletorPersonagem" onchange="carregarParaEdicao()">
                 <option value="">Nenhuma personagem carregada...</option>
             </select>
@@ -39,20 +47,18 @@
     </div>
 
     <div class="grid-2">
-        <div class="form-group"><label for="nome">Nome</label><input type="text" id="nome"></div>
-        <div class="form-group"><label for="id">ID Único</label><input type="text" id="id"></div>
+        <div class="form-group"><label>Nome</label><input type="text" id="nome"></div>
+        <div class="form-group"><label>ID Único</label><input type="text" id="id"></div>
     </div>
-
     <div class="grid-3">
-        <div class="form-group"><label for="nivel">Nível</label><input type="number" id="nivel" value="1"></div>
-        <div class="form-group"><label for="xp_atual">XP Atual</label><input type="number" id="xp_atual" value="0"></div>
-        <div class="form-group"><label for="xp_proximo">XP Próximo Nível</label><input type="number" id="xp_proximo" value="50"></div>
+        <div class="form-group"><label>Nível</label><input type="number" id="nivel" value="1"></div>
+        <div class="form-group"><label>XP Atual</label><input type="number" id="xp_atual" value="0"></div>
+        <div class="form-group"><label>XP Próximo Nível</label><input type="number" id="xp_proximo" value="50"></div>
     </div>
-
     <div class="grid-2">
-        <div class="form-group"><label for="raca">Raça</label><input type="text" id="raca"></div>
+        <div class="form-group"><label>Raça</label><input type="text" id="raca"></div>
         <div class="form-group">
-            <label for="classe">Classe</label>
+            <label>Classe</label>
             <select id="classe" onchange="atualizarDadosMatriz()">
                 <option value="Cavaleiro">Cavaleiro</option>
                 <option value="Construto">Construto</option>
@@ -64,11 +70,10 @@
             </select>
         </div>
     </div>
-
     <div class="grid-2">
-        <div class="form-group"><label for="url_imagem">URL da Imagem</label><input type="text" id="url_imagem"></div>
+        <div class="form-group"><label>URL da Imagem</label><input type="text" id="url_imagem"></div>
         <div class="form-group">
-            <label for="afinidade">Afinidade Elemental</label>
+            <label>Afinidade Elemental</label>
             <select id="afinidade">
                 <option value="Fogo">Fogo</option>
                 <option value="Gelo/Água">Gelo/Água</option>
@@ -91,18 +96,16 @@
     </div>
 
     <div class="form-group" style="margin-top:20px;">
-        <label for="lacos">Laços (Formato: Nome: Porcentagem - um por linha)</label>
-        <textarea id="lacos" class="large-input" placeholder="Ex: Baltazar: 20&#10;King: 45"></textarea>
+        <label>Laços (Formato: Nome: Porcentagem - um por linha)</label>
+        <textarea id="lacos" class="large-input"></textarea>
     </div>
+    <div class="form-group"><label>Inventário</label><textarea id="inventario" class="large-input"></textarea></div>
 
-    <div class="grid-2">
-        <div class="form-group"><label for="inventario">Inventário</label><textarea id="inventario" class="large-input"></textarea></div>
-        <div class="form-group"><label for="techs">Techs / Habilidades</label><textarea id="techs" class="large-input"></textarea></div>
-    </div>
+    <h3 style="margin-top: 30px; border-bottom: 2px solid #9b59b6; color: #8e44ad;">Techs & Habilidades</h3>
+    <div id="lista-techs"></div>
+    <button type="button" class="btn-add-tech" onclick="adicionarTech()">+ Adicionar Nova Tech</button>
 
-    <button onclick="salvarPersonagem()" style="background-color: #27ae60;">Salvar e Baixar banco_de_dados.json</button>
-    <h3 id="ancora-resultado" style="margin-top: 30px; color: #27ae60; display: none;">✅ Ficheiro exportado! Substitua o antigo na sua pasta local.</h3>
-    <textarea id="resultado" class="json-output" readonly placeholder="O código JSON será exibido aqui após salvar..."></textarea>
+    <button onclick="salvarPersonagem()" style="background-color: #27ae60; margin-top: 40px;">Salvar e Baixar banco_de_dados.json</button>
 </div>
 
 <script>
@@ -138,9 +141,7 @@
             try {
                 bancoDeDados = JSON.parse(ev.target.result);
                 atualizarSeletorHTML();
-            } catch (err) {
-                alert("Erro ao ler o ficheiro JSON.");
-            }
+            } catch (err) { alert("Erro ao ler o ficheiro JSON."); }
         };
         reader.readAsText(e.target.files[0]);
     }
@@ -153,6 +154,39 @@
             o.value = p.id; o.innerText = p.dados_basicos.nome;
             s.appendChild(o);
         });
+    }
+
+    // --- FUNÇÕES DAS TECHS ---
+    function adicionarTech(tech = {}) {
+        const div = document.createElement('div');
+        div.className = 'tech-box';
+        div.innerHTML = `
+            <button class="btn-remover-tech" onclick="this.parentElement.remove()">Remover</button>
+            <div class="grid-2">
+                <div class="form-group"><label>Nome da Habilidade</label><input type="text" class="t-nome" value="${tech.nome || ''}"></div>
+                <div class="grid-2">
+                    <div class="form-group"><label>Custo</label><input type="text" class="t-custo" placeholder="Ex: 2 PM" value="${tech.custo || ''}"></div>
+                    <div class="form-group"><label>Elemento</label><input type="text" class="t-elemento" placeholder="Ex: Água/Gelo" value="${tech.elemento || ''}"></div>
+                </div>
+            </div>
+            <div class="grid-3">
+                <div class="form-group"><label>Alvo</label><input type="text" class="t-alvo" placeholder="Ex: 1 Inimigo" value="${tech.alvo || ''}"></div>
+                <div class="form-group"><label>Tipo de Efeito</label>
+                    <select class="t-tipo">
+                        <option value="Dano" ${tech.tipo === 'Dano' ? 'selected' : ''}>Dano</option>
+                        <option value="Cura" ${tech.tipo === 'Cura' ? 'selected' : ''}>Cura</option>
+                        <option value="Bônus" ${tech.tipo === 'Bônus' ? 'selected' : ''}>Bônus / Suporte</option>
+                        <option value="Escudo" ${tech.tipo === 'Escudo' ? 'selected' : ''}>Escudo / Defesa</option>
+                        <option value="Especial" ${tech.tipo === 'Especial' ? 'selected' : ''}>Especial</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Rolagem / Valor</label><input type="text" class="t-valor" placeholder="Ex: 1d8 + Magia" value="${tech.valor || ''}"></div>
+            </div>
+            <div class="form-group"><label>Descrição / Efeito</label><textarea class="t-desc" rows="2">${tech.desc || ''}</textarea></div>
+            <div class="form-group"><label>Interação Elemental (Opcional)</label><textarea class="t-inter" rows="2">${tech.inter || ''}</textarea></div>
+            <div class="form-group"><label>Dica de Combo (Opcional)</label><textarea class="t-combo" rows="2">${tech.combo || ''}</textarea></div>
+        `;
+        document.getElementById('lista-techs').appendChild(div);
     }
 
     function carregarParaEdicao() {
@@ -169,7 +203,7 @@
         document.getElementById("url_imagem").value = p.url_imagem;
         document.getElementById("afinidade").value = p.dados_basicos.afinidade_elemental;
         document.getElementById("inventario").value = p.inventario;
-        document.getElementById("techs").value = p.techs;
+        
         document.getElementById("poder").value = p.atributos.poder.bruto;
         document.getElementById("vigor").value = p.atributos.vigor.bruto;
         document.getElementById("velocidade").value = p.atributos.velocidade.bruto;
@@ -178,30 +212,39 @@
         document.getElementById("esquiva").value = p.atributos.esquiva.bruto;
         document.getElementById("def_magica").value = p.atributos.defesa_magica.bruto;
         
-        if(p.lacos) {
-            document.getElementById("lacos").value = p.lacos.map(l => `${l.nome}: ${l.porcentagem}`).join('\n');
-        } else {
-            document.getElementById("lacos").value = "";
+        document.getElementById("lacos").value = p.lacos ? p.lacos.map(l => `${l.nome}: ${l.porcentagem}`).join('\n') : "";
+        
+        // Carregar Techs
+        document.getElementById('lista-techs').innerHTML = ''; // Limpa a lista
+        if(Array.isArray(p.techs)) {
+            p.techs.forEach(t => adicionarTech(t));
         }
+
         atualizarDadosMatriz();
     }
 
     function salvarPersonagem() {
         const id = document.getElementById("id").value;
         const classeNome = document.getElementById("classe").value;
-        if (!id || !classeNome) {
-            alert("ID e Classe são obrigatórios!");
-            return;
-        }
-
+        if (!id || !classeNome) { alert("ID e Classe são obrigatórios!"); return; }
         const info = regrasClasses[classeNome];
         
-        // Parse Laços
-        const lacosTexto = document.getElementById("lacos").value.split('\n');
-        const lacosArray = lacosTexto.filter(t => t.includes(':')).map(t => {
-            const [n, p] = t.split(':');
-            return { nome: n.trim(), porcentagem: parseInt(p.trim()) || 0 };
+        const lacosArray = document.getElementById("lacos").value.split('\n').filter(t => t.includes(':')).map(t => {
+            const [n, p] = t.split(':'); return { nome: n.trim(), porcentagem: parseInt(p.trim()) || 0 };
         });
+
+        // Coletar Techs
+        const techsArray = Array.from(document.querySelectorAll('.tech-box')).map(box => ({
+            nome: box.querySelector('.t-nome').value,
+            custo: box.querySelector('.t-custo').value,
+            elemento: box.querySelector('.t-elemento').value,
+            alvo: box.querySelector('.t-alvo').value,
+            tipo: box.querySelector('.t-tipo').value,
+            valor: box.querySelector('.t-valor').value,
+            desc: box.querySelector('.t-desc').value,
+            inter: box.querySelector('.t-inter').value,
+            combo: box.querySelector('.t-combo').value
+        }));
 
         const vVig = parseInt(document.getElementById("vigor").value);
         const vMag = parseInt(document.getElementById("magia").value);
@@ -210,7 +253,7 @@
         const ficha = {
             id: id,
             url_imagem: document.getElementById("url_imagem").value,
-            techs: document.getElementById("techs").value,
+            techs: techsArray, // Agora é um array estruturado!
             inventario: document.getElementById("inventario").value,
             lacos: lacosArray,
             dados_basicos: {
@@ -240,30 +283,14 @@
         };
 
         const idx = bancoDeDados.personagens.findIndex(x => x.id === id);
-        if(idx > -1) bancoDeDados.personagens[idx] = ficha; 
-        else bancoDeDados.personagens.push(ficha);
+        if(idx > -1) bancoDeDados.personagens[idx] = ficha; else bancoDeDados.personagens.push(ficha);
 
         const final = JSON.stringify(bancoDeDados, null, 4);
-        
-        // Exibe o JSON na tela (opcional, para visualização rápida)
-        document.getElementById("resultado").value = final;
-        
-        // --- NOVO: LÓGICA DE EXPORTAÇÃO (DOWNLOAD) ---
         const blob = new Blob([final], { type: "application/json" });
         const url = URL.createObjectURL(blob);
-        
         const a = document.createElement('a');
-        a.href = url;
-        a.download = "banco_de_dados.json"; // Nome exato do ficheiro
-        document.body.appendChild(a);
-        a.click(); // Força o clique invisível para iniciar o download
-        document.body.removeChild(a); // Limpa o botão invisível
-        URL.revokeObjectURL(url); // Libera memória
-        // ---------------------------------------------
-
-        const msgSucesso = document.getElementById("ancora-resultado");
-        msgSucesso.style.display = "block";
-        msgSucesso.scrollIntoView({ behavior: 'smooth' });
+        a.href = url; a.download = "banco_de_dados.json";
+        document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
     }
 </script>
 </body>
