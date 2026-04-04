@@ -241,8 +241,8 @@
         const atrMagia = obterAtributo('magia', info);
         const atrPrecisao = obterAtributo('precisao', info);
         const atrEsquiva = obterAtributo('esquiva', info);
-        const atrDefMagica = obterAtributo('def_magica', info); // Tem que passar o ID correto se o array for diferente
-        // Correção para def_magica: a chave no info.dados é def_magica. O id é defesa_magica_...
+        
+        // A CORREÇÃO FOI FEITA AQUI (linha removida)
         const bDefMag = parseInt(document.getElementById("defesa_magica_bruto").value) || 0;
         const mDefMag = parseInt(document.getElementById("defesa_magica_mod").value) || 0;
         const tDefMag = bDefMag + mDefMag;
