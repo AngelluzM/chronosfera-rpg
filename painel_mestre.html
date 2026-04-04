@@ -20,12 +20,17 @@
         textarea.json-output { height: 200px; font-family: monospace; background-color: #fdfdfd; border-left: 5px solid #2ecc71; margin-top: 10px; }
         textarea.large-input { height: 100px; resize: vertical; }
         
-        /* Estilos do Bloco de Techs */
-        .tech-box { background: #fdfdfd; border: 1px solid #dcdde1; border-left: 4px solid #9b59b6; border-radius: 6px; padding: 15px; margin-bottom: 15px; position: relative;}
-        .btn-remover-tech { background-color: #e74c3c; width: auto; padding: 5px 10px; font-size: 12px; position: absolute; right: 15px; top: 10px; margin: 0;}
-        .btn-remover-tech:hover { background-color: #c0392b; }
+        /* Estilos dos Blocos Dinâmicos */
+        .box-dinamico { background: #fdfdfd; border: 1px solid #dcdde1; border-radius: 6px; padding: 15px; margin-bottom: 15px; position: relative;}
+        .tech-box { border-left: 4px solid #9b59b6; }
+        .laco-box { border-left: 4px solid #e67e22; }
+        .btn-remover { background-color: #e74c3c; width: auto; padding: 5px 10px; font-size: 12px; position: absolute; right: 15px; top: 10px; margin: 0;}
+        .btn-remover:hover { background-color: #c0392b; }
+        
         .btn-add-tech { background-color: #9b59b6; margin-top: 5px;}
         .btn-add-tech:hover { background-color: #8e44ad; }
+        .btn-add-laco { background-color: #e67e22; margin-top: 5px;}
+        .btn-add-laco:hover { background-color: #d35400; }
     </style>
 </head>
 <body>
@@ -96,10 +101,12 @@
     </div>
 
     <div class="form-group" style="margin-top:20px;">
-        <label>Laços (Formato: Nome: Porcentagem - um por linha)</label>
-        <textarea id="lacos" class="large-input"></textarea>
+        <label>Inventário</label><textarea id="inventario" class="large-input"></textarea>
     </div>
-    <div class="form-group"><label>Inventário</label><textarea id="inventario" class="large-input"></textarea></div>
+
+    <h3 style="margin-top: 30px; border-bottom: 2px solid #e67e22; color: #d35400;">Laços</h3>
+    <div id="lista-lacos"></div>
+    <button type="button" class="btn-add-laco" onclick="adicionarLaco()">+ Adicionar Novo Laço</button>
 
     <h3 style="margin-top: 30px; border-bottom: 2px solid #9b59b6; color: #8e44ad;">Techs & Habilidades</h3>
     <div id="lista-techs"></div>
@@ -156,12 +163,11 @@
         });
     }
 
-    // --- FUNÇÕES DAS TECHS ---
     function adicionarTech(tech = {}) {
         const div = document.createElement('div');
-        div.className = 'tech-box';
+        div.className = 'box-dinamico tech-box';
         div.innerHTML = `
-            <button class="btn-remover-tech" onclick="this.parentElement.remove()">Remover</button>
+            <button class="btn-remover" onclick="this.parentElement.remove()">Remover</button>
             <div class="grid-2">
                 <div class="form-group"><label>Nome da Habilidade</label><input type="text" class="t-nome" value="${tech.nome || ''}"></div>
                 <div class="grid-2">
@@ -189,6 +195,19 @@
         document.getElementById('lista-techs').appendChild(div);
     }
 
+    function adicionarLaco(laco = {}) {
+        const div = document.createElement('div');
+        div.className = 'box-dinamico laco-box';
+        div.innerHTML = `
+            <button class="btn-remover" onclick="this.parentElement.remove()">Remover</button>
+            <div class="grid-2">
+                <div class="form-group"><label>Com quem?</label><input type="text" class="l-nome" placeholder="Nome do Personagem" value="${laco.nome || ''}"></div>
+                <div class="form-group"><label>Força do Laço (%)</label><input type="number" min="0" max="100" class="l-porc" placeholder="Ex: 45" value="${laco.porcentagem || 0}"></div>
+            </div>
+        `;
+        document.getElementById('lista-lacos').appendChild(div);
+    }
+
     function carregarParaEdicao() {
         const id = document.getElementById("seletorPersonagem").value;
         const p = bancoDeDados.personagens.find(x => x.id === id);
@@ -212,12 +231,20 @@
         document.getElementById("esquiva").value = p.atributos.esquiva.bruto;
         document.getElementById("def_magica").value = p.atributos.defesa_magica.bruto;
         
-        document.getElementById("lacos").value = p.lacos ? p.lacos.map(l => `${l.nome}: ${l.porcentagem}`).join('\n') : "";
-        
         // Carregar Techs
-        document.getElementById('lista-techs').innerHTML = ''; // Limpa a lista
-        if(Array.isArray(p.techs)) {
-            p.techs.forEach(t => adicionarTech(t));
+        document.getElementById('lista-techs').innerHTML = '';
+        if(Array.isArray(p.techs)) p.techs.forEach(t => adicionarTech(t));
+
+        // Carregar Lacos
+        document.getElementById('lista-lacos').innerHTML = '';
+        if(Array.isArray(p.lacos)) p.lacos.forEach(l => adicionarLaco(l));
+        // Adaptação para quem usava o formato antigo em texto
+        else if(typeof p.lacos === 'string') {
+            const arr = p.lacos.split('\n').filter(t => t.includes(':'));
+            arr.forEach(t => {
+                const [n, por] = t.split(':');
+                adicionarLaco({ nome: n.trim(), porcentagem: parseInt(por.trim()) || 0 });
+            });
         }
 
         atualizarDadosMatriz();
@@ -228,10 +255,12 @@
         const classeNome = document.getElementById("classe").value;
         if (!id || !classeNome) { alert("ID e Classe são obrigatórios!"); return; }
         const info = regrasClasses[classeNome];
-        
-        const lacosArray = document.getElementById("lacos").value.split('\n').filter(t => t.includes(':')).map(t => {
-            const [n, p] = t.split(':'); return { nome: n.trim(), porcentagem: parseInt(p.trim()) || 0 };
-        });
+
+        // Coletar Laços Novos
+        const lacosArray = Array.from(document.querySelectorAll('.laco-box')).map(box => ({
+            nome: box.querySelector('.l-nome').value,
+            porcentagem: parseInt(box.querySelector('.l-porc').value) || 0
+        }));
 
         // Coletar Techs
         const techsArray = Array.from(document.querySelectorAll('.tech-box')).map(box => ({
@@ -253,7 +282,7 @@
         const ficha = {
             id: id,
             url_imagem: document.getElementById("url_imagem").value,
-            techs: techsArray, // Agora é um array estruturado!
+            techs: techsArray,
             inventario: document.getElementById("inventario").value,
             lacos: lacosArray,
             dados_basicos: {
