@@ -74,10 +74,27 @@
         {
             "id": "King",
             "url_imagem": "https://i.pinimg.com/736x/5e/9b/d4/5e9bd475689812a607089f4fd2d6ff61.jpg",
+            "techs": [
+                {
+                    "nome": "",
+                    "custo": "",
+                    "elemento": "",
+                    "alvo": "",
+                    "tipo": "Dano",
+                    "valor": "",
+                    "desc": "",
+                    "inter": "",
+                    "combo": ""
+                }
+            ],
+            "inventario": "Pistola de Ar Comprimido, Macacão de Lona Grossa, ",
+            "lacos": [],
             "dados_basicos": {
                 "nome": "KING",
-                "raca": "Humano",
                 "nivel": 1,
+                "xp_atual": 0,
+                "xp_proximo": 50,
+                "raca": "Humano",
                 "classe": "Mecânico",
                 "arquetipo": "Arcana / Tecnologia",
                 "afinidade_elemental": "Fogo"
@@ -123,17 +140,24 @@
                     "bruto": 2,
                     "bonus": 0
                 }
-            },
-            "inventario": "Pistola de Ar Comprimido, Macacão de Lona Grossa, ",
-            "referencias": {
-                "dano_fisico": "Dados da Arma + Atributo Bruto",
-                "dano_magico": "Dados da Magia + Magia Bruta"
             }
         },
         {
             "id": "orpheu",
             "url_imagem": "https://i.pinimg.com/736x/08/9d/e4/089de4dfbd5949d095e81ba3d95b0dac.jpg",
-            "techs": "undefined",
+            "techs": [
+                {
+                    "nome": "",
+                    "custo": "",
+                    "elemento": "",
+                    "alvo": "",
+                    "tipo": "Dano",
+                    "valor": "",
+                    "desc": "",
+                    "inter": "",
+                    "combo": ""
+                }
+            ],
             "inventario": "Máscara Doutor da Peste, Luvas Achronos, Vestes Antigas, Sobretudo Antigo, Botas de Couro",
             "lacos": [],
             "dados_basicos": {
