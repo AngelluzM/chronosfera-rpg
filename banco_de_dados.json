@@ -3,7 +3,19 @@
         {
             "id": "baltazar",
             "url_imagem": "https://i.pinimg.com/736x/c7/d2/96/c7d296b5374dcef0463499e10a48fce5.jpg",
-            "techs": "Nº| MAGIA        | PM |  DANO/CURA  | DESCRIÇÃO\n1 |ESTACA DE GELO| 2  | 1D8+ATMAGIA |DISPAPARA UMA ESTACA  DE GELO",
+            "techs": [
+                {
+                    "nome": "Estaca de Gelo",
+                    "custo": "2 PM",
+                    "elemento": "Água/Gelo",
+                    "alvo": "1 inimigo",
+                    "tipo": "Dano",
+                    "valor": "1d8 + Magia Bruta",
+                    "desc": "Junta a humidade do ar gerando uma estaca de gelo e disparando contra um inimigo.",
+                    "inter": "",
+                    "combo": ""
+                }
+            ],
             "inventario": "Túnica Arcana, Cajado de Quartzo Bruto, bota de couro",
             "lacos": [],
             "dados_basicos": {
