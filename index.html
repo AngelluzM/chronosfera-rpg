@@ -4,44 +4,17 @@
     <meta charset="UTF-8">
     <title>Chronosfera RPG</title>
     <style>
-        /* === ESTILOS GERAIS DA SPA === */
-        body { 
-            font-family: Arial, sans-serif; 
-            line-height: 1.6; 
-            margin: 40px auto; 
-            max-width: 1100px; 
-            padding: 0 20px; 
-            color: #333;
-            background-color: #f9f9f9;
-            overflow-y: scroll; /* Mantém a barra de rolagem fixa */
-        }
-        nav { 
-            margin-bottom: 30px; 
-            padding: 15px; 
-            background-color: #eee; 
-            border-radius: 5px; 
-            display: flex;
-            gap: 20px;
-        }
-        nav a { 
-            text-decoration: none; 
-            color: #0056b3; 
-            font-weight: bold; 
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 4px;
-            transition: background 0.3s;
-        }
+        /* === ESTILOS GERAIS === */
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px auto; max-width: 1100px; padding: 0 20px; color: #333; background-color: #f9f9f9; overflow-y: scroll; }
+        nav { margin-bottom: 30px; padding: 15px; background-color: #eee; border-radius: 5px; display: flex; gap: 20px; }
+        nav a { text-decoration: none; color: #0056b3; font-weight: bold; cursor: pointer; padding: 5px 10px; border-radius: 4px; transition: background 0.3s; }
         nav a:hover { background-color: #ddd; }
         nav a.ativo { background-color: #3498db; color: white; }
         h1 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0; }
         
-        /* Controle das Seções */
         .secao { display: none; }
         .secao.ativa { display: block; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Estilo dos Iframes (Google Docs) */
         .doc-container { width: 100%; height: 80vh; border: none; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-top: 15px; background-color: white; }
 
         /* === ESTILOS DAS FICHAS === */
@@ -49,7 +22,6 @@
         .ficha-card { background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; }
         .ficha-imagem { width: 100%; height: 250px; object-fit: cover; object-position: top; border-bottom: 4px solid #3498db; }
         .ficha-conteudo { padding: 20px; flex-grow: 1; }
-        
         .ficha-header h2 { margin: 0 0 5px 0; color: #2c3e50; }
         .ficha-header p { margin: 0; color: #7f8c8d; font-size: 0.9em; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
 
@@ -61,14 +33,13 @@
         .status-item { background: #f8f9fa; padding: 8px; border-radius: 4px; text-align: center; font-weight: bold; border: 1px solid #eee; }
         .status-pv { color: #e74c3c; }
         .status-pm { color: #3498db; }
-
         .esquiva-box { text-align: center; background-color: #e8f6f3; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-weight: bold; color: #16a085; }
 
         .atributos { font-size: 0.9em; border-collapse: collapse; width: 100%; margin-bottom: 15px; }
         .atributos th, .atributos td { border: 1px solid #ddd; padding: 5px; text-align: center; }
         .atributos th { background-color: #f4f4f4; color: #333; }
         
-        .inventario-box { background-color: #fcfcfc; border: 1px solid #e0e0e0; padding: 10px; border-radius: 4px; font-size: 0.85em; white-space: pre-wrap; color: #555; margin-bottom: 15px; }
+        .inventario-box { background: #fcfcfc; border: 1px solid #e0e0e0; padding: 10px; border-radius: 4px; font-size: 0.85em; white-space: pre-wrap; color: #555; margin-bottom: 15px; }
         .inventario-box strong { color: #2c3e50; display: block; margin-bottom: 5px; }
 
         .footer-btns { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid #eee; }
@@ -77,16 +48,14 @@
         .btn-lacos { background: #9b59b6; }
         .btn-action:hover { opacity: 0.8; }
 
-        /* === MODAL GIGANTE PARA A TELA INTEIRA === */
+        /* === MODAL GIGANTE === */
         .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); overflow-y: auto; }
         .modal-content { background: #f4f4f9; margin: 5% auto; padding: 30px; border-radius: 10px; max-width: 900px; width: 90%; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         .close { position: absolute; right: 25px; top: 20px; font-size: 32px; font-weight: bold; cursor: pointer; color: #777; transition: 0.2s; }
         .close:hover { color: #111; }
-        
         #modalTitle { color: #2c3e50; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-top: 0; margin-bottom: 20px; font-size: 1.8em; }
-        #modalBody { line-height: 1.5; color: #444; }
 
-        /* Cartinhas das Techs */
+        /* Cartões de Techs */
         .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
         .tech-card { background: white; border-radius: 10px; border: 1px solid #ddd; box-shadow: 0 3px 6px rgba(0,0,0,0.08); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s; }
         .tech-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.12); }
@@ -102,12 +71,48 @@
         .tech-inter { background: #e8f6f3; color: #117a65; border-left: 4px solid #1abc9c; }
         .tech-combo { background: #f4ecf7; color: #76448a; border-left: 4px solid #9b59b6; }
 
-        /* Barra de Laço */
-        .laco-item { background: white; padding: 15px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
-        .laco-header { display: flex; justify-content: space-between; font-size: 1.1em; font-weight: bold; margin-bottom: 8px; color: #2c3e50; }
-        .laco-bar-bg { background: #e0e0e0; height: 16px; border-radius: 8px; overflow: hidden; }
-        .laco-bar-fill { background: linear-gradient(90deg, #e67e22, #d35400); height: 100%; transition: width 0.5s ease-in-out; }
+        /* === BARRAS DE LAÇOS MODERNAS E GROSSAS === */
+        .laco-item { background: white; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .laco-header { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; color: #2c3e50; }
         
+        .laco-bar-bg { 
+            background: #e9ecef; 
+            height: 32px; /* Barra bem grossa */
+            border-radius: 16px; 
+            overflow: hidden; 
+            position: relative;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.15); /* Sombra interna para dar fundura */
+        }
+        
+        .laco-bar-fill { 
+            background: linear-gradient(90deg, #f39c12, #e74c3c); /* Degradê quente */
+            height: 100%; 
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Coloca o texto no final do preenchimento */
+            padding-right: 15px;
+            box-sizing: border-box;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: inset 0 -3px 6px rgba(0,0,0,0.2), inset 0 3px 6px rgba(255,255,255,0.3); /* Efeito 3D/Vidro */
+        }
+
+        /* Efeito de listras animadas sobre a barra */
+        .laco-bar-fill::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+            background-size: 30px 30px;
+            z-index: 1;
+        }
+        
+        .laco-pct-text { position: relative; z-index: 2; } /* Garante que o texto fique acima do brilho */
+
         .erro { color: #e74c3c; font-weight: bold; }
     </style>
 </head>
@@ -149,7 +154,7 @@
     </div>
 
     <script>
-        // === LÓGICA DE NAVEGAÇÃO SPA ===
+        // === NAVEGAÇÃO SPA ===
         function mostrarSecao(idSecao, elementoClicado) {
             document.querySelectorAll('.secao').forEach(secao => secao.classList.remove('ativa'));
             document.querySelectorAll('#menu-principal a').forEach(link => link.classList.remove('ativo'));
@@ -158,19 +163,12 @@
             window.scrollTo(0, 0);
         }
 
-        // === LÓGICA DE CARREGAMENTO DAS FICHAS E BANCO DE DADOS ===
         let personagens = [];
 
-        // Carrega o JSON assim que a página inteira abre
         fetch('banco_de_dados.json?v=' + new Date().getTime())
             .then(r => r.json())
-            .then(data => {
-                personagens = data.personagens;
-                renderizarFichas();
-            })
-            .catch(error => {
-                document.getElementById('lista-fichas').innerHTML = `<div class="erro"><p>Erro ao carregar banco_de_dados.json: ${error.message}</p></div>`;
-            });
+            .then(data => { personagens = data.personagens; renderizarFichas(); })
+            .catch(error => { document.getElementById('lista-fichas').innerHTML = `<div class="erro"><p>Erro: ${error.message}</p></div>`; });
 
         function renderizarFichas() {
             const container = document.getElementById('lista-fichas');
@@ -215,9 +213,7 @@
                             <div class="status-item status-pm">PM: ${p.status.pm_maximo}</div>
                         </div>
                         
-                        <div class="esquiva-box">
-                            ND de Esquiva Base: ${p.status.nd_esquiva_base}
-                        </div>
+                        <div class="esquiva-box">ND de Esquiva Base: ${p.status.nd_esquiva_base}</div>
 
                         <table class="atributos">
                             <tr><th>Atr.</th><th>Dado</th><th>Bruto</th><th>Bônus</th></tr>
@@ -241,11 +237,9 @@
             });
         }
 
-        // === LÓGICA DOS MODAIS (JANELAS FLUTUANTES) ===
         function abrirTechs(id) {
             const p = personagens.find(x => x.id === id);
             document.getElementById('modalTitle').innerText = "Techs & Habilidades: " + p.dados_basicos.nome;
-            
             let html = '<div class="tech-grid">';
             
             if (Array.isArray(p.techs) && p.techs.length > 0) {
@@ -268,23 +262,16 @@
                             <span><strong>Elemento:</strong> ${t.elemento || '-'}</span>
                         </div>
                         <div class="tech-body">
-                            <div class="tech-valor" style="color: ${corTipo}; border-color: ${corTipo};">
-                                ${t.valor || '-'}
-                            </div>
+                            <div class="tech-valor" style="color: ${corTipo}; border-color: ${corTipo};">${t.valor || '-'}</div>
                             <div class="tech-desc">${t.desc || '-'}</div>
                             ${t.inter ? `<div class="tech-callout tech-inter"><strong>⚡ Interação:</strong> ${t.inter}</div>` : ''}
                             ${t.combo ? `<div class="tech-callout tech-combo"><strong>🔗 Combo:</strong> ${t.combo}</div>` : ''}
                         </div>
                     </div>`;
                 });
-            } else if (typeof p.techs === 'string' && p.techs.trim() !== '') {
-                html += `<p style="white-space:pre-wrap; padding: 20px;">${p.techs}</p>`;
-            } else {
-                html += '<p style="padding: 20px;">Nenhuma técnica registada.</p>';
-            }
+            } else { html += '<p style="padding: 20px;">Nenhuma técnica registada.</p>'; }
             
             html += '</div>';
-
             document.getElementById('modalBody').innerHTML = html;
             document.getElementById('modalGeral').style.display = 'block';
         }
@@ -293,18 +280,35 @@
             const p = personagens.find(x => x.id === id);
             document.getElementById('modalTitle').innerText = "Laços de " + p.dados_basicos.nome;
             let html = '';
-            if(p.lacos && p.lacos.length > 0) {
+            
+            if(Array.isArray(p.lacos) && p.lacos.length > 0) {
                 p.lacos.forEach(l => {
+                    // A NOVA BARRA MODERNA É DESENHADA AQUI
                     html += `
                         <div class="laco-item">
-                            <div class="laco-header"><span>${l.nome}</span><span>${l.porcentagem}%</span></div>
-                            <div class="laco-bar-bg"><div class="laco-bar-fill" style="width: ${l.porcentagem}%"></div></div>
+                            <div class="laco-header">Vínculo com: ${l.nome}</div>
+                            <div class="laco-bar-bg">
+                                <div class="laco-bar-fill" style="width: ${l.porcentagem}%">
+                                    <span class="laco-pct-text">${l.porcentagem}%</span>
+                                </div>
+                            </div>
                         </div>
                     `;
                 });
             } else { html = '<p>Nenhum laço formado ainda.</p>'; }
+            
             document.getElementById('modalBody').innerHTML = html;
             document.getElementById('modalGeral').style.display = 'block';
+            
+            // Truque para fazer a animação da barra fluir ao abrir
+            setTimeout(() => {
+                const barras = document.querySelectorAll('.laco-bar-fill');
+                barras.forEach(b => {
+                    const width = b.style.width;
+                    b.style.width = '0%';
+                    setTimeout(() => b.style.width = width, 50);
+                });
+            }, 10);
         }
 
         function fecharModal() { document.getElementById('modalGeral').style.display = 'none'; }
