@@ -17,7 +17,12 @@
                 }
             ],
             "inventario": "Túnica Arcana, Cajado de Quartzo Bruto, bota de couro",
-            "lacos": [],
+            "lacos": [
+                {
+                    "nome": "teste",
+                    "porcentagem": 50
+                }
+            ],
             "dados_basicos": {
                 "nome": "Baltazar",
                 "nivel": 1,
