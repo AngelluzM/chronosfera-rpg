@@ -1,7 +1,7 @@
 {
     "personagens": [
         {
-            "id": "baltazar",
+            "id": "juan",
             "url_imagem": "https://i.pinimg.com/736x/c7/d2/96/c7d296b5374dcef0463499e10a48fce5.jpg",
             "techs": [
                 {
@@ -72,7 +72,7 @@
             }
         },
         {
-            "id": "orpheu",
+            "id": "maicon",
             "url_imagem": "https://i.pinimg.com/736x/08/9d/e4/089de4dfbd5949d095e81ba3d95b0dac.jpg",
             "techs": [],
             "inventario": "Máscara Doutor da Peste, Luvas Achronos, Vestes Antigas, Sobretudo Antigo, Botas de Couro",
@@ -131,7 +131,7 @@
             }
         },
         {
-            "id": "Link",
+            "id": "vinicius-void",
             "url_imagem": "https://i.pinimg.com/736x/5e/9b/d4/5e9bd475689812a607089f4fd2d6ff61.jpg",
             "techs": [],
             "inventario": "Pistola de Ar Comprimido, Macacão de Lona Grossa, ",
