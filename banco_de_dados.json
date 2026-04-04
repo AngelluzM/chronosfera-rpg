@@ -46,7 +46,7 @@
             },
             "status": {
                 "pv_maximo": 30,
-                "pm_maximo": 35,
+                "pm_maximo": 36,
                 "nd_esquiva_base": 8
             },
             "atributos": {
@@ -74,8 +74,8 @@
                 "magia": {
                     "dado": "d12",
                     "bruto": 11,
-                    "mod": 0,
-                    "total": 11,
+                    "mod": 1,
+                    "total": 12,
                     "bonus": 1
                 },
                 "precisao": {
@@ -95,8 +95,8 @@
                 "defesa_magica": {
                     "dado": "d10",
                     "bruto": 8,
-                    "mod": 0,
-                    "total": 8,
+                    "mod": 1,
+                    "total": 9,
                     "bonus": 1
                 }
             }
