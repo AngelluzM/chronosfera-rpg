@@ -47,7 +47,8 @@
             "status": {
                 "pv_maximo": 30,
                 "pm_maximo": 36,
-                "nd_esquiva_base": 8
+                "nd_esquiva_base": 8,
+                "rd_armadura": 0
             },
             "atributos": {
                 "poder": {
