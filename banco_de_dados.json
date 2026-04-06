@@ -105,7 +105,33 @@
             "id": "maicon",
             "url_imagem": "https://i.pinimg.com/736x/08/9d/e4/089de4dfbd5949d095e81ba3d95b0dac.jpg",
             "techs": [],
-            "inventario": "Máscara Doutor da Peste, Luvas Achronos, Vestes Antigas, Sobretudo Antigo, Botas de Couro",
+            "inventario": [
+                {
+                    "nome": "Máscara Doutor da Peste",
+                    "quantidade": 1,
+                    "desc": "Uma máscara usada por praticantes de medicina"
+                },
+                {
+                    "nome": "Luvas Achronos",
+                    "quantidade": 1,
+                    "desc": "Uma par de luvas misteriosa que ficou agarrada nos mão dele, mistérios sobre ainda precisam ser descobertos"
+                },
+                {
+                    "nome": "Vestes Antigas",
+                    "quantidade": 1,
+                    "desc": "Conjuntos de roupas de muitos anos passados, confortáveis e em excelente estado"
+                },
+                {
+                    "nome": " Sobretudo Antigo",
+                    "quantidade": 1,
+                    "desc": "Um sobretudo de muitos anos passados, confortável e em excelente estado"
+                },
+                {
+                    "nome": "Botas Antigas de Couro",
+                    "quantidade": 1,
+                    "desc": "Um par de botas de couro de muitos anos passados, confortável e em excelente estado e protege os pés"
+                }
+            ],
             "lacos": [],
             "dados_basicos": {
                 "nome": "Orpheu de Lynx",
@@ -126,36 +152,50 @@
                 "poder": {
                     "dado": "d4",
                     "bruto": 2,
+                    "mod": 0,
+                    "total": 2,
                     "bonus": 0
                 },
                 "vigor": {
                     "dado": "d6",
                     "bruto": 5,
+                    "mod": 0,
+                    "total": 5,
                     "bonus": 0
                 },
                 "velocidade": {
                     "dado": "d8",
                     "bruto": 4,
+                    "mod": 1,
+                    "total": 5,
                     "bonus": 0
                 },
                 "magia": {
                     "dado": "d10",
                     "bruto": 9,
+                    "mod": 0,
+                    "total": 9,
                     "bonus": 1
                 },
                 "precisao": {
                     "dado": "d8",
                     "bruto": 7,
+                    "mod": 0,
+                    "total": 7,
                     "bonus": 1
                 },
                 "esquiva": {
                     "dado": "d6",
                     "bruto": 6,
+                    "mod": 0,
+                    "total": 6,
                     "bonus": 1
                 },
                 "defesa_magica": {
                     "dado": "d12",
                     "bruto": 11,
+                    "mod": 1,
+                    "total": 12,
                     "bonus": 1
                 }
             }
