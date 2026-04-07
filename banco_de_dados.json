@@ -286,6 +286,91 @@
                     "bonus": 0
                 }
             }
+        },
+        {
+            "id": "shiebow",
+            "url_imagem": "",
+            "techs": [],
+            "inventario": [
+                {
+                    "nome": "Vestimenta Selvagem",
+                    "quantidade": 1,
+                    "desc": "Uma roupa de couro de animal pré-histórico, confere muita resistência a dano, armadura 3"
+                },
+                {
+                    "nome": "Bota de Couro Selvagem",
+                    "quantidade": 1,
+                    "desc": "Além de ser de couro de animal pré-histórico, é resistente e confere aderência e leveza facilitando os movimentos"
+                }
+            ],
+            "lacos": [],
+            "dados_basicos": {
+                "nome": "Hexzyr",
+                "nivel": 1,
+                "xp_atual": 0,
+                "xp_proximo": 50,
+                "raca": "Humano",
+                "classe": "Selvagem",
+                "arquetipo": "Equilibrada",
+                "afinidade_elemental": "Sombra"
+            },
+            "status": {
+                "pv_maximo": 54,
+                "pm_maximo": 6,
+                "nd_esquiva_base": 9,
+                "rd_armadura": 3
+            },
+            "atributos": {
+                "poder": {
+                    "dado": "d10",
+                    "bruto": 7,
+                    "mod": 0,
+                    "total": 7,
+                    "bonus": 1
+                },
+                "vigor": {
+                    "dado": "d8",
+                    "bruto": 6,
+                    "mod": 0,
+                    "total": 6,
+                    "bonus": 1
+                },
+                "velocidade": {
+                    "dado": "d8",
+                    "bruto": 5,
+                    "mod": 1,
+                    "total": 6,
+                    "bonus": 1
+                },
+                "magia": {
+                    "dado": "d4",
+                    "bruto": 2,
+                    "mod": 0,
+                    "total": 2,
+                    "bonus": 0
+                },
+                "precisao": {
+                    "dado": "d6",
+                    "bruto": 4,
+                    "mod": 0,
+                    "total": 4,
+                    "bonus": 0
+                },
+                "esquiva": {
+                    "dado": "d12",
+                    "bruto": 9,
+                    "mod": 0,
+                    "total": 9,
+                    "bonus": 1
+                },
+                "defesa_magica": {
+                    "dado": "d6",
+                    "bruto": 3,
+                    "mod": 0,
+                    "total": 3,
+                    "bonus": 0
+                }
+            }
         }
     ]
 }
