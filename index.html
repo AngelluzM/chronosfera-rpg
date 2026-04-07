@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Chronosfera RPG</title>
     <style>
+        /* === ESTILOS GERAIS === */
         body { font-family: Arial, sans-serif; line-height: 1.6; margin: 10px auto; max-width: 1100px; padding: 0 20px; color: #333; background-color: #f9f9f9; overflow-y: scroll; }
         nav { margin-bottom: 5px; padding: 10px; background-color: #eee; border-radius: 5px; display: flex; gap: 20px; }
         nav a { text-decoration: none; color: #0056b3; font-weight: bold; cursor: pointer; padding: 5px 10px; border-radius: 4px; transition: background 0.3s; }
@@ -50,7 +51,12 @@
         .status-item { background: #f8f9fa; padding: 8px; border-radius: 4px; text-align: center; font-weight: bold; border: 1px solid #eee; }
         .status-pv { color: #e74c3c; }
         .status-pm { color: #3498db; }
-        .esquiva-box { text-align: center; background-color: #e8f6f3; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-weight: bold; color: #16a085; }
+
+        /* Nova Barra de Defesa (Esquiva + RD) */
+        .defesa-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .defesa-item { text-align: center; padding: 10px; border-radius: 4px; font-weight: bold; font-size: 0.9em; }
+        .esquiva-box { background-color: #e8f6f3; color: #117a65; }
+        .armadura-box { background-color: #f4f6f7; color: #2c3e50; border: 1px solid #ddd; }
 
         .atributos { font-size: 0.8em; border-collapse: collapse; width: 100%; margin-bottom: 15px; }
         .atributos th, .atributos td { border: 1px solid #ddd; padding: 5px; text-align: center; }
@@ -64,23 +70,24 @@
         .btn-lacos { background: #9b59b6; }
         .btn-action:hover { opacity: 0.8; }
 
-        /* MODAIS */
+        /* === MODAIS === */
         .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); overflow-y: auto; }
         .modal-content { background: #f4f4f9; margin: 5% auto; padding: 30px; border-radius: 10px; max-width: 900px; width: 90%; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         .close { position: absolute; right: 25px; top: 20px; font-size: 32px; font-weight: bold; cursor: pointer; color: #777; transition: 0.2s; }
         .close:hover { color: #111; }
         #modalTitle { color: #2c3e50; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-top: 0; margin-bottom: 20px; font-size: 1.8em; }
 
-        /* ITENS DE INVENTÁRIO */
+        /* === ITENS DE INVENTÁRIO === */
         .inv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
         .inv-item { background: white; padding: 15px; border-radius: 8px; border: 1px solid #ddd; border-left: 4px solid #27ae60; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .inv-item h4 { margin: 0 0 10px 0; color: #2c3e50; display: flex; justify-content: space-between; align-items: center; }
         .inv-badge { background: #eee; color: #555; padding: 3px 8px; border-radius: 12px; font-size: 0.8em; }
         .inv-item p { margin: 0; font-size: 0.9em; color: #555; }
 
-        /* RESTO (TECHS/LACOS) IGUAL À VERSÃO ANTERIOR */
+        /* === TECHS === */
         .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
         .tech-card { background: white; border-radius: 10px; border: 1px solid #ddd; box-shadow: 0 3px 6px rgba(0,0,0,0.08); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s; }
+        .tech-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.12); }
         .tech-header { padding: 12px 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
         .tech-title { font-size: 1.2em; font-weight: bold; margin: 0; }
         .tech-badge { font-size: 0.8em; background: rgba(0,0,0,0.25); padding: 4px 8px; border-radius: 12px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
@@ -92,6 +99,7 @@
         .tech-inter { background: #e8f6f3; color: #117a65; border-left: 4px solid #1abc9c; }
         .tech-combo { background: #f4ecf7; color: #76448a; border-left: 4px solid #9b59b6; }
 
+        /* === LAÇOS === */
         .laco-item { background: white; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .laco-header { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; color: #2c3e50; }
         .laco-bar-bg { background: #e9ecef; height: 32px; border-radius: 16px; overflow: hidden; position: relative; box-shadow: inset 0 2px 5px rgba(0,0,0,0.15); }
@@ -124,10 +132,12 @@
         <h1>História do Mundo</h1>
         <iframe class="doc-container" src="https://docs.google.com/document/d/1jeW4iKwZaI5UrmxjH9XR32UemYb1x6fQiRJbhDsWhkk/preview"></iframe>
     </div>
+    
     <div id="regras" class="secao">
         <h1>Regras do Sistema</h1>
         <iframe class="doc-container" src="https://docs.google.com/document/d/1CuajzTWO3LZVEYR3Lg9KR-6W6C8J7iLyWWiHt4lYyDI/preview"></iframe>
     </div>
+    
     <div id="fichas" class="secao">
         <h1>Fichas dos Personagens</h1>
         <div id="lista-fichas" class="grid-fichas"><p>Procurando dados na linha do tempo...</p></div>
@@ -166,24 +176,45 @@
                 const card = document.createElement('div'); card.className = 'ficha-card';
                 const imagemHtml = p.url_imagem && p.url_imagem.trim() !== "" ? `<img src="${p.url_imagem}" class="ficha-imagem" alt="Imagem">` : ``;
 
+                // Mapeamento dinâmico da tabela de atributos para evitar erros de undefined
+                const nomesAtr = {
+                    poder: "Poder", vigor: "Vigor", velocidade: "Velocidade", 
+                    magia: "Magia", precisao: "Precisão", esquiva: "Esquiva", defesa_magica: "Def. Mag."
+                };
+
+                let tabelaAtributosHtml = '';
+                Object.keys(nomesAtr).forEach(chave => {
+                    const atr = p.atributos[chave] || { dado: "-", bruto: 0, mod: 0, total: 0, bonus: 0 };
+                    tabelaAtributosHtml += `
+                        <tr>
+                            <td>${nomesAtr[chave]}</td>
+                            <td>${atr.dado}</td>
+                            <td>${atr.bruto}</td>
+                            <td>+${atr.mod}</td>
+                            <td class="atr-destaque">${atr.total}</td>
+                            <td>+${atr.bonus}</td>
+                        </tr>`;
+                });
+
                 card.innerHTML = `
                     ${imagemHtml}
                     <div class="ficha-conteudo">
-                        <div class="ficha-header"><h2>${p.dados_basicos.nome}</h2><p>Nv ${p.dados_basicos.nivel} | ${p.dados_basicos.raca || "Raça Desconhecida"}<br>${p.dados_basicos.classe} (${p.dados_basicos.arquetipo})</p></div>
+                        <div class="ficha-header"><h2>${p.dados_basicos.nome}</h2><p>Nv ${p.dados_basicos.nivel} | ${p.dados_basicos.raca}<br>${p.dados_basicos.classe} (${p.dados_basicos.arquetipo})</p></div>
                         <div class="xp-container">Experiência: ${xpAtu} / ${xpMax}<div class="xp-bar-bg"><div class="xp-bar-fill" style="width: ${xpPct}%"></div></div></div>
                         <p style="font-size:0.85em; margin: -5px 0 15px 0; color: #555;"><strong>Afinidade:</strong> ${p.dados_basicos.afinidade_elemental}</p>
-                        <div class="status-grid"><div class="status-item status-pv">PV: ${p.status.pv_maximo}</div><div class="status-item status-pm">PM: ${p.status.pm_maximo}</div></div>
-                        <div class="esquiva-box">ND de Esquiva Base: ${p.status.nd_esquiva_base}</div>
+                        <div class="status-grid">
+                            <div class="status-item status-pv">PV: ${p.status.pv_maximo}</div>
+                            <div class="status-item status-pm">PM: ${p.status.pm_maximo}</div>
+                        </div>
+                        
+                        <div class="defesa-container">
+                            <div class="defesa-item esquiva-box">ND Esquiva: ${p.status.nd_esquiva_base}</div>
+                            <div class="defesa-item armadura-box">🛡️ RD: ${p.status.rd_armadura || 0}</div>
+                        </div>
 
                         <table class="atributos">
                             <tr><th>Atr.</th><th>Dado</th><th>Bruto</th><th>Mod.</th><th>Total</th><th>Bônus</th></tr>
-                            <tr><td>Poder</td><td>${p.atributos.poder.dado}</td><td>${p.atributos.poder.bruto}</td><td>+${p.atributos.poder.mod || 0}</td><td class="atr-destaque">${p.atributos.poder.total || p.atributos.poder.bruto}</td><td>+${p.atributos.poder.bonus}</td></tr>
-                            <tr><td>Vigor</td><td>${p.atributos.vigor.dado}</td><td>${p.atributos.vigor.bruto}</td><td>+${p.atributos.vigor.mod || 0}</td><td class="atr-destaque">${p.atributos.vigor.total || p.atributos.vigor.bruto}</td><td>+${p.atributos.vigor.bonus}</td></tr>
-                            <tr><td>Veloc.</td><td>${p.atributos.velocidade.dado}</td><td>${p.atributos.velocidade.bruto}</td><td>+${p.atributos.velocidade.mod || 0}</td><td class="atr-destaque">${p.atributos.velocidade.total || p.atributos.velocidade.bruto}</td><td>+${p.atributos.velocidade.bonus}</td></tr>
-                            <tr><td>Magia</td><td>${p.atributos.magia.dado}</td><td>${p.atributos.magia.bruto}</td><td>+${p.atributos.magia.mod || 0}</td><td class="atr-destaque">${p.atributos.magia.total || p.atributos.magia.bruto}</td><td>+${p.atributos.magia.bonus}</td></tr>
-                            <tr><td>Precisão</td><td>${p.atributos.precisao.dado}</td><td>${p.atributos.precisao.bruto}</td><td>+${p.atributos.precisao.mod || 0}</td><td class="atr-destaque">${p.atributos.precisao.total || p.atributos.precisao.bruto}</td><td>+${p.atributos.precisao.bonus}</td></tr>
-                            <tr><td>Esquiva</td><td>${p.atributos.esquiva.dado}</td><td>${p.atributos.esquiva.bruto}</td><td>+${p.atributos.esquiva.mod || 0}</td><td class="atr-destaque">${p.atributos.esquiva.total || p.atributos.esquiva.bruto}</td><td>+${p.atributos.esquiva.bonus}</td></tr>
-                            <tr><td>Def. Mag.</td><td>${p.atributos.defesa_magica.dado}</td><td>${p.atributos.defesa_magica.bruto}</td><td>+${p.atributos.defesa_magica.mod || 0}</td><td class="atr-destaque">${p.atributos.defesa_magica.total || p.atributos.defesa_magica.bruto}</td><td>+${p.atributos.defesa_magica.bonus}</td></tr>
+                            ${tabelaAtributosHtml}
                         </table>
                     </div>
                     <div class="footer-btns">
@@ -200,20 +231,11 @@
             const p = personagens.find(x => x.id === id);
             document.getElementById('modalTitle').innerText = "Inventário: " + p.dados_basicos.nome;
             let html = '<div class="inv-grid">';
-            
             if (Array.isArray(p.inventario) && p.inventario.length > 0) {
                 p.inventario.forEach(i => {
-                    html += `
-                        <div class="inv-item">
-                            <h4>${i.nome} <span class="inv-badge">x${i.quantidade}</span></h4>
-                            <p>${i.desc || 'Sem descrição.'}</p>
-                        </div>
-                    `;
+                    html += `<div class="inv-item"><h4>${i.nome} <span class="inv-badge">x${i.quantidade}</span></h4><p>${i.desc}</p></div>`;
                 });
-            } else if (typeof p.inventario === 'string' && p.inventario.trim() !== '') {
-                html += `<p style="padding: 20px; white-space:pre-wrap;">${p.inventario}</p>`;
             } else { html += '<p style="padding: 20px;">Inventário vazio.</p>'; }
-            
             html += '</div>';
             document.getElementById('modalBody').innerHTML = html;
             document.getElementById('modalGeral').style.display = 'block';
@@ -230,9 +252,9 @@
                     if (t.tipo === "Bônus") { corTipo = "#f39c12"; icone = "✨"; }
                     if (t.tipo === "Escudo") { corTipo = "#2980b9"; icone = "🛡️"; }
                     if (t.tipo === "Especial") { corTipo = "#8e44ad"; icone = "🔮"; }
-                    html += `<div class="tech-card"><div class="tech-header" style="background-color: ${corTipo};"><h3 class="tech-title">${t.nome}</h3><div class="tech-badge">${icone} ${t.tipo}</div></div><div class="tech-meta"><span><strong>Custo:</strong> ${t.custo || '-'}</span><span><strong>Alvo:</strong> ${t.alvo || '-'}</span><span><strong>Elemento:</strong> ${t.elemento || '-'}</span></div><div class="tech-body"><div class="tech-valor" style="color: ${corTipo}; border-color: ${corTipo};">${t.valor || '-'}</div><div class="tech-desc">${t.desc || '-'}</div>${t.inter ? `<div class="tech-callout tech-inter"><strong>⚡ Interação:</strong> ${t.inter}</div>` : ''}${t.combo ? `<div class="tech-callout tech-combo"><strong>🔗 Combo:</strong> ${t.combo}</div>` : ''}</div></div>`;
+                    html += `<div class="tech-card"><div class="tech-header" style="background-color: ${corTipo};"><h3 class="tech-title">${t.nome}</h3><div class="tech-badge">${icone} ${t.tipo}</div></div><div class="tech-meta"><span><strong>Custo:</strong> ${t.custo}</span><span><strong>Alvo:</strong> ${t.alvo}</span><span><strong>Elem:</strong> ${t.elemento}</span></div><div class="tech-body"><div class="tech-valor" style="color: ${corTipo}; border-color: ${corTipo};">${t.valor}</div><div class="tech-desc">${t.desc}</div>${t.inter ? `<div class="tech-callout tech-inter"><strong>⚡ Interação:</strong> ${t.inter}</div>` : ''}${t.combo ? `<div class="tech-callout tech-combo"><strong>🔗 Combo:</strong> ${t.combo}</div>` : ''}</div></div>`;
                 });
-            } else { html += '<p style="padding: 20px;">Nenhuma técnica registada.</p>'; }
+            } else { html += '<p style="padding: 20px;">Nenhuma técnica registrada.</p>'; }
             html += '</div>'; document.getElementById('modalBody').innerHTML = html; document.getElementById('modalGeral').style.display = 'block';
         }
 
