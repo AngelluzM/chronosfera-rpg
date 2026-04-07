@@ -267,8 +267,8 @@
                 "precisao": {
                     "dado": "d12",
                     "bruto": 8,
-                    "mod": 0,
-                    "total": 8,
+                    "mod": 1,
+                    "total": 9,
                     "bonus": 1
                 },
                 "esquiva": {
