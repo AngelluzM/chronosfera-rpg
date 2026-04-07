@@ -371,6 +371,101 @@
                     "bonus": 0
                 }
             }
+        },
+        {
+            "id": "rafinha",
+            "url_imagem": "https://i.pinimg.com/736x/72/7f/cb/727fcb2a4b6606bacfd97973c2297c7c.jpg",
+            "techs": [],
+            "inventario": [
+                {
+                    "nome": "Vestes Comuns",
+                    "quantidade": 1,
+                    "desc": "Pano simples ou couro leve. São a vestimenta básica do dia a dia, como uma Túnica de Pano, ideal para quem está começando uma jornada."
+                },
+                {
+                    "nome": "Botas de Couro",
+                    "quantidade": 1,
+                    "desc": "Uma par de botas de couro que é confortável e protege os pés"
+                },
+                {
+                    "nome": "Capa de Qualidade",
+                    "quantidade": 1,
+                    "desc": "Uma capa feita de tecidos de qualidade"
+                },
+                {
+                    "nome": "Espada de Bronze",
+                    "quantidade": 1,
+                    "desc": "Uma lâmina forjada em bronze, simples e robusta. É a arma mais confiável que um aventureiro iniciante pode ter, representando um salto de qualidade em relação aos equipamentos improvisados de madeira. Causa 1d8+ Poder Total de Dano, concede maior chance de acerto quando utilizado por alguem treinado, +1 em ataque"
+                }
+            ],
+            "lacos": [],
+            "dados_basicos": {
+                "nome": "Oliver Sanches",
+                "nivel": 1,
+                "xp_atual": 0,
+                "xp_proximo": 50,
+                "raca": "Humano",
+                "classe": "Espadachim",
+                "arquetipo": "Equilibrada",
+                "afinidade_elemental": "Luz"
+            },
+            "status": {
+                "pv_maximo": 40,
+                "pm_maximo": 6,
+                "nd_esquiva_base": 8,
+                "rd_armadura": 0
+            },
+            "atributos": {
+                "poder": {
+                    "dado": "d10",
+                    "bruto": 7,
+                    "mod": 0,
+                    "total": 7,
+                    "bonus": 1
+                },
+                "vigor": {
+                    "dado": "d6",
+                    "bruto": 4,
+                    "mod": 0,
+                    "total": 4,
+                    "bonus": 0
+                },
+                "velocidade": {
+                    "dado": "d12",
+                    "bruto": 9,
+                    "mod": 0,
+                    "total": 9,
+                    "bonus": 1
+                },
+                "magia": {
+                    "dado": "d4",
+                    "bruto": 2,
+                    "mod": 0,
+                    "total": 2,
+                    "bonus": 0
+                },
+                "precisao": {
+                    "dado": "d8",
+                    "bruto": 6,
+                    "mod": 0,
+                    "total": 6,
+                    "bonus": 1
+                },
+                "esquiva": {
+                    "dado": "d8",
+                    "bruto": 5,
+                    "mod": 0,
+                    "total": 5,
+                    "bonus": 0
+                },
+                "defesa_magica": {
+                    "dado": "d6",
+                    "bruto": 3,
+                    "mod": 0,
+                    "total": 3,
+                    "bonus": 0
+                }
+            }
         }
     ]
 }
