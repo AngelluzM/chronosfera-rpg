@@ -1,0 +1,85 @@
+{
+    "personagens": [
+        {
+            "id": "mobini1",
+            "url_imagem": "",
+            "techs": [
+                {
+                    "nome": "",
+                    "valor": "",
+                    "desc": ""
+                }
+            ],
+            "inventario": [
+                {
+                    "nome": "",
+                    "quantidade": "100%"
+                }
+            ],
+            "dados_basicos": {
+                "nome": "Greebowl",
+                "nivel": 1,
+                "arquetipo": "Mob",
+                "afinidade_elemental": "Neutro",
+                "classe": "Antagonista"
+            },
+            "status": {
+                "pv_maximo": 0,
+                "pm_maximo": 0,
+                "nd_esquiva_base": 8,
+                "rd_armadura": 0
+            },
+            "atributos": {
+                "poder": {
+                    "dado": "d10",
+                    "bruto": 0,
+                    "mod": 0,
+                    "total": 0,
+                    "bonus": 0
+                },
+                "vigor": {
+                    "dado": "d10",
+                    "bruto": 0,
+                    "mod": 0,
+                    "total": 0,
+                    "bonus": 0
+                },
+                "velocidade": {
+                    "dado": "d10",
+                    "bruto": 0,
+                    "mod": 0,
+                    "total": 0,
+                    "bonus": 0
+                },
+                "magia": {
+                    "dado": "d10",
+                    "bruto": 0,
+                    "mod": 0,
+                    "total": 0,
+                    "bonus": 0
+                },
+                "precisao": {
+                    "dado": "d10",
+                    "bruto": 0,
+                    "mod": 0,
+                    "total": 0,
+                    "bonus": 0
+                },
+                "esquiva": {
+                    "dado": "d10",
+                    "bruto": 0,
+                    "mod": 0,
+                    "total": 0,
+                    "bonus": 0
+                },
+                "defesa_magica": {
+                    "dado": "d10",
+                    "bruto": 0,
+                    "mod": 0,
+                    "total": 0,
+                    "bonus": 0
+                }
+            }
+        }
+    ]
+}
