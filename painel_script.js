@@ -1,5 +1,5 @@
 /**
- * CHRONOSFERA RPG - Motor Lógico do Painel
+ * CHRONOSFERA RPG - Lógica do Painel Mestre
  */
 
 let bancoDeDados = { personagens: [] };
@@ -14,7 +14,6 @@ const regrasClasses = {
     "Feiticeiro": { arquetipo: "Arcana", pv_base: 24, pm_base: 24, dados: { magia: "d12", defesa_magica: "d10", velocidade: "d8", poder: "d8", esquiva: "d6", vigor: "d6", precisao: "d4" } }
 };
 
-// Carregamento inicial automático
 window.onload = () => {
     fetch('banco_de_dados.json?v=' + new Date().getTime())
         .then(r => r.json())
@@ -23,10 +22,8 @@ window.onload = () => {
                 bancoDeDados = data;
                 atualizarSeletorHTML();
             }
-        })
-        .catch(err => {
-            console.warn("Banco de dados não encontrado localmente.");
-            document.getElementById("seletorPersonagem").innerHTML = '<option value="">Banco não encontrado. Inicie uma ficha nova.</option>';
+        }).catch(() => {
+            console.log("Iniciando sem banco de dados anterior.");
         });
 };
 
@@ -52,11 +49,8 @@ function importarJSON(e) {
     reader.onload = (ev) => {
         try {
             const ficha = JSON.parse(ev.target.result);
-            if (ficha.dados_basicos) {
-                preencherFormulario(ficha);
-                alert("Habilidades e dados da ficha individual carregados com sucesso!");
-            }
-        } catch (err) { alert("Erro ao ler JSON individual."); }
+            if (ficha.dados_basicos) preencherFormulario(ficha);
+        } catch (err) { alert("Erro ao importar."); }
         e.target.value = '';
     };
     reader.readAsText(e.target.files[0]);
@@ -64,12 +58,10 @@ function importarJSON(e) {
 
 function atualizarSeletorHTML() {
     const s = document.getElementById("seletorPersonagem");
-    s.innerHTML = '<option value="">Selecione um personagem para editar...</option>';
+    s.innerHTML = '<option value="">Selecione um personagem...</option>';
     bancoDeDados.personagens.forEach(p => {
         const o = document.createElement("option");
-        o.value = p.id;
-        o.innerText = p.dados_basicos.nome;
-        s.appendChild(o);
+        o.value = p.id; o.innerText = p.dados_basicos.nome; s.appendChild(o);
     });
 }
 
@@ -93,7 +85,6 @@ function preencherFormulario(p) {
         document.getElementById(a + "_mod").value = p.atributos?.[a]?.mod || 0;
     });
 
-    // Limpar e preencher listas dinâmicas
     document.getElementById('lista-inventario').innerHTML = '';
     if(Array.isArray(p.inventario)) p.inventario.forEach(i => adicionarItem(i));
 
@@ -110,62 +101,66 @@ function carregarParaEdicao() {
     if(p) preencherFormulario(p);
 }
 
-// Funções para Gerar Blocos HTML de Listas
-function adicionarItem(i={}) {
-    const d = document.createElement('div'); d.className='box-dinamico item-box';
+// === GERAÇÃO DINÂMICA COM LABELS E FORM-GROUPS ===
+
+function adicionarItem(i = {}) {
+    const d = document.createElement('div'); d.className = 'box-dinamico item-box';
     d.innerHTML = `
-        <button class="btn-remover" onclick="this.parentElement.remove()">Remover Item</button>
+        <button class="btn-remover" onclick="this.parentElement.remove()">Remover</button>
         <div class="grid-2">
-            <input type="text" class="i-nome" placeholder="Nome do Item" value="${i.nome||''}">
-            <input type="number" class="i-qtd" placeholder="Qtd" value="${i.quantidade||1}">
+            <div class="form-group"><label>Nome do Item</label><input type="text" class="i-nome" value="${i.nome || ''}"></div>
+            <div class="form-group"><label>Quantidade</label><input type="number" class="i-qtd" value="${i.quantidade || 1}"></div>
         </div>
-        <textarea class="i-desc" placeholder="Efeito ou descrição curta" rows="2">${i.desc||''}</textarea>`;
+        <div class="form-group"><label>Descrição / Efeito</label><textarea class="i-desc" rows="2">${i.desc || ''}</textarea></div>`;
     document.getElementById('lista-inventario').appendChild(d);
 }
 
-function adicionarLaco(l={}) {
-    const d = document.createElement('div'); d.className='box-dinamico laco-box';
+function adicionarLaco(l = {}) {
+    const d = document.createElement('div'); d.className = 'box-dinamico laco-box';
     d.innerHTML = `
-        <button class="btn-remover" onclick="this.parentElement.remove()">Remover Laço</button>
+        <button class="btn-remover" onclick="this.parentElement.remove()">Remover</button>
         <div class="grid-2">
-            <input type="text" class="l-nome" placeholder="Nome do Personagem / Aliado" value="${l.nome||''}">
-            <input type="number" class="l-porc" placeholder="Força (%)" value="${l.porcentagem||0}">
+            <div class="form-group"><label>Vínculo com (Aliado)</label><input type="text" class="l-nome" value="${l.nome || ''}"></div>
+            <div class="form-group"><label>Força do Laço (%)</label><input type="number" class="l-porc" value="${l.porcentagem || 0}"></div>
         </div>`;
     document.getElementById('lista-lacos').appendChild(d);
 }
 
-function adicionarTech(t={}) {
-    const d = document.createElement('div'); d.className='box-dinamico tech-box';
+function adicionarTech(t = {}) {
+    const d = document.createElement('div'); d.className = 'box-dinamico tech-box';
     d.innerHTML = `
-        <button class="btn-remover" onclick="this.parentElement.remove()">Remover Tech</button>
+        <button class="btn-remover" onclick="this.parentElement.remove()">Remover</button>
         <div class="grid-2">
-            <input type="text" class="t-nome" placeholder="Nome da Habilidade" value="${t.nome||''}">
+            <div class="form-group"><label>Habilidade</label><input type="text" class="t-nome" value="${t.nome || ''}"></div>
             <div class="grid-2">
-                <input type="text" class="t-custo" placeholder="Custo (ex: 2 PM)" value="${t.custo||''}">
-                <input type="text" class="t-elemento" placeholder="Elemento" value="${t.elemento||''}">
+                <div class="form-group"><label>Custo (PM)</label><input type="text" class="t-custo" value="${t.custo || ''}"></div>
+                <div class="form-group"><label>Elemento</label><input type="text" class="t-elemento" value="${t.elemento || ''}"></div>
             </div>
         </div>
         <div class="grid-3">
-            <input type="text" class="t-alvo" placeholder="Alvo (ex: 1 Inimigo)" value="${t.alvo||''}">
-            <select class="t-tipo">
-                <option value="Dano" ${t.tipo=='Dano'?'selected':''}>Dano</option>
-                <option value="Cura" ${t.tipo=='Cura'?'selected':''}>Cura</option>
-                <option value="Bônus" ${t.tipo=='Bônus'?'selected':''}>Bônus</option>
-                <option value="Escudo" ${t.tipo=='Escudo'?'selected':''}>Escudo</option>
-                <option value="Especial" ${t.tipo=='Especial'?'selected':''}>Especial</option>
-            </select>
-            <input type="text" class="t-valor" placeholder="Rolagem (ex: 1d10+Poder)" value="${t.valor||''}">
+            <div class="form-group"><label>Alvo</label><input type="text" class="t-alvo" value="${t.alvo || ''}"></div>
+            <div class="form-group">
+                <label>Tipo</label>
+                <select class="t-tipo">
+                    <option value="Dano" ${t.tipo=='Dano'?'selected':''}>Dano</option>
+                    <option value="Cura" ${t.tipo=='Cura'?'selected':''}>Cura</option>
+                    <option value="Bônus" ${t.tipo=='Bônus'?'selected':''}>Bônus</option>
+                    <option value="Escudo" ${t.tipo=='Escudo'?'selected':''}>Escudo</option>
+                    <option value="Especial" ${t.tipo=='Especial'?'selected':''}>Especial</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Valor/Rolagem</label><input type="text" class="t-valor" value="${t.valor || ''}"></div>
         </div>
-        <textarea class="t-desc" placeholder="Efeito detalhado" rows="2">${t.desc||''}</textarea>
-        <textarea class="t-inter" placeholder="Interação Elemental (Opcional)" rows="2">${t.inter||''}</textarea>
-        <textarea class="t-combo" placeholder="Dica de Combo / Double Tech" rows="2">${t.combo||''}</textarea>`;
+        <div class="form-group"><label>Descrição Completa</label><textarea class="t-desc" rows="2">${t.desc || ''}</textarea></div>
+        <div class="form-group"><label>Interação Elemental</label><textarea class="t-inter" rows="2">${t.inter || ''}</textarea></div>
+        <div class="form-group"><label>Dica de Combo</label><textarea class="t-combo" rows="2">${t.combo || ''}</textarea></div>`;
     document.getElementById('lista-techs').appendChild(d);
 }
 
 function salvarPersonagem() {
     const id = document.getElementById("id").value;
     const cl = document.getElementById("classe").value;
-    if(!id || !cl) return alert("Erro: ID e Classe são campos obrigatórios para salvar.");
+    if(!id || !cl) return alert("ID e Classe são obrigatórios!");
     
     const info = regrasClasses[cl];
     const attrs = {};
@@ -177,8 +172,7 @@ function salvarPersonagem() {
     });
 
     const p = {
-        id, 
-        url_imagem: document.getElementById("url_imagem").value,
+        id, url_imagem: document.getElementById("url_imagem").value,
         techs: Array.from(document.querySelectorAll('.tech-box')).map(b => ({
             nome: b.querySelector('.t-nome').value, custo: b.querySelector('.t-custo').value,
             elemento: b.querySelector('.t-elemento').value, alvo: b.querySelector('.t-alvo').value,
@@ -194,20 +188,13 @@ function salvarPersonagem() {
             nome: b.querySelector('.l-nome').value, porcentagem: parseInt(b.querySelector('.l-porc').value)||0
         })),
         dados_basicos: {
-            nome: document.getElementById("nome").value,
-            nivel: parseInt(document.getElementById("nivel").value),
-            xp_atual: parseInt(document.getElementById("xp_atual").value),
-            xp_proximo: parseInt(document.getElementById("xp_proximo").value),
-            raca: document.getElementById("raca").value,
-            classe: cl,
-            arquetipo: info.arquetipo,
-            afinidade_elemental: document.getElementById("afinidade").value
+            nome: document.getElementById("nome").value, nivel: parseInt(document.getElementById("nivel").value),
+            xp_atual: parseInt(document.getElementById("xp_atual").value), xp_proximo: parseInt(document.getElementById("xp_proximo").value),
+            raca: document.getElementById("raca").value, classe: cl, arquetipo: info.arquetipo, afinidade_elemental: document.getElementById("afinidade").value
         },
         status: { 
-            pv_maximo: attrs.vigor.total + info.pv_base, 
-            pm_maximo: attrs.magia.total + info.pm_base, 
-            nd_esquiva_base: 8 + attrs.esquiva.bonus,
-            rd_armadura: parseInt(document.getElementById("rd_armadura").value) || 0
+            pv_maximo: attrs.vigor.total + info.pv_base, pm_maximo: attrs.magia.total + info.pm_base, 
+            nd_esquiva_base: 8 + attrs.esquiva.bonus, rd_armadura: parseInt(document.getElementById("rd_armadura").value) || 0
         },
         atributos: attrs
     };
@@ -216,8 +203,5 @@ function salvarPersonagem() {
     if(idx > -1) bancoDeDados.personagens[idx] = p; else bancoDeDados.personagens.push(p);
     
     const blob = new Blob([JSON.stringify(bancoDeDados, null, 4)], { type: "application/json" });
-    const a = document.createElement('a'); 
-    a.href = URL.createObjectURL(blob); 
-    a.download = "banco_de_dados.json";
-    a.click();
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "banco_de_dados.json"; a.click();
 }
