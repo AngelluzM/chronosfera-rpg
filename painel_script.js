@@ -1,5 +1,5 @@
 /**
- * CHRONOSFERA RPG - Lógica do Painel Mestre
+ * CHRONOSFERA RPG - Motor de Tradução e Lógica do Painel
  */
 
 let bancoDeDados = { personagens: [] };
@@ -22,9 +22,7 @@ window.onload = () => {
                 bancoDeDados = data;
                 atualizarSeletorHTML();
             }
-        }).catch(() => {
-            console.log("Iniciando sem banco de dados anterior.");
-        });
+        }).catch(() => console.log("Banco de dados não carregado."));
 };
 
 function calcularFibonacci(v) { 
@@ -44,13 +42,22 @@ function atualizarDadosMatriz() {
     document.getElementById("lbl_defesa_magica").innerText = "Defesa Mágica ("+d.defesa_magica+")";
 }
 
+// --- FUNÇÃO DE IMPORTAÇÃO CORRIGIDA ---
 function importarJSON(e) {
     const reader = new FileReader();
     reader.onload = (ev) => {
         try {
             const ficha = JSON.parse(ev.target.result);
-            if (ficha.dados_basicos) preencherFormulario(ficha);
-        } catch (err) { alert("Erro ao importar."); }
+            // Deteta se é o formato da IA ou do Sistema
+            if (ficha.dados_basicos || ficha.nome_personagem) {
+                preencherFormulario(ficha);
+                alert("Ficha carregada com sucesso! Verifique os campos antes de salvar.");
+            } else {
+                alert("Erro: O ficheiro JSON não é reconhecido como uma ficha de personagem.");
+            }
+        } catch (err) { 
+            alert("Erro ao ler JSON: " + err.message); 
+        }
         e.target.value = '';
     };
     reader.readAsText(e.target.files[0]);
@@ -65,26 +72,40 @@ function atualizarSeletorHTML() {
     });
 }
 
+// --- TRADUTOR DE CAMPOS (IA -> SISTEMA) ---
 function preencherFormulario(p) {
-    document.getElementById("id").value = p.id || '';
-    document.getElementById("nome").value = p.dados_basicos?.nome || '';
-    document.getElementById("nivel").value = p.dados_basicos?.nivel || 1;
+    // Normalização dos dados da IA
+    const nome = p.nome_personagem || p.dados_basicos?.nome || '';
+    const classe = p.classe || p.dados_basicos?.classe || '';
+    const nivel = p.nivel || p.dados_basicos?.nivel || 1;
+    const afinidade = p.afinidade_elemental || p.dados_basicos?.afinidade_elemental || 'Neutro';
+    
+    // Gerar ID automático se não existir
+    const idSugerido = p.id || nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_');
+
+    document.getElementById("id").value = idSugerido;
+    document.getElementById("nome").value = nome;
+    document.getElementById("nivel").value = nivel;
     document.getElementById("xp_atual").value = p.dados_basicos?.xp_atual || 0;
     document.getElementById("xp_proximo").value = p.dados_basicos?.xp_proximo || 50;
     document.getElementById("rd_armadura").value = p.status?.rd_armadura || 0;
     document.getElementById("raca").value = p.dados_basicos?.raca || '';
-    document.getElementById("classe").value = p.dados_basicos?.classe || '';
+    document.getElementById("classe").value = classe;
     document.getElementById("url_imagem").value = p.url_imagem || '';
-    document.getElementById("afinidade").value = p.dados_basicos?.afinidade_elemental || 'Neutro';
+    document.getElementById("afinidade").value = afinidade;
 
     atualizarDadosMatriz();
 
+    // Atributos (Lida com 'bruto' ou 'valor_bruto')
     const atrs = ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'];
     atrs.forEach(a => {
-        document.getElementById(a + "_bruto").value = p.atributos?.[a]?.bruto || 0;
-        document.getElementById(a + "_mod").value = p.atributos?.[a]?.mod || 0;
+        const valorBruto = p.atributos?.[a]?.valor_bruto || p.atributos?.[a]?.bruto || 0;
+        const valorMod = p.atributos?.[a]?.mod || 0;
+        document.getElementById(a + "_bruto").value = valorBruto;
+        document.getElementById(a + "_mod").value = valorMod;
     });
 
+    // Listas Dinâmicas
     document.getElementById('lista-inventario').innerHTML = '';
     if(Array.isArray(p.inventario)) p.inventario.forEach(i => adicionarItem(i));
 
@@ -101,15 +122,13 @@ function carregarParaEdicao() {
     if(p) preencherFormulario(p);
 }
 
-// === GERAÇÃO DINÂMICA COM LABELS E FORM-GROUPS ===
-
 function adicionarItem(i = {}) {
     const d = document.createElement('div'); d.className = 'box-dinamico item-box';
     d.innerHTML = `
         <button class="btn-remover" onclick="this.parentElement.remove()">Remover</button>
         <div class="grid-2">
             <div class="form-group"><label>Nome do Item</label><input type="text" class="i-nome" value="${i.nome || ''}"></div>
-            <div class="form-group"><label>Quantidade</label><input type="number" class="i-qtd" value="${i.quantidade || 1}"></div>
+            <div class="form-group"><label>Qtd</label><input type="number" class="i-qtd" value="${i.quantidade || 1}"></div>
         </div>
         <div class="form-group"><label>Descrição / Efeito</label><textarea class="i-desc" rows="2">${i.desc || ''}</textarea></div>`;
     document.getElementById('lista-inventario').appendChild(d);
@@ -151,16 +170,16 @@ function adicionarTech(t = {}) {
             </div>
             <div class="form-group"><label>Valor/Rolagem</label><input type="text" class="t-valor" value="${t.valor || ''}"></div>
         </div>
-        <div class="form-group"><label>Descrição Completa</label><textarea class="t-desc" rows="2">${t.desc || ''}</textarea></div>
-        <div class="form-group"><label>Interação Elemental</label><textarea class="t-inter" rows="2">${t.inter || ''}</textarea></div>
-        <div class="form-group"><label>Dica de Combo</label><textarea class="t-combo" rows="2">${t.combo || ''}</textarea></div>`;
+        <div class="form-group"><label>Efeito</label><textarea class="t-desc" rows="2">${t.desc || ''}</textarea></div>
+        <div class="form-group"><label>Interação</label><textarea class="t-inter" rows="2">${t.inter || ''}</textarea></div>
+        <div class="form-group"><label>Combo</label><textarea class="t-combo" rows="2">${t.combo || ''}</textarea></div>`;
     document.getElementById('lista-techs').appendChild(d);
 }
 
 function salvarPersonagem() {
     const id = document.getElementById("id").value;
     const cl = document.getElementById("classe").value;
-    if(!id || !cl) return alert("ID e Classe são obrigatórios!");
+    if(!id || !cl) return alert("ID e Classe obrigatórios!");
     
     const info = regrasClasses[cl];
     const attrs = {};
