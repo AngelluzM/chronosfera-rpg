@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Chronosfera RPG - Painel do Mestre</title>
     <style>
+        /* === ESTILOS GERAIS === */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
         .container { max-width: 950px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 20px; }
@@ -16,7 +17,7 @@
             width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; font-size: 14px;
         }
 
-        /* Layout em Grids */
+        /* === GRIDS DE ALINHAMENTO === */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
         .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
@@ -31,22 +32,20 @@
         }
         button:hover { background-color: #2980b9; }
 
-        /* Blocos Dinâmicos */
-        .box-dinamico { background: #fdfdfd; border: 1px solid #dcdde1; border-radius: 6px; padding: 15px; margin-bottom: 15px; position: relative; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        
+        /* === BLOCOS DINÂMICOS (ITENS, TECHS, LAÇOS) === */
+        .box-dinamico { background: #fdfdfd; border: 1px solid #dcdde1; border-radius: 6px; padding: 15px; margin-bottom: 15px; position: relative; }
         .tech-box { border-left: 5px solid #9b59b6; }
         .laco-box { border-left: 5px solid #e67e22; }
         .item-box { border-left: 5px solid #27ae60; }
         
-        .btn-remover { background-color: #e74c3c; width: auto; padding: 6px 12px; font-size: 12px; position: absolute; right: 15px; top: 12px; margin: 0;}
+        .btn-remover { background-color: #e74c3c; width: auto; padding: 6px 12px; font-size: 12px; position: absolute; right: 15px; top: 12px; margin: 0; z-index: 10; border-radius: 4px; color: white; border: none; cursor: pointer; }
         .btn-remover:hover { background-color: #c0392b; }
         
-        .btn-add-item { background-color: #27ae60; margin-top: 5px; margin-bottom: 20px;}
-        .btn-add-laco { background-color: #e67e22; margin-top: 5px; margin-bottom: 20px;}
-        .btn-add-tech { background-color: #9b59b6; margin-top: 5px; margin-bottom: 20px;}
+        .btn-add-item { background-color: #27ae60; margin-bottom: 20px;}
+        .btn-add-laco { background-color: #e67e22; margin-bottom: 20px;}
+        .btn-add-tech { background-color: #9b59b6; margin-bottom: 20px;}
         
-        .secao-titulo { margin-top: 40px; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .secao-titulo { margin-top: 40px; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -73,27 +72,27 @@
     <div class="grid-2">
         <div class="form-group">
             <label>Nome do Personagem</label>
-            <input type="text" id="nome" placeholder="Ex: Kaeru">
+            <input type="text" id="nome">
         </div>
         <div class="form-group">
-            <label>ID Único (Para o Sistema)</label>
-            <input type="text" id="id" placeholder="Ex: kaeru_01">
+            <label>ID Único (ex: king_01)</label>
+            <input type="text" id="id">
         </div>
     </div>
 
     <div class="grid-4">
-        <div class="form-group"><label>Nível Atual</label><input type="number" id="nivel" value="1"></div>
+        <div class="form-group"><label>Nível</label><input type="number" id="nivel" value="1"></div>
         <div class="form-group"><label>XP Atual</label><input type="number" id="xp_atual" value="0"></div>
-        <div class="form-group"><label>XP Próximo Nível</label><input type="number" id="xp_proximo" value="50"></div>
+        <div class="form-group"><label>XP Próximo</label><input type="number" id="xp_proximo" value="50"></div>
         <div class="form-group"><label>🛡️ RD (Armadura)</label><input type="number" id="rd_armadura" value="0"></div>
     </div>
 
     <div class="grid-2">
-        <div class="form-group"><label>Raça / Origem</label><input type="text" id="raca" placeholder="Ex: Salamandra"></div>
+        <div class="form-group"><label>Raça / Origem</label><input type="text" id="raca"></div>
         <div class="form-group">
-            <label>Classe do Personagem</label>
+            <label>Classe</label>
             <select id="classe" onchange="atualizarDadosMatriz()">
-                <option value="">Selecione uma classe...</option>
+                <option value="">Selecione...</option>
                 <option value="Cavaleiro">Cavaleiro</option>
                 <option value="Construto">Construto</option>
                 <option value="Espadachim">Espadachim</option>
@@ -105,28 +104,24 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label>URL da Imagem (Avatar)</label>
-        <input type="text" id="url_imagem" placeholder="https://link-da-imagem.jpg">
-    </div>
-
-    <div class="form-group">
-        <label>Afinidade Elemental</label>
-        <select id="afinidade">
-            <option value="Neutro">Neutro</option>
-            <option value="Fogo">Fogo</option>
-            <option value="Gelo/Água">Gelo/Água</option>
-            <option value="Luz">Luz</option>
-            <option value="Sombra">Sombra</option>
-        </select>
+    <div class="grid-2">
+        <div class="form-group"><label>URL da Imagem</label><input type="text" id="url_imagem"></div>
+        <div class="form-group">
+            <label>Afinidade Elemental</label>
+            <select id="afinidade">
+                <option value="Neutro">Neutro</option>
+                <option value="Fogo">Fogo</option>
+                <option value="Gelo/Água">Gelo/Água</option>
+                <option value="Luz">Luz</option>
+                <option value="Sombra">Sombra</option>
+            </select>
+        </div>
     </div>
 
     <h3 class="secao-titulo">📊 Atributos e Modificadores</h3>
     <div class="atributos-tabela">
         <div class="atr-row atr-header">
-            <span>Atributo</span>
-            <span>Valor Bruto</span>
-            <span>Modificador (Equip/Buff)</span>
+            <span>Atributo</span><span>Valor Bruto</span><span>Modificador</span>
         </div>
         <div class="atr-row"><span id="lbl_poder">Poder</span><input type="number" id="poder_bruto" value="0"><input type="number" id="poder_mod" value="0"></div>
         <div class="atr-row"><span id="lbl_vigor">Vigor</span><input type="number" id="vigor_bruto" value="0"><input type="number" id="vigor_mod" value="0"></div>
@@ -139,24 +134,21 @@
 
     <h3 class="secao-titulo" style="color: #27ae60;">🎒 Inventário</h3>
     <div id="lista-inventario"></div>
-    <button type="button" class="btn-add-item" onclick="adicionarItem()">+ Adicionar Novo Item</button>
+    <button type="button" class="btn-add-item" onclick="adicionarItem()">+ Adicionar Item</button>
 
-    <h3 class="secao-titulo" style="color: #e67e22;">🤝 Laços e Vínculos</h3>
+    <h3 class="secao-titulo" style="color: #e67e22;">🤝 Laços</h3>
     <div id="lista-lacos"></div>
-    <button type="button" class="btn-add-laco" onclick="adicionarLaco()">+ Adicionar Novo Laço</button>
+    <button type="button" class="btn-add-laco" onclick="adicionarLaco()">+ Adicionar Laço</button>
 
     <h3 class="secao-titulo" style="color: #9b59b6;">✨ Techs & Habilidades</h3>
     <div id="lista-techs"></div>
-    <button type="button" class="btn-add-tech" onclick="adicionarTech()">+ Adicionar Nova Habilidade</button>
+    <button type="button" class="btn-add-tech" onclick="adicionarTech()">+ Adicionar Habilidade</button>
 
-    <hr style="margin-top: 40px; border: 0; border-top: 1px solid #eee;">
-    
-    <button onclick="salvarPersonagem()" style="background-color: #2c3e50; margin-bottom: 50px; font-size: 20px;">
+    <button onclick="salvarPersonagem()" style="background-color: #2c3e50; margin-top: 40px; margin-bottom: 60px;">
         💾 SALVAR E BAIXAR BANCO ATUALIZADO
     </button>
 </div>
 
 <script src="painel_script.js"></script>
-
 </body>
 </html>
