@@ -5,34 +5,48 @@
     <title>Chronosfera RPG - Painel do Mestre</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
-        .container { max-width: 950px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .container { max-width: 950px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 20px; }
-        .import-section { background: #e8f4f8; padding: 15px; border-radius: 5px; border: 1px dashed #3498db; margin-bottom: 25px; }
+        
+        .import-section { background: #e8f4f8; padding: 20px; border-radius: 8px; border: 1px dashed #3498db; margin-bottom: 25px; }
         .form-group { margin-bottom: 15px; }
         label { display: block; font-weight: bold; margin-bottom: 5px; color: #555; font-size: 0.9em; }
-        input[type="text"], input[type="number"], select, input[type="file"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit;}
         
-        /* Grids de layout */
+        input[type="text"], input[type="number"], select, input[type="file"], textarea { 
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; font-size: 14px;
+        }
+
+        /* Layout em Grids */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-        .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
         
-        .atributos-tabela { background: #f9f9fc; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; }
+        .atributos-tabela { background: #f9f9fc; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; margin-top: 10px; }
         .atr-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px; margin-bottom: 10px; align-items: center; }
-        .atr-header { font-weight: bold; color: #2c3e50; border-bottom: 2px solid #ddd; padding-bottom: 5px; margin-bottom: 15px; }
-        
-        button { background-color: #3498db; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; transition: background 0.3s; }
+        .atr-header { font-weight: bold; color: #2c3e50; border-bottom: 2px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; }
+
+        button { 
+            background-color: #3498db; color: white; padding: 14px 20px; border: none; border-radius: 4px; 
+            cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; transition: background 0.3s; 
+        }
         button:hover { background-color: #2980b9; }
+
+        /* Blocos Dinâmicos */
+        .box-dinamico { background: #fdfdfd; border: 1px solid #dcdde1; border-radius: 6px; padding: 15px; margin-bottom: 15px; position: relative; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
-        .box-dinamico { background: #fdfdfd; border: 1px solid #dcdde1; border-radius: 6px; padding: 15px; margin-bottom: 15px; position: relative;}
-        .tech-box { border-left: 4px solid #9b59b6; }
-        .laco-box { border-left: 4px solid #e67e22; }
-        .item-box { border-left: 4px solid #27ae60; }
+        .tech-box { border-left: 5px solid #9b59b6; }
+        .laco-box { border-left: 5px solid #e67e22; }
+        .item-box { border-left: 5px solid #27ae60; }
         
-        .btn-remover { background-color: #e74c3c; width: auto; padding: 5px 10px; font-size: 12px; position: absolute; right: 15px; top: 10px; margin: 0;}
-        .btn-add-item { background-color: #27ae60; margin-top: 5px;}
-        .btn-add-laco { background-color: #e67e22; margin-top: 5px;}
-        .btn-add-tech { background-color: #9b59b6; margin-top: 5px;}
+        .btn-remover { background-color: #e74c3c; width: auto; padding: 6px 12px; font-size: 12px; position: absolute; right: 15px; top: 12px; margin: 0;}
+        .btn-remover:hover { background-color: #c0392b; }
+        
+        .btn-add-item { background-color: #27ae60; margin-top: 5px; margin-bottom: 20px;}
+        .btn-add-laco { background-color: #e67e22; margin-top: 5px; margin-bottom: 20px;}
+        .btn-add-tech { background-color: #9b59b6; margin-top: 5px; margin-bottom: 20px;}
+        
+        .secao-titulo { margin-top: 40px; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
     </style>
 </head>
 <body>
@@ -41,44 +55,79 @@
     <h1>Painel do Mestre - Chronosfera RPG</h1>
     
     <div class="import-section">
-        <div class="form-group"><label>1. Importar banco_de_dados.json</label><input type="file" id="arquivoImport" accept=".json" onchange="importarJSON(event)"></div>
-        <div class="form-group"><label>2. Selecionar Personagem</label><select id="seletorPersonagem" onchange="carregarParaEdicao()"><option value="">Aguardando importação...</option></select></div>
+        <div class="grid-2">
+            <div class="form-group">
+                <label>1. Personagens no Banco (Carregado Auto)</label>
+                <select id="seletorPersonagem" onchange="carregarParaEdicao()">
+                    <option value="">Aguardando banco_de_dados.json...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>2. OU Importar Ficha do GEM (.json)</label>
+                <input type="file" id="arquivoImport" accept=".json" onchange="importarJSON(event)">
+            </div>
+        </div>
     </div>
 
+    <h3 class="secao-titulo">👤 Identidade do Herói</h3>
     <div class="grid-2">
-        <div class="form-group"><label>Nome do Personagem</label><input type="text" id="nome"></div>
-        <div class="form-group"><label>ID Único (ex: king, kaeru)</label><input type="text" id="id"></div>
+        <div class="form-group">
+            <label>Nome do Personagem</label>
+            <input type="text" id="nome" placeholder="Ex: Kaeru">
+        </div>
+        <div class="form-group">
+            <label>ID Único (Para o Sistema)</label>
+            <input type="text" id="id" placeholder="Ex: kaeru_01">
+        </div>
     </div>
 
     <div class="grid-4">
-        <div class="form-group"><label>Nível</label><input type="number" id="nivel" value="1"></div>
+        <div class="form-group"><label>Nível Atual</label><input type="number" id="nivel" value="1"></div>
         <div class="form-group"><label>XP Atual</label><input type="number" id="xp_atual" value="0"></div>
-        <div class="form-group"><label>XP Próximo</label><input type="number" id="xp_proximo" value="50"></div>
+        <div class="form-group"><label>XP Próximo Nível</label><input type="number" id="xp_proximo" value="50"></div>
         <div class="form-group"><label>🛡️ RD (Armadura)</label><input type="number" id="rd_armadura" value="0"></div>
     </div>
 
     <div class="grid-2">
-        <div class="form-group"><label>Raça</label><input type="text" id="raca"></div>
+        <div class="form-group"><label>Raça / Origem</label><input type="text" id="raca" placeholder="Ex: Salamandra"></div>
         <div class="form-group">
-            <label>Classe</label>
+            <label>Classe do Personagem</label>
             <select id="classe" onchange="atualizarDadosMatriz()">
-                <option value="">Selecione...</option>
-                <option value="Cavaleiro">Cavaleiro</option><option value="Construto">Construto</option><option value="Espadachim">Espadachim</option><option value="Selvagem">Selvagem</option><option value="Mecânico">Mecânico</option><option value="Suporte">Suporte</option><option value="Feiticeiro">Feiticeiro</option>
+                <option value="">Selecione uma classe...</option>
+                <option value="Cavaleiro">Cavaleiro</option>
+                <option value="Construto">Construto</option>
+                <option value="Espadachim">Espadachim</option>
+                <option value="Selvagem">Selvagem</option>
+                <option value="Mecânico">Mecânico</option>
+                <option value="Suporte">Suporte</option>
+                <option value="Feiticeiro">Feiticeiro</option>
             </select>
         </div>
     </div>
 
-    <div class="grid-2">
-        <div class="form-group"><label>URL da Imagem</label><input type="text" id="url_imagem"></div>
-        <div class="form-group">
-            <label>Afinidade Elemental</label>
-            <select id="afinidade"><option value="Fogo">Fogo</option><option value="Gelo/Água">Gelo/Água</option><option value="Luz">Luz</option><option value="Sombra">Sombra</option><option value="Neutro">Neutro</option></select>
-        </div>
+    <div class="form-group">
+        <label>URL da Imagem (Avatar)</label>
+        <input type="text" id="url_imagem" placeholder="https://link-da-imagem.jpg">
     </div>
 
-    <h3>Atributos e Modificadores</h3>
+    <div class="form-group">
+        <label>Afinidade Elemental</label>
+        <select id="afinidade">
+            <option value="Neutro">Neutro</option>
+            <option value="Fogo">Fogo</option>
+            <option value="Gelo/Água">Gelo/Água</option>
+            <option value="Luz">Luz</option>
+            <option value="Sombra">Sombra</option>
+        </select>
+    </div>
+
+    <h3 class="secao-titulo">📊 Atributos e Modificadores</h3>
     <div class="atributos-tabela">
-        <div class="atr-row atr-header"><span>Atributo</span><span>Valor Bruto</span><span>Modificador</span></div>
+        <div class="atr-row atr-header">
+            <span>Atributo</span>
+            <span>Valor Bruto</span>
+            <span>Modificador (Equip/Buff)</span>
+        </div>
         <div class="atr-row"><span id="lbl_poder">Poder</span><input type="number" id="poder_bruto" value="0"><input type="number" id="poder_mod" value="0"></div>
         <div class="atr-row"><span id="lbl_vigor">Vigor</span><input type="number" id="vigor_bruto" value="0"><input type="number" id="vigor_mod" value="0"></div>
         <div class="atr-row"><span id="lbl_velocidade">Velocidade</span><input type="number" id="velocidade_bruto" value="0"><input type="number" id="velocidade_mod" value="0"></div>
@@ -88,178 +137,26 @@
         <div class="atr-row"><span id="lbl_defesa_magica">Defesa Mágica</span><input type="number" id="defesa_magica_bruto" value="0"><input type="number" id="defesa_magica_mod" value="0"></div>
     </div>
 
-    <h3 style="margin-top: 30px; color: #27ae60;">Inventário</h3>
+    <h3 class="secao-titulo" style="color: #27ae60;">🎒 Inventário</h3>
     <div id="lista-inventario"></div>
-    <button type="button" class="btn-add-item" onclick="adicionarItem()">+ Adicionar Item</button>
+    <button type="button" class="btn-add-item" onclick="adicionarItem()">+ Adicionar Novo Item</button>
 
-    <h3 style="margin-top: 30px; color: #e67e22;">Laços</h3>
+    <h3 class="secao-titulo" style="color: #e67e22;">🤝 Laços e Vínculos</h3>
     <div id="lista-lacos"></div>
     <button type="button" class="btn-add-laco" onclick="adicionarLaco()">+ Adicionar Novo Laço</button>
 
-    <h3 style="margin-top: 30px; color: #9b59b6;">Techs & Habilidades</h3>
+    <h3 class="secao-titulo" style="color: #9b59b6;">✨ Techs & Habilidades</h3>
     <div id="lista-techs"></div>
-    <button type="button" class="btn-add-tech" onclick="adicionarTech()">+ Adicionar Nova Tech</button>
+    <button type="button" class="btn-add-tech" onclick="adicionarTech()">+ Adicionar Nova Habilidade</button>
 
-    <button onclick="salvarPersonagem()" style="background-color: #2c3e50; margin-top: 40px; font-size: 18px;">SALVAR E BAIXAR JSON</button>
+    <hr style="margin-top: 40px; border: 0; border-top: 1px solid #eee;">
+    
+    <button onclick="salvarPersonagem()" style="background-color: #2c3e50; margin-bottom: 50px; font-size: 20px;">
+        💾 SALVAR E BAIXAR BANCO ATUALIZADO
+    </button>
 </div>
 
-<script>
-    let bancoDeDados = { personagens: [] };
-    const regrasClasses = {
-        "Cavaleiro": { arquetipo: "Combatente", pv_base: 60, pm_base: 8, dados: { vigor: "d12", poder: "d10", magia: "d8", defesa_magica: "d8", velocidade: "d6", esquiva: "d6", precisao: "d4" } },
-        "Construto": { arquetipo: "Combatente", pv_base: 72, pm_base: 6, dados: { poder: "d10", vigor: "d12", precisao: "d8", defesa_magica: "d8", magia: "d6", esquiva: "d6", velocidade: "d4" } },
-        "Espadachim": { arquetipo: "Equilibrada", pv_base: 36, pm_base: 4, dados: { velocidade: "d12", poder: "d10", esquiva: "d8", precisao: "d8", vigor: "d6", defesa_magica: "d6", magia: "d4" } },
-        "Selvagem": { arquetipo: "Equilibrada", pv_base: 48, pm_base: 4, dados: { esquiva: "d12", poder: "d10", velocidade: "d8", vigor: "d8", precisao: "d6", defesa_magica: "d6", magia: "d4" } },
-        "Mecânico": { arquetipo: "Arcana / Tecnologia", pv_base: 32, pm_base: 20, dados: { precisao: "d12", magia: "d10", defesa_magica: "d8", vigor: "d8", poder: "d6", esquiva: "d6", velocidade: "d4" } },
-        "Suporte": { arquetipo: "Arcana", pv_base: 24, pm_base: 20, dados: { defesa_magica: "d12", magia: "d10", precisao: "d8", velocidade: "d8", vigor: "d6", esquiva: "d6", poder: "d4" } },
-        "Feiticeiro": { arquetipo: "Arcana", pv_base: 24, pm_base: 24, dados: { magia: "d12", defesa_magica: "d10", velocidade: "d8", poder: "d8", esquiva: "d6", vigor: "d6", precisao: "d4" } }
-    };
+<script src="painel_script.js"></script>
 
-    function calcularFibonacci(v) { return v>=82?5:v>=48?4:v>=27?3:v>=14?2:v>=6?1:0; }
-
-    function atualizarDadosMatriz() {
-        const c = document.getElementById("classe").value;
-        if(!c || !regrasClasses[c]) return;
-        const d = regrasClasses[c].dados;
-        document.getElementById("lbl_poder").innerText = "Poder ("+d.poder+")";
-        document.getElementById("lbl_vigor").innerText = "Vigor ("+d.vigor+")";
-        document.getElementById("lbl_velocidade").innerText = "Velocidade ("+d.velocidade+")";
-        document.getElementById("lbl_magia").innerText = "Magia ("+d.magia+")";
-        document.getElementById("lbl_precisao").innerText = "Precisão ("+d.precisao+")";
-        document.getElementById("lbl_esquiva").innerText = "Esquiva ("+d.esquiva+")";
-        document.getElementById("lbl_defesa_magica").innerText = "Defesa Mágica ("+d.defesa_magica+")";
-    }
-
-    function importarJSON(e) {
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            try {
-                const d = JSON.parse(ev.target.result);
-                if(d.personagens) bancoDeDados = d;
-                else if(d.id) {
-                    const idx = bancoDeDados.personagens.findIndex(p => p.id === d.id);
-                    if(idx > -1) bancoDeDados.personagens[idx] = d; else bancoDeDados.personagens.push(d);
-                }
-                atualizarSeletorHTML();
-                alert("Dados importados!");
-            } catch (err) { alert("Erro ao ler JSON"); }
-        };
-        reader.readAsText(e.target.files[0]);
-    }
-
-    function atualizarSeletorHTML() {
-        const s = document.getElementById("seletorPersonagem");
-        s.innerHTML = '<option value="">Selecionar...</option>';
-        bancoDeDados.personagens.forEach(p => {
-            const o = document.createElement("option"); o.value = p.id; o.innerText = p.dados_basicos.nome; s.appendChild(o);
-        });
-    }
-
-    // --- FUNÇÕES DE BLOCOS DINÂMICOS ---
-    function adicionarItem(item = {}) {
-        const div = document.createElement('div');
-        div.className = 'box-dinamico item-box';
-        div.innerHTML = `
-            <button class="btn-remover" onclick="this.parentElement.remove()">Remover</button>
-            <div class="grid-2">
-                <div class="form-group"><label>Nome do Item / Equipamento</label><input type="text" class="i-nome" value="${item.nome || ''}"></div>
-                <div class="form-group"><label>Quantidade</label><input type="number" class="i-qtd" value="${item.quantidade || 1}"></div>
-            </div>
-            <div class="form-group"><label>Descrição / Efeito</label><textarea class="i-desc" rows="2">${item.desc || ''}</textarea></div>
-        `;
-        document.getElementById('lista-inventario').appendChild(div);
-    }
-
-    function adicionarLaco(laco = {}) {
-        const div = document.createElement('div');
-        div.className = 'box-dinamico laco-box';
-        div.innerHTML = `
-            <button class="btn-remover" onclick="this.parentElement.remove()">Remover</button>
-            <div class="grid-2">
-                <div class="form-group"><label>Com quem?</label><input type="text" class="l-nome" value="${laco.nome || ''}"></div>
-                <div class="form-group"><label>Força do Laço (%)</label><input type="number" min="0" max="100" class="l-porc" value="${laco.porcentagem || 0}"></div>
-            </div>
-        `;
-        document.getElementById('lista-lacos').appendChild(div);
-    }
-
-    function adicionarTech(tech = {}) {
-        const div = document.createElement('div');
-        div.className = 'box-dinamico tech-box';
-        div.innerHTML = `
-            <button class="btn-remover" onclick="this.parentElement.remove()">Remover</button>
-            <div class="grid-2"><div class="form-group"><label>Nome da Habilidade</label><input type="text" class="t-nome" value="${tech.nome || ''}"></div><div class="grid-2"><div class="form-group"><label>Custo</label><input type="text" class="t-custo" value="${tech.custo || ''}"></div><div class="form-group"><label>Elemento</label><input type="text" class="t-elemento" value="${tech.elemento || ''}"></div></div></div>
-            <div class="grid-3"><div class="form-group"><label>Alvo</label><input type="text" class="t-alvo" value="${tech.alvo || ''}"></div><div class="form-group"><label>Tipo de Efeito</label><select class="t-tipo"><option value="Dano" ${tech.tipo === 'Dano' ? 'selected' : ''}>Dano</option><option value="Cura" ${tech.tipo === 'Cura' ? 'selected' : ''}>Cura</option><option value="Bônus" ${tech.tipo === 'Bônus' ? 'selected' : ''}>Bônus / Suporte</option><option value="Escudo" ${tech.tipo === 'Escudo' ? 'selected' : ''}>Escudo / Defesa</option><option value="Especial" ${tech.tipo === 'Especial' ? 'selected' : ''}>Especial</option></select></div><div class="form-group"><label>Rolagem / Valor</label><input type="text" class="t-valor" value="${tech.valor || ''}"></div></div>
-            <div class="form-group"><label>Descrição / Efeito</label><textarea class="t-desc" rows="2">${tech.desc || ''}</textarea></div>
-            <div class="form-group"><label>Interação Elemental</label><textarea class="t-inter" rows="2">${tech.inter || ''}</textarea></div><div class="form-group"><label>Dica de Combo</label><textarea class="t-combo" rows="2">${tech.combo || ''}</textarea></div>
-        `;
-        document.getElementById('lista-techs').appendChild(div);
-    }
-
-    function carregarParaEdicao() {
-        const id = document.getElementById("seletorPersonagem").value;
-        const p = bancoDeDados.personagens.find(x => x.id === id);
-        if(!p) return;
-        
-        document.getElementById("id").value = p.id;
-        document.getElementById("nome").value = p.dados_basicos.nome;
-        document.getElementById("nivel").value = p.dados_basicos.nivel;
-        document.getElementById("xp_atual").value = p.dados_basicos.xp_atual || 0;
-        document.getElementById("xp_proximo").value = p.dados_basicos.xp_proximo || 50;
-        document.getElementById("rd_armadura").value = p.status.rd_armadura || 0; // CARREGA RD
-        document.getElementById("raca").value = p.dados_basicos.raca;
-        document.getElementById("classe").value = p.dados_basicos.classe;
-        document.getElementById("url_imagem").value = p.url_imagem;
-        document.getElementById("afinidade").value = p.dados_basicos.afinidade_elemental;
-
-        atualizarDadosMatriz();
-
-        ['poder','vigor','velocidade','magia','precisao','esquiva','defesa_magica'].forEach(a => {
-            document.getElementById(a+"_bruto").value = p.atributos[a]?.bruto || 0;
-            document.getElementById(a+"_mod").value = p.atributos[a]?.mod || 0;
-        });
-
-        document.getElementById('lista-inventario').innerHTML=''; if(Array.isArray(p.inventario)) p.inventario.forEach(i=>adicionarItem(i));
-        document.getElementById('lista-techs').innerHTML=''; if(Array.isArray(p.techs)) p.techs.forEach(t=>adicionarTech(t));
-        document.getElementById('lista-lacos').innerHTML=''; if(Array.isArray(p.lacos)) p.lacos.forEach(l=>adicionarLaco(l));
-    }
-
-    function salvarPersonagem() {
-        const id = document.getElementById("id").value;
-        const cl = document.getElementById("classe").value;
-        if(!id || !cl) return alert("ID e Classe obrigatórios!");
-        const info = regrasClasses[cl];
-
-        const attrs = {};
-        ['poder','vigor','velocidade','magia','precisao','esquiva','defesa_magica'].forEach(a => {
-            const b = parseInt(document.getElementById(a+"_bruto").value)||0;
-            const m = parseInt(document.getElementById(a+"_mod").value)||0;
-            const t = b + m;
-            attrs[a] = { dado: info.dados[a], bruto: b, mod: m, total: t, bonus: calcularFibonacci(t) };
-        });
-
-        const p = {
-            id, url_imagem: document.getElementById("url_imagem").value,
-            techs: Array.from(document.querySelectorAll('.tech-box')).map(b => ({ nome: b.querySelector('.t-nome').value, custo: b.querySelector('.t-custo').value, elemento: b.querySelector('.t-elemento').value, alvo: b.querySelector('.t-alvo').value, tipo: b.querySelector('.t-tipo').value, valor: b.querySelector('.t-valor').value, desc: b.querySelector('.t-desc').value, inter: b.querySelector('.t-inter').value, combo: b.querySelector('.t-combo').value })),
-            inventario: Array.from(document.querySelectorAll('.item-box')).map(b => ({ nome: b.querySelector('.i-nome').value, quantidade: parseInt(b.querySelector('.i-qtd').value)||1, desc: b.querySelector('.i-desc').value })),
-            lacos: Array.from(document.querySelectorAll('.laco-box')).map(b => ({ nome: b.querySelector('.l-nome').value, porcentagem: parseInt(b.querySelector('.l-porc').value)||0 })),
-            dados_basicos: { nome: document.getElementById("nome").value, nivel: parseInt(document.getElementById("nivel").value), xp_atual: parseInt(document.getElementById("xp_atual").value), xp_proximo: parseInt(document.getElementById("xp_proximo").value), raca: document.getElementById("raca").value, classe: cl, arquetipo: info.arquetipo, afinidade_elemental: document.getElementById("afinidade").value },
-            status: { 
-                pv_maximo: attrs.vigor.total + info.pv_base, 
-                pm_maximo: attrs.magia.total + info.pm_base, 
-                nd_esquiva_base: 8 + attrs.esquiva.bonus,
-                rd_armadura: parseInt(document.getElementById("rd_armadura").value) || 0 // SALVA RD
-            },
-            atributos: attrs
-        };
-
-        const idx = bancoDeDados.personagens.findIndex(x => x.id === id);
-        if(idx > -1) bancoDeDados.personagens[idx] = p; else bancoDeDados.personagens.push(p);
-        
-        const blob = new Blob([JSON.stringify(bancoDeDados, null, 4)], { type: "application/json" });
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "banco_de_dados.json";
-        a.click();
-    }
-</script>
 </body>
 </html>
