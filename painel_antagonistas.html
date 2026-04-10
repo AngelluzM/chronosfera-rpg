@@ -44,11 +44,13 @@
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
         .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
         
-        /* Atributos Simplificados */
-        .atributos-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; text-align: center; }
-        .atr-box { background: #f9f9fc; padding: 10px; border: 1px solid #e0e0e0; border-radius: 6px; }
-        .atr-box label { font-size: 0.8em; color: #c0392b; }
-        .atr-box input { text-align: center; font-weight: bold; font-size: 1.1em; padding: 5px; }
+        /* Tabela de Atributos Corrigida */
+        .atributos-tabela { background: #fdf9f9; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; margin-top: 20px; }
+        .atr-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 15px; margin-bottom: 10px; align-items: center; text-align: center; }
+        .atr-header { font-weight: bold; color: #c0392b; border-bottom: 2px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; }
+        .atr-row span:first-child { text-align: left; font-weight: bold; color: #555; }
+        .atr-total { font-weight: bold; color: #c0392b; font-size: 1.1em; background: #fff; padding: 8px; border-radius: 4px; border: 1px dashed #e74c3c; }
+        .atr-bonus { font-weight: bold; color: #2980b9; font-size: 1.1em; background: #e8f4f8; padding: 8px; border-radius: 4px; }
 
         /* Dinâmicos */
         .box-dinamico { background: #fdfdfd; border: 1px solid #dcdde1; border-radius: 6px; padding: 15px; margin-bottom: 15px; position: relative; }
@@ -59,7 +61,6 @@
         .btn-add { background-color: #34495e; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-bottom: 15px; }
         .btn-salvar { background-color: #c0392b; color: white; padding: 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 18px; font-weight: bold; width: 100%; margin-top: 20px; margin-bottom: 50px; }
         
-        /* Barra de rolagem customizada pro Sidebar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #1a252f; }
         ::-webkit-scrollbar-thumb { background: #c0392b; border-radius: 4px; }
@@ -73,7 +74,7 @@
         <p style="margin: 5px 0 0 0; font-size: 0.8em; color: #bdc3c7;">banco_antagonistas.json</p>
     </div>
     <div id="lista-cards">
-        <p style="text-align: center; color: #7f8c8d; font-size: 0.9em; margin-top: 20px;">Carregando banco de dados...</p>
+        <p style="text-align: center; color: #7f8c8d; font-size: 0.9em; margin-top: 20px;">A carregar base de dados...</p>
     </div>
 </div>
 
@@ -81,7 +82,7 @@
     
     <div class="top-bar">
         <div>
-            <label style="margin:0; font-size: 0.8em; color: #7f8c8d;">Importar Banco ou Ficha (.json)</label>
+            <label style="margin:0; font-size: 0.8em; color: #7f8c8d;">Importar Ficha (.json)</label>
             <input type="file" id="arquivoImport" accept=".json" onchange="importarJSON(event)">
         </div>
         <button class="btn-novo" onclick="limparFormulario()">+ Criar Novo Antagonista</button>
@@ -109,7 +110,7 @@
             <div class="form-group"><label>Avatar (URL)</label><input type="text" id="url_imagem"></div>
         </div>
         
-        <button class="btn-gerar" onclick="gerarStatusAutomatico()">🎲 Auto-Gerar Atributos e Combate (Baseado no Nível/Tipo)</button>
+        <button class="btn-gerar" onclick="gerarStatusAutomatico()">🎲 Auto-Gerar Atributos e Combate</button>
     </div>
 
     <div class="form-section">
@@ -122,18 +123,63 @@
         </div>
         <div class="grid-2">
             <div class="form-group"><label>🎯 Bônus de Ataque Padrão</label><input type="text" id="ataque" placeholder="Ex: +5"></div>
-            <div class="form-group"><label>💥 Dano Base (Ataque Físico/Mágico)</label><input type="text" id="dano" placeholder="Ex: 2d6 + 4"></div>
+            <div class="form-group"><label>💥 Dano Base</label><input type="text" id="dano" placeholder="Ex: 2d6 + 4"></div>
         </div>
 
-        <h4 style="margin-top: 20px; color: #555; text-align: center;">Valores Totais dos Atributos</h4>
-        <div class="atributos-grid">
-            <div class="atr-box"><label>Poder</label><input type="number" id="atr_poder" value="0"></div>
-            <div class="atr-box"><label>Vigor</label><input type="number" id="atr_vigor" value="0"></div>
-            <div class="atr-box"><label>Velocidade</label><input type="number" id="atr_velocidade" value="0"></div>
-            <div class="atr-box"><label>Magia</label><input type="number" id="atr_magia" value="0"></div>
-            <div class="atr-box"><label>Precisão</label><input type="number" id="atr_precisao" value="0"></div>
-            <div class="atr-box"><label>Esquiva</label><input type="number" id="atr_esquiva" value="0"></div>
-            <div class="atr-box"><label>Def. Mag</label><input type="number" id="atr_defesa_magica" value="0"></div>
+        <h3 class="secao-titulo" style="margin-top: 30px;">📊 Atributos e Modificadores</h3>
+        <div class="atributos-tabela">
+            <div class="atr-row atr-header">
+                <span>Atributo</span><span>Bruto</span><span>Mod. (Buffs)</span><span>Total</span><span>Bônus</span>
+            </div>
+            <div class="atr-row">
+                <span id="lbl_poder">Poder (d10)</span>
+                <input type="number" id="poder_bruto" value="0" oninput="atualizarTotais()">
+                <input type="number" id="poder_mod" value="0" oninput="atualizarTotais()">
+                <span id="poder_total" class="atr-total">0</span>
+                <span id="poder_bonus" class="atr-bonus">+0</span>
+            </div>
+            <div class="atr-row">
+                <span id="lbl_vigor">Vigor (d10)</span>
+                <input type="number" id="vigor_bruto" value="0" oninput="atualizarTotais()">
+                <input type="number" id="vigor_mod" value="0" oninput="atualizarTotais()">
+                <span id="vigor_total" class="atr-total">0</span>
+                <span id="vigor_bonus" class="atr-bonus">+0</span>
+            </div>
+            <div class="atr-row">
+                <span id="lbl_velocidade">Velocidade (d10)</span>
+                <input type="number" id="velocidade_bruto" value="0" oninput="atualizarTotais()">
+                <input type="number" id="velocidade_mod" value="0" oninput="atualizarTotais()">
+                <span id="velocidade_total" class="atr-total">0</span>
+                <span id="velocidade_bonus" class="atr-bonus">+0</span>
+            </div>
+            <div class="atr-row">
+                <span id="lbl_magia">Magia (d10)</span>
+                <input type="number" id="magia_bruto" value="0" oninput="atualizarTotais()">
+                <input type="number" id="magia_mod" value="0" oninput="atualizarTotais()">
+                <span id="magia_total" class="atr-total">0</span>
+                <span id="magia_bonus" class="atr-bonus">+0</span>
+            </div>
+            <div class="atr-row">
+                <span id="lbl_precisao">Precisão (d10)</span>
+                <input type="number" id="precisao_bruto" value="0" oninput="atualizarTotais()">
+                <input type="number" id="precisao_mod" value="0" oninput="atualizarTotais()">
+                <span id="precisao_total" class="atr-total">0</span>
+                <span id="precisao_bonus" class="atr-bonus">+0</span>
+            </div>
+            <div class="atr-row">
+                <span id="lbl_esquiva">Esquiva (d10)</span>
+                <input type="number" id="esquiva_bruto" value="0" oninput="atualizarTotais()">
+                <input type="number" id="esquiva_mod" value="0" oninput="atualizarTotais()">
+                <span id="esquiva_total" class="atr-total">0</span>
+                <span id="esquiva_bonus" class="atr-bonus">+0</span>
+            </div>
+            <div class="atr-row">
+                <span id="lbl_defesa_magica">Defesa Mágica (d10)</span>
+                <input type="number" id="defesa_magica_bruto" value="0" oninput="atualizarTotais()">
+                <input type="number" id="defesa_magica_mod" value="0" oninput="atualizarTotais()">
+                <span id="defesa_magica_total" class="atr-total">0</span>
+                <span id="defesa_magica_bonus" class="atr-bonus">+0</span>
+            </div>
         </div>
     </div>
 
@@ -147,7 +193,7 @@
         <button type="button" class="btn-add" style="background:#d35400;" onclick="adicionarDrop()">+ Adicionar Drop</button>
     </div>
 
-    <button class="btn-salvar" onclick="salvarAntagonista()">💾 SALVAR E BAIXAR BANCO_ANTAGONISTAS.JSON</button>
+    <button class="btn-salvar" onclick="salvarAntagonista()">💾 SALVAR NO BESTIÁRIO (JSON)</button>
 </div>
 
 <script src="antagonista_script.js"></script>
