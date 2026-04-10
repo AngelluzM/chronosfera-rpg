@@ -1,262 +1,201 @@
-/**
- * CHRONOSFERA RPG - Lógica do Laboratório de Antagonistas
- */
-
-let bancoAntagonistas = { personagens: [] };
-
-window.onload = () => {
-    fetch('banco_antagonistas.json?v=' + new Date().getTime())
-        .then(r => r.json())
-        .then(data => {
-            if (data.personagens) {
-                bancoAntagonistas = data;
-                renderizarSidebar();
-            }
-        }).catch(() => {
-            document.getElementById("lista-cards").innerHTML = '<p style="text-align:center; color:#bdc3c7;">Nenhum banco encontrado. Crie o primeiro monstro!</p>';
-        });
-};
-
-function calcularFibonacci(v) { 
-    return v >= 82 ? 5 : v >= 48 ? 4 : v >= 27 ? 3 : v >= 14 ? 2 : v >= 6 ? 1 : 0; 
-}
-
-// Atualiza visualmente o Total e Bônus na tabela do painel
-function atualizarTotais() {
-    ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'].forEach(a => {
-        const bruto = parseInt(document.getElementById(a + "_bruto").value) || 0;
-        const mod = parseInt(document.getElementById(a + "_mod").value) || 0;
-        const total = bruto + mod;
-        const bonus = calcularFibonacci(total);
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Chronosfera RPG - Laboratório de Antagonistas</title>
+    <style>
+        /* === LAYOUT DASHBOARD === */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; display: flex; height: 100vh; background-color: #f4f4f9; overflow: hidden; }
         
-        document.getElementById(a + "_total").innerText = total;
-        document.getElementById(a + "_bonus").innerText = "+" + bonus;
-    });
-}
+        /* === SIDEBAR (LISTA DE MONSTROS) === */
+        #sidebar { width: 350px; background-color: #2c3e50; color: #ecf0f1; display: flex; flex-direction: column; box-shadow: 2px 0 10px rgba(0,0,0,0.2); z-index: 10; }
+        .sidebar-header { padding: 20px; background-color: #1a252f; text-align: center; border-bottom: 3px solid #e74c3c; }
+        .sidebar-header h2 { margin: 0; color: #e74c3c; font-size: 1.5em; }
+        #lista-cards { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 15px; }
+        
+        /* CARDS DO SIDEBAR */
+        .monster-card { background: #34495e; border-left: 4px solid #e74c3c; border-radius: 6px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: transform 0.2s; }
+        .monster-card:hover { transform: translateX(5px); background: #3b536b; }
+        .monster-card h4 { margin: 0 0 5px 0; color: #fff; font-size: 1.1em; display: flex; justify-content: space-between; }
+        .monster-card .badge { font-size: 0.7em; background: #e74c3c; padding: 2px 6px; border-radius: 10px; }
+        .monster-card p { margin: 3px 0; font-size: 0.85em; color: #bdc3c7; }
+        .monster-card .tech-list { font-style: italic; color: #9b59b6; margin-top: 5px; border-top: 1px solid #465c71; padding-top: 5px; }
+        .btn-editar { background: #3498db; color: white; border: none; padding: 5px 10px; width: 100%; margin-top: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn-editar:hover { background: #2980b9; }
 
-function renderizarSidebar() {
-    const container = document.getElementById("lista-cards");
-    container.innerHTML = '';
+        /* === PAINEL CENTRAL (FORMULÁRIO) === */
+        #main-content { flex: 1; overflow-y: auto; padding: 30px; position: relative; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        .top-bar input[type="file"] { width: auto; border: none; padding: 0; }
+        
+        .btn-novo { background-color: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .btn-novo:hover { background-color: #219653; }
+        .btn-gerar { background-color: #f39c12; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; font-size: 1.1em; }
+        .btn-gerar:hover { background-color: #d68910; }
 
-    if (bancoAntagonistas.personagens.length === 0) {
-        container.innerHTML = '<p style="text-align:center; color:#bdc3c7;">Bestiário vazio.</p>';
-        return;
-    }
+        /* Formulário */
+        .form-section { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .secao-titulo { margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; color: #c0392b; font-size: 1.2em; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #555; font-size: 0.9em; }
+        input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        
+        /* Tabela de Atributos Corrigida */
+        .atributos-tabela { background: #fdf9f9; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; margin-top: 20px; }
+        .atr-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 15px; margin-bottom: 10px; align-items: center; text-align: center; }
+        .atr-header { font-weight: bold; color: #c0392b; border-bottom: 2px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; }
+        .atr-row span:first-child { text-align: left; font-weight: bold; color: #555; }
+        .atr-total { font-weight: bold; color: #c0392b; font-size: 1.1em; background: #fff; padding: 8px; border-radius: 4px; border: 1px dashed #e74c3c; }
+        .atr-bonus { font-weight: bold; color: #2980b9; font-size: 1.1em; background: #e8f4f8; padding: 8px; border-radius: 4px; }
 
-    const monstrosOrdenados = [...bancoAntagonistas.personagens].sort((a, b) => b.dados_basicos.nivel - a.dados_basicos.nivel);
+        /* Dinâmicos */
+        .box-dinamico { background: #fdfdfd; border: 1px solid #dcdde1; border-radius: 6px; padding: 15px; margin-bottom: 15px; position: relative; }
+        .tech-box { border-left: 5px solid #8e44ad; }
+        .drop-box { border-left: 5px solid #f1c40f; }
+        .btn-remover { background-color: #e74c3c; width: auto; padding: 5px 10px; font-size: 12px; position: absolute; right: 15px; top: 10px; border: none; color: white; border-radius: 4px; cursor: pointer;}
+        
+        .btn-add { background-color: #34495e; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-bottom: 15px; }
+        .btn-salvar { background-color: #c0392b; color: white; padding: 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 18px; font-weight: bold; width: 100%; margin-top: 20px; margin-bottom: 50px; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a252f; }
+        ::-webkit-scrollbar-thumb { background: #c0392b; border-radius: 4px; }
+    </style>
+</head>
+<body>
 
-    monstrosOrdenados.forEach(p => {
-        let techsResumo = "Nenhuma";
-        if (p.techs && p.techs.length > 0) {
-            techsResumo = p.techs.map(t => t.nome).join(", ");
-        }
+<div id="sidebar">
+    <div class="sidebar-header">
+        <h2>Bestiário</h2>
+        <p style="margin: 5px 0 0 0; font-size: 0.8em; color: #bdc3c7;">banco_antagonistas.json</p>
+    </div>
+    <div id="lista-cards">
+        <p style="text-align: center; color: #7f8c8d; font-size: 0.9em; margin-top: 20px;">A carregar base de dados...</p>
+    </div>
+</div>
 
-        const card = document.createElement("div");
-        card.className = "monster-card";
-        card.innerHTML = `
-            <h4>${p.dados_basicos.nome} <span class="badge">Nv ${p.dados_basicos.nivel}</span></h4>
-            <p><strong>Tipo:</strong> ${p.dados_basicos.arquetipo} | <strong>Afin:</strong> ${p.dados_basicos.afinidade_elemental}</p>
-            <p><strong>PV:</strong> ${p.combate.pv_maximo} | <strong>PM:</strong> ${p.combate.pm_maximo} | <strong>RD:</strong> ${p.combate.rd}</p>
-            <p><strong>Esq:</strong> ${p.combate.esquiva_base} | <strong>Atq:</strong> ${p.combate.bonus_ataque}</p>
-            <p><strong>Dano:</strong> ${p.combate.dano_base}</p>
-            <div class="tech-list"><strong>Techs:</strong> ${techsResumo}</div>
-            <button class="btn-editar" onclick="carregarParaEdicao('${p.id}')">✏️ Editar</button>
-        `;
-        container.appendChild(card);
-    });
-}
-
-function limparFormulario() {
-    document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
-    document.getElementById("nivel").value = 1;
-    document.getElementById("tipo").value = "Mob";
-    document.getElementById("afinidade").value = "Neutro";
+<div id="main-content">
     
-    ['pv', 'pm', 'rd', 'esquiva_base'].forEach(id => document.getElementById(id).value = 0);
-    
-    ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'].forEach(a => {
-        document.getElementById(a + "_bruto").value = 0;
-        document.getElementById(a + "_mod").value = 0;
-    });
-
-    document.getElementById('lista-techs').innerHTML = '';
-    document.getElementById('lista-drops').innerHTML = '';
-    
-    atualizarTotais();
-}
-
-function importarJSON(e) {
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-        try {
-            const importado = JSON.parse(ev.target.result);
-            if (importado.personagens) {
-                bancoAntagonistas = importado;
-                renderizarSidebar();
-                alert("Banco de dados carregado com sucesso!");
-            } else {
-                preencherFormulario(importado);
-                alert("Ficha individual importada!");
-            }
-        } catch (err) { alert("Erro ao ler JSON."); }
-        e.target.value = '';
-    };
-    reader.readAsText(e.target.files[0]);
-}
-
-function preencherFormulario(p) {
-    document.getElementById("id").value = p.id || '';
-    document.getElementById("nome").value = p.dados_basicos?.nome || '';
-    document.getElementById("nivel").value = p.dados_basicos?.nivel || 1;
-    document.getElementById("tipo").value = p.dados_basicos?.arquetipo || 'Mob';
-    document.getElementById("afinidade").value = p.dados_basicos?.afinidade_elemental || 'Neutro';
-    document.getElementById("url_imagem").value = p.url_imagem || '';
-
-    document.getElementById("pv").value = p.combate?.pv_maximo || 10;
-    document.getElementById("pm").value = p.combate?.pm_maximo || 0;
-    document.getElementById("rd").value = p.combate?.rd || 0;
-    document.getElementById("esquiva_base").value = p.combate?.esquiva_base || 8;
-    document.getElementById("ataque").value = p.combate?.bonus_ataque || '+0';
-    document.getElementById("dano").value = p.combate?.dano_base || '1d4';
-
-    const atrs = ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'];
-    atrs.forEach(a => {
-        document.getElementById(a + "_bruto").value = p.atributos?.[a]?.bruto || p.atributos?.[a]?.valor_bruto || 0;
-        document.getElementById(a + "_mod").value = p.atributos?.[a]?.mod || 0;
-    });
-
-    document.getElementById('lista-techs').innerHTML = '';
-    if(Array.isArray(p.techs)) p.techs.forEach(t => adicionarTech(t));
-
-    document.getElementById('lista-drops').innerHTML = '';
-    if(Array.isArray(p.drops) || Array.isArray(p.inventario)) {
-        const dropsList = p.drops || p.inventario;
-        dropsList.forEach(d => adicionarDrop(d));
-    }
-    
-    atualizarTotais();
-}
-
-function carregarParaEdicao(id) {
-    const p = bancoAntagonistas.personagens.find(x => x.id === id);
-    if (p) preencherFormulario(p);
-}
-
-function gerarStatusAutomatico() {
-    const nivel = parseInt(document.getElementById("nivel").value) || 1;
-    const tipo = document.getElementById("tipo").value;
-    
-    let mult = 1; let baseDano = "1d6";
-    if (tipo === "Elite") { mult = 2.5; baseDano = "2d6"; }
-    else if (tipo === "Subchefe") { mult = 4; baseDano = "2d8"; }
-    else if (tipo === "Boss") { mult = 8; baseDano = "3d8"; }
-    else if (tipo === "NPC") { mult = 1.5; baseDano = "1d4"; }
-
-    const baseAtr = Math.floor(nivel * mult * 1.5);
-    
-    ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'].forEach(a => {
-        const variacao = Math.random() * 0.4 - 0.2; 
-        let valorFim = Math.floor(baseAtr + (baseAtr * variacao));
-        if(valorFim < 0) valorFim = 0;
-        document.getElementById(a + "_bruto").value = valorFim;
-        document.getElementById(a + "_mod").value = 0;
-    });
-
-    atualizarTotais(); // Garante que a UI atualiza os totais e bônus antes de calcular os derivados
-
-    const vigorGid = parseInt(document.getElementById("vigor_bruto").value);
-    const magiaGid = parseInt(document.getElementById("magia_bruto").value);
-    const esquivaGid = parseInt(document.getElementById("esquiva_bruto").value);
-    const precisaoGid = parseInt(document.getElementById("precisao_bruto").value);
-    const poderGid = parseInt(document.getElementById("poder_bruto").value);
-
-    document.getElementById("pv").value = Math.floor((vigorGid * 5) + (nivel * 10 * mult));
-    document.getElementById("pm").value = Math.floor((magiaGid * 2) + (nivel * 5));
-    document.getElementById("esquiva_base").value = 8 + calcularFibonacci(esquivaGid) + Math.floor(nivel/3);
-    document.getElementById("rd").value = Math.floor(nivel * (mult / 2));
-    
-    const bonusAtq = calcularFibonacci(precisaoGid) + Math.floor(nivel/2);
-    document.getElementById("ataque").value = "+" + bonusAtq;
-    
-    const poderBonus = calcularFibonacci(poderGid);
-    document.getElementById("dano").value = `${baseDano} + ${poderBonus}`;
-
-    alert(`Atributos gerados! Reveja os dados.`);
-}
-
-function adicionarTech(t = {}) {
-    const d = document.createElement('div'); d.className = 'box-dinamico tech-box';
-    d.innerHTML = `
-        <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
-        <div class="grid-3">
-            <div class="form-group"><label>Ação / Habilidade</label><input type="text" class="t-nome" value="${t.nome || ''}"></div>
-            <div class="form-group"><label>Alvo / Alcance</label><input type="text" class="t-alvo" value="${t.alvo || ''}"></div>
-            <div class="form-group"><label>Valor (Dano/Cura)</label><input type="text" class="t-valor" value="${t.valor || ''}"></div>
+    <div class="top-bar">
+        <div>
+            <label style="margin:0; font-size: 0.8em; color: #7f8c8d;">Importar Ficha (.json)</label>
+            <input type="file" id="arquivoImport" accept=".json" onchange="importarJSON(event)">
         </div>
-        <div class="form-group"><label>Descrição do Efeito</label><textarea class="t-desc" rows="2">${t.desc || ''}</textarea></div>`;
-    document.getElementById('lista-techs').appendChild(d);
-}
+        <button class="btn-novo" onclick="limparFormulario()">+ Criar Novo Antagonista</button>
+    </div>
 
-function adicionarDrop(d = {}) {
-    const div = document.createElement('div'); div.className = 'box-dinamico drop-box';
-    div.innerHTML = `
-        <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
+    <div class="form-section">
+        <h3 class="secao-titulo">👿 Identidade da Ameaça</h3>
         <div class="grid-2">
-            <div class="form-group"><label>Item / Recompensa</label><input type="text" class="d-nome" value="${d.nome || ''}"></div>
-            <div class="form-group"><label>Qtd ou Condição</label><input type="text" class="d-qtd" value="${d.quantidade || '100%'}"></div>
-        </div>`;
-    document.getElementById('lista-drops').appendChild(div);
-}
+            <div class="form-group"><label>Nome</label><input type="text" id="nome" placeholder="Ex: Orc Furioso"></div>
+            <div class="form-group"><label>ID Único</label><input type="text" id="id" placeholder="Ex: orc_fogo_01"></div>
+        </div>
+        <div class="grid-4">
+            <div class="form-group"><label>Nível</label><input type="number" id="nivel" value="1"></div>
+            <div class="form-group">
+                <label>Tipo (Classe)</label>
+                <select id="tipo">
+                    <option value="Mob">Mob (Lacaio)</option>
+                    <option value="Elite">Elite</option>
+                    <option value="Subchefe">Subchefe</option>
+                    <option value="Boss">Boss (Chefe)</option>
+                    <option value="NPC">NPC (Aliado/Neutro)</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Afinidade</label><select id="afinidade"><option value="Neutro">Neutro</option><option value="Fogo">Fogo</option><option value="Gelo/Água">Gelo/Água</option><option value="Luz">Luz</option><option value="Sombra">Sombra</option></select></div>
+            <div class="form-group"><label>Avatar (URL)</label><input type="text" id="url_imagem"></div>
+        </div>
+        
+        <button class="btn-gerar" onclick="gerarStatusAutomatico()">🎲 Auto-Gerar Atributos e Combate</button>
+    </div>
 
-function salvarAntagonista() {
-    const id = document.getElementById("id").value;
-    const nome = document.getElementById("nome").value;
-    if(!id || !nome) return alert("Erro: Nome e ID Único são obrigatórios!");
+    <div class="form-section">
+        <h3 class="secao-titulo">⚔️ Status de Combate</h3>
+        <div class="grid-4">
+            <div class="form-group"><label>❤️ PV Máx</label><input type="number" id="pv" value="10"></div>
+            <div class="form-group"><label>💧 PM Máx</label><input type="number" id="pm" value="5"></div>
+            <div class="form-group"><label>🛡️ RD (Armadura)</label><input type="number" id="rd" value="0"></div>
+            <div class="form-group"><label>🏃 Esquiva Base (ND)</label><input type="number" id="esquiva_base" value="8"></div>
+        </div>
+        <div class="grid-2">
+            <div class="form-group"><label>🎯 Bônus de Ataque Padrão</label><input type="text" id="ataque" placeholder="Ex: +5"></div>
+            <div class="form-group"><label>💥 Dano Base</label><input type="text" id="dano" placeholder="Ex: 2d6 + 4"></div>
+        </div>
 
-    const attrs = {};
-    ['poder','vigor','velocidade','magia','precisao','esquiva','defesa_magica'].forEach(a => {
-        const b = parseInt(document.getElementById(a+"_bruto").value)||0;
-        const m = parseInt(document.getElementById(a+"_mod").value)||0;
-        const t = b + m;
-        attrs[a] = { dado: "d10", bruto: b, mod: m, total: t, bonus: calcularFibonacci(t) };
-    });
+        <h3 class="secao-titulo" style="margin-top: 30px;">📊 Atributos e Modificadores</h3>
+        <div class="atributos-tabela">
+            <div class="atr-row atr-header">
+                <span>Atributo</span><span>Bruto</span><span>Mod. (Buffs)</span><span>Total</span><span>Bônus</span>
+            </div>
+            <div class="atr-row">
+                <span id="lbl_poder">Poder (d10)</span>
+                <input type="number" id="poder_bruto" value="0" oninput="atualizarTotais()">
+                <input type="number" id="poder_mod" value="0" oninput="atualizarTotais()">
+                <span id="poder_total" class="atr-total">0</span>
+                <span id="poder_bonus" class="atr-bonus">+0</span>
+            </div>
+            <div class="atr-row">
+                <span id="lbl_vigor">Vigor (d10)</span>
+                <input type="number" id="vigor_bruto" value="0" oninput="atualizarTotais()">
+                <input type="number" id="vigor_mod" value="0" oninput="atualizarTotais()">
+                <span id="vigor_total" class="atr-total">0</span>
+                <span id="vigor_bonus" class="atr-bonus">+0</span>
+            </div>
+            <div class="atr-row">
+                <span id="lbl_velocidade">Velocidade (d10)</span>
+                <input type="number" id="velocidade_bruto" value="0" oninput="atualizarTotais()">
+                <input type="number" id="velocidade_mod" value="0" oninput="atualizarTotais()">
+                <span id="velocidade_total" class="atr-total">0</span>
+                <span id="velocidade_bonus" class="atr-bonus">+0</span>
+            </div>
+            <div class="atr-row">
+                <span id="lbl_magia">Magia (d10)</span>
+                <input type="number" id="magia_bruto" value="0" oninput="atualizarTotais()">
+                <input type="number" id="magia_mod" value="0" oninput="atualizarTotais()">
+                <span id="magia_total" class="atr-total">0</span>
+                <span id="magia_bonus" class="atr-bonus">+0</span>
+            </div>
+            <div class="atr-row">
+                <span id="lbl_precisao">Precisão (d10)</span>
+                <input type="number" id="precisao_bruto" value="0" oninput="atualizarTotais()">
+                <input type="number" id="precisao_mod" value="0" oninput="atualizarTotais()">
+                <span id="precisao_total" class="atr-total">0</span>
+                <span id="precisao_bonus" class="atr-bonus">+0</span>
+            </div>
+            <div class="atr-row">
+                <span id="lbl_esquiva">Esquiva (d10)</span>
+                <input type="number" id="esquiva_bruto" value="0" oninput="atualizarTotais()">
+                <input type="number" id="esquiva_mod" value="0" oninput="atualizarTotais()">
+                <span id="esquiva_total" class="atr-total">0</span>
+                <span id="esquiva_bonus" class="atr-bonus">+0</span>
+            </div>
+            <div class="atr-row">
+                <span id="lbl_defesa_magica">Defesa Mágica (d10)</span>
+                <input type="number" id="defesa_magica_bruto" value="0" oninput="atualizarTotais()">
+                <input type="number" id="defesa_magica_mod" value="0" oninput="atualizarTotais()">
+                <span id="defesa_magica_total" class="atr-total">0</span>
+                <span id="defesa_magica_bonus" class="atr-bonus">+0</span>
+            </div>
+        </div>
+    </div>
 
-    const p = {
-        id: id,
-        url_imagem: document.getElementById("url_imagem").value,
-        dados_basicos: {
-            nome: nome,
-            nivel: parseInt(document.getElementById("nivel").value),
-            arquetipo: document.getElementById("tipo").value,
-            afinidade_elemental: document.getElementById("afinidade").value,
-            classe: "Antagonista"
-        },
-        combate: {
-            pv_maximo: parseInt(document.getElementById("pv").value) || 0,
-            pm_maximo: parseInt(document.getElementById("pm").value) || 0,
-            rd: parseInt(document.getElementById("rd").value) || 0,
-            esquiva_base: parseInt(document.getElementById("esquiva_base").value) || 8,
-            bonus_ataque: document.getElementById("ataque").value,
-            dano_base: document.getElementById("dano").value
-        },
-        atributos: attrs,
-        techs: Array.from(document.querySelectorAll('.tech-box')).map(b => ({
-            nome: b.querySelector('.t-nome').value, alvo: b.querySelector('.t-alvo').value,
-            valor: b.querySelector('.t-valor').value, desc: b.querySelector('.t-desc').value
-        })),
-        drops: Array.from(document.querySelectorAll('.drop-box')).map(b => ({
-            nome: b.querySelector('.d-nome').value, quantidade: b.querySelector('.d-qtd').value
-        }))
-    };
+    <div class="form-section">
+        <h3 class="secao-titulo" style="color: #8e44ad;">🔮 Ações e Techs (Habilidades Especiais)</h3>
+        <div id="lista-techs"></div>
+        <button type="button" class="btn-add" style="background:#8e44ad;" onclick="adicionarTech()">+ Adicionar Ação</button>
 
-    const idx = bancoAntagonistas.personagens.findIndex(x => x.id === id);
-    if(idx > -1) bancoAntagonistas.personagens[idx] = p; else bancoAntagonistas.personagens.push(p);
-    
-    renderizarSidebar();
-    
-    const blob = new Blob([JSON.stringify(bancoAntagonistas, null, 4)], { type: "application/json" });
-    const a = document.createElement('a'); 
-    a.href = URL.createObjectURL(blob); 
-    a.download = "banco_antagonistas.json"; 
-    a.click();
-}
+        <h3 class="secao-titulo" style="color: #d35400; margin-top: 20px;">💎 Drops (Recompensas)</h3>
+        <div id="lista-drops"></div>
+        <button type="button" class="btn-add" style="background:#d35400;" onclick="adicionarDrop()">+ Adicionar Drop</button>
+    </div>
+
+    <button class="btn-salvar" onclick="salvarAntagonista()">💾 SALVAR NO BESTIÁRIO (JSON)</button>
+</div>
+
+<script src="antagonista_script.js"></script>
+</body>
+</html>
