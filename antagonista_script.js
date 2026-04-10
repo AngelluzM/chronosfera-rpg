@@ -4,7 +4,6 @@
 
 let bancoAntagonistas = { personagens: [] };
 
-// Ao carregar a página, tenta buscar o banco de dados
 window.onload = () => {
     fetch('banco_antagonistas.json?v=' + new Date().getTime())
         .then(r => r.json())
@@ -18,12 +17,23 @@ window.onload = () => {
         });
 };
 
-// Função Fibonacci mantida para consistência de bônus do sistema
 function calcularFibonacci(v) { 
     return v >= 82 ? 5 : v >= 48 ? 4 : v >= 27 ? 3 : v >= 14 ? 2 : v >= 6 ? 1 : 0; 
 }
 
-// Renderiza a lista vertical de Cards
+// Atualiza visualmente o Total e Bônus na tabela do painel
+function atualizarTotais() {
+    ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'].forEach(a => {
+        const bruto = parseInt(document.getElementById(a + "_bruto").value) || 0;
+        const mod = parseInt(document.getElementById(a + "_mod").value) || 0;
+        const total = bruto + mod;
+        const bonus = calcularFibonacci(total);
+        
+        document.getElementById(a + "_total").innerText = total;
+        document.getElementById(a + "_bonus").innerText = "+" + bonus;
+    });
+}
+
 function renderizarSidebar() {
     const container = document.getElementById("lista-cards");
     container.innerHTML = '';
@@ -33,11 +43,9 @@ function renderizarSidebar() {
         return;
     }
 
-    // Organiza por Nível (do maior pro menor)
     const monstrosOrdenados = [...bancoAntagonistas.personagens].sort((a, b) => b.dados_basicos.nivel - a.dados_basicos.nivel);
 
     monstrosOrdenados.forEach(p => {
-        // Extrai as techs para uma string resumida
         let techsResumo = "Nenhuma";
         if (p.techs && p.techs.length > 0) {
             techsResumo = p.techs.map(t => t.nome).join(", ");
@@ -50,9 +58,9 @@ function renderizarSidebar() {
             <p><strong>Tipo:</strong> ${p.dados_basicos.arquetipo} | <strong>Afin:</strong> ${p.dados_basicos.afinidade_elemental}</p>
             <p><strong>PV:</strong> ${p.combate.pv_maximo} | <strong>PM:</strong> ${p.combate.pm_maximo} | <strong>RD:</strong> ${p.combate.rd}</p>
             <p><strong>Esq:</strong> ${p.combate.esquiva_base} | <strong>Atq:</strong> ${p.combate.bonus_ataque}</p>
-            <p><strong>Dano Base:</strong> ${p.combate.dano_base}</p>
+            <p><strong>Dano:</strong> ${p.combate.dano_base}</p>
             <div class="tech-list"><strong>Techs:</strong> ${techsResumo}</div>
-            <button class="btn-editar" onclick="carregarParaEdicao('${p.id}')">✏️ Editar no Painel</button>
+            <button class="btn-editar" onclick="carregarParaEdicao('${p.id}')">✏️ Editar</button>
         `;
         container.appendChild(card);
     });
@@ -64,13 +72,17 @@ function limparFormulario() {
     document.getElementById("tipo").value = "Mob";
     document.getElementById("afinidade").value = "Neutro";
     
-    // Zera os atributos numéricos
-    ['pv', 'pm', 'rd', 'esquiva_base', 'atr_poder', 'atr_vigor', 'atr_velocidade', 'atr_magia', 'atr_precisao', 'atr_esquiva', 'atr_defesa_magica'].forEach(id => {
-        document.getElementById(id).value = 0;
+    ['pv', 'pm', 'rd', 'esquiva_base'].forEach(id => document.getElementById(id).value = 0);
+    
+    ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'].forEach(a => {
+        document.getElementById(a + "_bruto").value = 0;
+        document.getElementById(a + "_mod").value = 0;
     });
 
     document.getElementById('lista-techs').innerHTML = '';
     document.getElementById('lista-drops').innerHTML = '';
+    
+    atualizarTotais();
 }
 
 function importarJSON(e) {
@@ -81,13 +93,12 @@ function importarJSON(e) {
             if (importado.personagens) {
                 bancoAntagonistas = importado;
                 renderizarSidebar();
-                alert("Banco de dados substituído com sucesso!");
+                alert("Banco de dados carregado com sucesso!");
             } else {
-                // É um monstro individual
                 preencherFormulario(importado);
-                alert("Ficha individual importada pro formulário!");
+                alert("Ficha individual importada!");
             }
-        } catch (err) { alert("Erro ao importar o JSON."); }
+        } catch (err) { alert("Erro ao ler JSON."); }
         e.target.value = '';
     };
     reader.readAsText(e.target.files[0]);
@@ -101,7 +112,6 @@ function preencherFormulario(p) {
     document.getElementById("afinidade").value = p.dados_basicos?.afinidade_elemental || 'Neutro';
     document.getElementById("url_imagem").value = p.url_imagem || '';
 
-    // Status de Combate
     document.getElementById("pv").value = p.combate?.pv_maximo || 10;
     document.getElementById("pm").value = p.combate?.pm_maximo || 0;
     document.getElementById("rd").value = p.combate?.rd || 0;
@@ -109,18 +119,22 @@ function preencherFormulario(p) {
     document.getElementById("ataque").value = p.combate?.bonus_ataque || '+0';
     document.getElementById("dano").value = p.combate?.dano_base || '1d4';
 
-    // Atributos
     const atrs = ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'];
     atrs.forEach(a => {
-        document.getElementById("atr_" + a).value = p.atributos?.[a]?.valor || 0;
+        document.getElementById(a + "_bruto").value = p.atributos?.[a]?.bruto || p.atributos?.[a]?.valor_bruto || 0;
+        document.getElementById(a + "_mod").value = p.atributos?.[a]?.mod || 0;
     });
 
-    // Techs e Drops
     document.getElementById('lista-techs').innerHTML = '';
     if(Array.isArray(p.techs)) p.techs.forEach(t => adicionarTech(t));
 
     document.getElementById('lista-drops').innerHTML = '';
-    if(Array.isArray(p.drops)) p.drops.forEach(d => adicionarDrop(d));
+    if(Array.isArray(p.drops) || Array.isArray(p.inventario)) {
+        const dropsList = p.drops || p.inventario;
+        dropsList.forEach(d => adicionarDrop(d));
+    }
+    
+    atualizarTotais();
 }
 
 function carregarParaEdicao(id) {
@@ -128,37 +142,34 @@ function carregarParaEdicao(id) {
     if (p) preencherFormulario(p);
 }
 
-// === GERADOR AUTOMÁTICO DE STATUS ===
 function gerarStatusAutomatico() {
     const nivel = parseInt(document.getElementById("nivel").value) || 1;
     const tipo = document.getElementById("tipo").value;
     
-    // Multiplicadores de dificuldade
-    let mult = 1;
-    let baseDano = "1d6";
+    let mult = 1; let baseDano = "1d6";
     if (tipo === "Elite") { mult = 2.5; baseDano = "2d6"; }
     else if (tipo === "Subchefe") { mult = 4; baseDano = "2d8"; }
     else if (tipo === "Boss") { mult = 8; baseDano = "3d8"; }
     else if (tipo === "NPC") { mult = 1.5; baseDano = "1d4"; }
 
-    // Gera atributos baseados no nível e no multiplicador
     const baseAtr = Math.floor(nivel * mult * 1.5);
     
     ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'].forEach(a => {
-        // Variação de -20% a +20% para não ficarem todos iguais
         const variacao = Math.random() * 0.4 - 0.2; 
         let valorFim = Math.floor(baseAtr + (baseAtr * variacao));
         if(valorFim < 0) valorFim = 0;
-        document.getElementById("atr_" + a).value = valorFim;
+        document.getElementById(a + "_bruto").value = valorFim;
+        document.getElementById(a + "_mod").value = 0;
     });
 
-    // Status Derivados
-    const vigorGid = parseInt(document.getElementById("atr_vigor").value);
-    const magiaGid = parseInt(document.getElementById("atr_magia").value);
-    const esquivaGid = parseInt(document.getElementById("atr_esquiva").value);
-    const precisaoGid = parseInt(document.getElementById("atr_precisao").value);
+    atualizarTotais(); // Garante que a UI atualiza os totais e bônus antes de calcular os derivados
 
-    // HP de monstro é inflado pro combate durar
+    const vigorGid = parseInt(document.getElementById("vigor_bruto").value);
+    const magiaGid = parseInt(document.getElementById("magia_bruto").value);
+    const esquivaGid = parseInt(document.getElementById("esquiva_bruto").value);
+    const precisaoGid = parseInt(document.getElementById("precisao_bruto").value);
+    const poderGid = parseInt(document.getElementById("poder_bruto").value);
+
     document.getElementById("pv").value = Math.floor((vigorGid * 5) + (nivel * 10 * mult));
     document.getElementById("pm").value = Math.floor((magiaGid * 2) + (nivel * 5));
     document.getElementById("esquiva_base").value = 8 + calcularFibonacci(esquivaGid) + Math.floor(nivel/3);
@@ -167,11 +178,10 @@ function gerarStatusAutomatico() {
     const bonusAtq = calcularFibonacci(precisaoGid) + Math.floor(nivel/2);
     document.getElementById("ataque").value = "+" + bonusAtq;
     
-    // Dano base cresce com o bônus de Poder
-    const poderBonus = calcularFibonacci(parseInt(document.getElementById("atr_poder").value));
+    const poderBonus = calcularFibonacci(poderGid);
     document.getElementById("dano").value = `${baseDano} + ${poderBonus}`;
 
-    alert(`Atributos gerados automaticamente para ${tipo} de Nível ${nivel}! Você pode ajustar os valores manualmente agora.`);
+    alert(`Atributos gerados! Reveja os dados.`);
 }
 
 function adicionarTech(t = {}) {
@@ -193,7 +203,7 @@ function adicionarDrop(d = {}) {
         <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
         <div class="grid-2">
             <div class="form-group"><label>Item / Recompensa</label><input type="text" class="d-nome" value="${d.nome || ''}"></div>
-            <div class="form-group"><label>Qtd ou Condição (ex: 1d4 moedas)</label><input type="text" class="d-qtd" value="${d.quantidade || '1'}"></div>
+            <div class="form-group"><label>Qtd ou Condição</label><input type="text" class="d-qtd" value="${d.quantidade || '100%'}"></div>
         </div>`;
     document.getElementById('lista-drops').appendChild(div);
 }
@@ -203,7 +213,14 @@ function salvarAntagonista() {
     const nome = document.getElementById("nome").value;
     if(!id || !nome) return alert("Erro: Nome e ID Único são obrigatórios!");
 
-    // Montando a estrutura simplificada do Antagonista
+    const attrs = {};
+    ['poder','vigor','velocidade','magia','precisao','esquiva','defesa_magica'].forEach(a => {
+        const b = parseInt(document.getElementById(a+"_bruto").value)||0;
+        const m = parseInt(document.getElementById(a+"_mod").value)||0;
+        const t = b + m;
+        attrs[a] = { dado: "d10", bruto: b, mod: m, total: t, bonus: calcularFibonacci(t) };
+    });
+
     const p = {
         id: id,
         url_imagem: document.getElementById("url_imagem").value,
@@ -222,7 +239,7 @@ function salvarAntagonista() {
             bonus_ataque: document.getElementById("ataque").value,
             dano_base: document.getElementById("dano").value
         },
-        atributos: {},
+        atributos: attrs,
         techs: Array.from(document.querySelectorAll('.tech-box')).map(b => ({
             nome: b.querySelector('.t-nome').value, alvo: b.querySelector('.t-alvo').value,
             valor: b.querySelector('.t-valor').value, desc: b.querySelector('.t-desc').value
@@ -232,17 +249,9 @@ function salvarAntagonista() {
         }))
     };
 
-    // Salvar atributos (apenas o valor final e o bônus automático)
-    ['poder','vigor','velocidade','magia','precisao','esquiva','defesa_magica'].forEach(a => {
-        const val = parseInt(document.getElementById("atr_" + a).value) || 0;
-        p.atributos[a] = { valor: val, bonus: calcularFibonacci(val) };
-    });
-
-    // Salvar no array
     const idx = bancoAntagonistas.personagens.findIndex(x => x.id === id);
     if(idx > -1) bancoAntagonistas.personagens[idx] = p; else bancoAntagonistas.personagens.push(p);
     
-    // Atualizar a UI e baixar
     renderizarSidebar();
     
     const blob = new Blob([JSON.stringify(bancoAntagonistas, null, 4)], { type: "application/json" });
