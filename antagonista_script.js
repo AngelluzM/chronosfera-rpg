@@ -21,7 +21,6 @@ function calcularFibonacci(v) {
     return v >= 82 ? 5 : v >= 48 ? 4 : v >= 27 ? 3 : v >= 14 ? 2 : v >= 6 ? 1 : 0; 
 }
 
-// Atualiza visualmente o Total e Bônus na tabela do painel
 function atualizarTotais() {
     ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'].forEach(a => {
         const bruto = parseInt(document.getElementById(a + "_bruto").value) || 0;
@@ -34,6 +33,7 @@ function atualizarTotais() {
     });
 }
 
+// === AQUI FICA A INCLUSÃO DA IMAGEM NOS CARDS ===
 function renderizarSidebar() {
     const container = document.getElementById("lista-cards");
     container.innerHTML = '';
@@ -51,16 +51,25 @@ function renderizarSidebar() {
             techsResumo = p.techs.map(t => t.nome).join(", ");
         }
 
+        // Se não tiver imagem, usa um placeholder visualmente neutro
+        const imgUrl = p.url_imagem && p.url_imagem.trim() !== "" 
+            ? p.url_imagem 
+            : 'https://via.placeholder.com/50/1a252f/bdc3c7?text=?';
+
         const card = document.createElement("div");
         card.className = "monster-card";
         card.innerHTML = `
-            <h4>${p.dados_basicos.nome} <span class="badge">Nv ${p.dados_basicos.nivel}</span></h4>
-            <p><strong>Tipo:</strong> ${p.dados_basicos.arquetipo} | <strong>Afin:</strong> ${p.dados_basicos.afinidade_elemental}</p>
+            <div class="monster-header">
+                <img src="${imgUrl}" class="monster-thumb" alt="Avatar">
+                <div class="monster-title-area">
+                    <h4>${p.dados_basicos.nome} <span class="badge">Nv ${p.dados_basicos.nivel}</span></h4>
+                    <p style="margin:0;"><strong>Tipo:</strong> ${p.dados_basicos.arquetipo} | <strong>Afin:</strong> ${p.dados_basicos.afinidade_elemental}</p>
+                </div>
+            </div>
             <p><strong>PV:</strong> ${p.combate.pv_maximo} | <strong>PM:</strong> ${p.combate.pm_maximo} | <strong>RD:</strong> ${p.combate.rd}</p>
-            <p><strong>Esq:</strong> ${p.combate.esquiva_base} | <strong>Atq:</strong> ${p.combate.bonus_ataque}</p>
-            <p><strong>Dano:</strong> ${p.combate.dano_base}</p>
+            <p><strong>Esq:</strong> ${p.combate.esquiva_base} | <strong>Atq:</strong> ${p.combate.bonus_ataque} | <strong>Dano:</strong> ${p.combate.dano_base}</p>
             <div class="tech-list"><strong>Techs:</strong> ${techsResumo}</div>
-            <button class="btn-editar" onclick="carregarParaEdicao('${p.id}')">✏️ Editar</button>
+            <button class="btn-editar" onclick="carregarParaEdicao('${p.id}')">✏️ Editar no Painel</button>
         `;
         container.appendChild(card);
     });
@@ -162,7 +171,7 @@ function gerarStatusAutomatico() {
         document.getElementById(a + "_mod").value = 0;
     });
 
-    atualizarTotais(); // Garante que a UI atualiza os totais e bônus antes de calcular os derivados
+    atualizarTotais();
 
     const vigorGid = parseInt(document.getElementById("vigor_bruto").value);
     const magiaGid = parseInt(document.getElementById("magia_bruto").value);
