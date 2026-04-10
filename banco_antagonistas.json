@@ -19,97 +19,13 @@
                 "dano_base": "1d4"
             },
             "atributos": {
-                "poder": {
-                    "valor": 0,
-                    "bonus": 0
-                },
-                "vigor": {
-                    "valor": 0,
-                    "bonus": 0
-                },
-                "velocidade": {
-                    "valor": 0,
-                    "bonus": 0
-                },
-                "magia": {
-                    "valor": 0,
-                    "bonus": 0
-                },
-                "precisao": {
-                    "valor": 0,
-                    "bonus": 0
-                },
-                "esquiva": {
-                    "valor": 0,
-                    "bonus": 0
-                },
-                "defesa_magica": {
-                    "valor": 0,
-                    "bonus": 0
-                }
-            },
-            "techs": [
-                {
-                    "nome": "Ataque Básico",
-                    "alvo": "1 Alvo",
-                    "valor": "1d4",
-                    "desc": "Um golpe simples e direto."
-                }
-            ],
-            "drops": [
-                {
-                    "nome": "Poeira Mística",
-                    "quantidade": "100%"
-                }
-            ]
-        },
-        {
-            "id": "db_estic",
-            "url_imagem": "https://i.pinimg.com/736x/26/f1/cd/26f1cdf32b912736e839ec2c989c57bb.jpg",
-            "dados_basicos": {
-                "nome": "Diabrete de Estática",
-                "nivel": 1,
-                "arquetipo": "Mob",
-                "afinidade_elemental": "Neutro",
-                "classe": "Antagonista"
-            },
-            "combate": {
-                "pv_maximo": 10,
-                "pm_maximo": 7,
-                "rd": 0,
-                "esquiva_base": 8,
-                "bonus_ataque": "+0",
-                "dano_base": "1d6 + 0"
-            },
-            "atributos": {
-                "poder": {
-                    "valor": 1,
-                    "bonus": 0
-                },
-                "vigor": {
-                    "valor": 0,
-                    "bonus": 0
-                },
-                "velocidade": {
-                    "valor": 0,
-                    "bonus": 0
-                },
-                "magia": {
-                    "valor": 1,
-                    "bonus": 0
-                },
-                "precisao": {
-                    "valor": 1,
-                    "bonus": 0
-                },
-                "esquiva": {
-                    "valor": 0,
-                    "bonus": 0
-                },
-                "defesa_magica": {
-                    "valor": 1,
-                    "bonus": 0
-                }
+                "poder": { "valor": 0, "bonus": 0 },
+                "vigor": { "valor": 0, "bonus": 0 },
+                "velocidade": { "valor": 0, "bonus": 0 },
+                "magia": { "valor": 0, "bonus": 0 },
+                "precisao": { "valor": 0, "bonus": 0 },
+                "esquiva": { "valor": 0, "bonus": 0 },
+                "defesa_magica": { "valor": 0, "bonus": 0 }
             },
             "techs": [],
             "drops": []
