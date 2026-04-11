@@ -84,13 +84,13 @@ function limparFormulario() {
     ['pv', 'pm', 'rd', 'esquiva_base'].forEach(id => document.getElementById(id).value = 0);
     
     ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'].forEach(a => {
+        document.getElementById(a + "_dado").value = "d10";
         document.getElementById(a + "_bruto").value = 0;
         document.getElementById(a + "_mod").value = 0;
     });
 
     document.getElementById('lista-techs').innerHTML = '';
     document.getElementById('lista-drops').innerHTML = '';
-    
     atualizarTotais();
 }
 
@@ -115,14 +115,14 @@ function importarJSON(e) {
 
 function preencherFormulario(p) {
     document.getElementById("id").value = p.id || '';
-    document.getElementById("nome").value = p.dados_basicos?.nome || '';
-    document.getElementById("nivel").value = p.dados_basicos?.nivel || 1;
-    document.getElementById("tipo").value = p.dados_basicos?.arquetipo || 'Mob';
-    document.getElementById("afinidade").value = p.dados_basicos?.afinidade_elemental || 'Neutro';
+    document.getElementById("nome").value = p.dados_basicos?.nome || p.nome_personagem || '';
+    document.getElementById("nivel").value = p.dados_basicos?.nivel || p.nivel || 1;
+    document.getElementById("tipo").value = p.dados_basicos?.arquetipo || p.tipo_inimigo || 'Mob';
+    document.getElementById("afinidade").value = p.dados_basicos?.afinidade_elemental || p.afinidade_elemental || 'Neutro';
     document.getElementById("url_imagem").value = p.url_imagem || '';
 
-    document.getElementById("pv").value = p.combate?.pv_maximo || 10;
-    document.getElementById("pm").value = p.combate?.pm_maximo || 0;
+    document.getElementById("pv").value = p.combate?.pv_maximo || p.estatisticas_combate?.pv_maximo || 10;
+    document.getElementById("pm").value = p.combate?.pm_maximo || p.estatisticas_combate?.pm_maximo || 0;
     document.getElementById("rd").value = p.combate?.rd || 0;
     document.getElementById("esquiva_base").value = p.combate?.esquiva_base || 8;
     document.getElementById("ataque").value = p.combate?.bonus_ataque || '+0';
@@ -130,7 +130,14 @@ function preencherFormulario(p) {
 
     const atrs = ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'];
     atrs.forEach(a => {
-        document.getElementById(a + "_bruto").value = p.atributos?.[a]?.bruto || p.atributos?.[a]?.valor_bruto || 0;
+        // Deteta a rolagem (dado)
+        document.getElementById(a + "_dado").value = p.atributos?.[a]?.dado || "d10";
+        
+        // Melhora a captura do Valor Bruto vindo do GEM ou de JSONs antigos
+        let vBruto = p.atributos?.[a]?.bruto || p.atributos?.[a]?.valor_bruto || p.atributos?.[a]?.valor || 0;
+        if (typeof vBruto === 'string') { vBruto = parseInt(vBruto.replace(/\D/g, '')) || 0; } // Converte "31" para 31
+        
+        document.getElementById(a + "_bruto").value = vBruto;
         document.getElementById(a + "_mod").value = p.atributos?.[a]?.mod || 0;
     });
 
@@ -161,7 +168,8 @@ function gerarStatusAutomatico() {
     else if (tipo === "Boss") { mult = 8; baseDano = "3d8"; }
     else if (tipo === "NPC") { mult = 1.5; baseDano = "1d4"; }
 
-    const baseAtr = Math.floor(nivel * mult * 1.5);
+    // Fórmula ajustada para gerar valores brutos mais realistas (ex: Nv 1 Mob ~ 18 pontos)
+    const baseAtr = Math.floor((nivel * 3 + 15) * mult);
     
     ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'].forEach(a => {
         const variacao = Math.random() * 0.4 - 0.2; 
@@ -224,10 +232,11 @@ function salvarAntagonista() {
 
     const attrs = {};
     ['poder','vigor','velocidade','magia','precisao','esquiva','defesa_magica'].forEach(a => {
+        const dado = document.getElementById(a+"_dado").value;
         const b = parseInt(document.getElementById(a+"_bruto").value)||0;
         const m = parseInt(document.getElementById(a+"_mod").value)||0;
         const t = b + m;
-        attrs[a] = { dado: "d10", bruto: b, mod: m, total: t, bonus: calcularFibonacci(t) };
+        attrs[a] = { dado: dado, bruto: b, mod: m, total: t, bonus: calcularFibonacci(t) };
     });
 
     const p = {
