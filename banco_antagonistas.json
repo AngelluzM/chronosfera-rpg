@@ -53,18 +53,18 @@
         },
         {
             "id": "BM_mob2",
-            "url_imagem": "",
+            "url_imagem": "https://i.pinimg.com/736x/34/75/7b/34757bcb9e0ff8229a23786d39e7172b.jpg",
             "dados_basicos": {
                 "nome": "Besouro-Motor",
                 "nivel": 1,
                 "arquetipo": "Mob",
-                "afinidade_elemental": "Neutro",
+                "afinidade_elemental": "Sombra",
                 "classe": "Antagonista"
             },
             "combate": {
-                "pv_maximo": 15,
+                "pv_maximo": 25,
                 "pm_maximo": 7,
-                "rd": 0,
+                "rd": 2,
                 "esquiva_base": 8,
                 "bonus_ataque": "+0",
                 "dano_base": "1d6 + 0"
