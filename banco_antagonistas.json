@@ -19,13 +19,106 @@
                 "dano_base": "1d4"
             },
             "atributos": {
-                "poder": { "valor": 0, "bonus": 0 },
-                "vigor": { "valor": 0, "bonus": 0 },
-                "velocidade": { "valor": 0, "bonus": 0 },
-                "magia": { "valor": 0, "bonus": 0 },
-                "precisao": { "valor": 0, "bonus": 0 },
-                "esquiva": { "valor": 0, "bonus": 0 },
-                "defesa_magica": { "valor": 0, "bonus": 0 }
+                "poder": {
+                    "valor": 0,
+                    "bonus": 0
+                },
+                "vigor": {
+                    "valor": 0,
+                    "bonus": 0
+                },
+                "velocidade": {
+                    "valor": 0,
+                    "bonus": 0
+                },
+                "magia": {
+                    "valor": 0,
+                    "bonus": 0
+                },
+                "precisao": {
+                    "valor": 0,
+                    "bonus": 0
+                },
+                "esquiva": {
+                    "valor": 0,
+                    "bonus": 0
+                },
+                "defesa_magica": {
+                    "valor": 0,
+                    "bonus": 0
+                }
+            },
+            "techs": [],
+            "drops": []
+        },
+        {
+            "id": "BM_mob2",
+            "url_imagem": "",
+            "dados_basicos": {
+                "nome": "Besouro-Motor",
+                "nivel": 1,
+                "arquetipo": "Mob",
+                "afinidade_elemental": "Neutro",
+                "classe": "Antagonista"
+            },
+            "combate": {
+                "pv_maximo": 15,
+                "pm_maximo": 7,
+                "rd": 0,
+                "esquiva_base": 8,
+                "bonus_ataque": "+0",
+                "dano_base": "1d6 + 0"
+            },
+            "atributos": {
+                "poder": {
+                    "dado": "d10",
+                    "bruto": 0,
+                    "mod": 0,
+                    "total": 0,
+                    "bonus": 0
+                },
+                "vigor": {
+                    "dado": "d10",
+                    "bruto": 1,
+                    "mod": 0,
+                    "total": 1,
+                    "bonus": 0
+                },
+                "velocidade": {
+                    "dado": "d10",
+                    "bruto": 1,
+                    "mod": 0,
+                    "total": 1,
+                    "bonus": 0
+                },
+                "magia": {
+                    "dado": "d10",
+                    "bruto": 1,
+                    "mod": 0,
+                    "total": 1,
+                    "bonus": 0
+                },
+                "precisao": {
+                    "dado": "d10",
+                    "bruto": 0,
+                    "mod": 0,
+                    "total": 0,
+                    "bonus": 0
+                },
+                "esquiva": {
+                    "dado": "d10",
+                    "bruto": 1,
+                    "mod": 0,
+                    "total": 1,
+                    "bonus": 0
+                },
+                "defesa_magica": {
+                    "dado": "d10",
+                    "bruto": 0,
+                    "mod": 0,
+                    "total": 0,
+                    "bonus": 0
+                }
             },
             "techs": [],
             "drops": []
