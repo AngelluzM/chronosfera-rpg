@@ -10,7 +10,7 @@
                     "elemento": "Água/Gelo",
                     "alvo": "1 inimigo",
                     "tipo": "Dano",
-                    "valor": "1d8 + Magia Bruta",
+                    "valor": "1d8 + Magia Total",
                     "desc": "Junta a humidade do ar gerando uma estaca de gelo e disparando contra um inimigo.",
                     "inter": "",
                     "combo": ""
