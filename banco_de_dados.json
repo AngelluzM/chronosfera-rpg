@@ -466,6 +466,80 @@
                     "bonus": 0
                 }
             }
+        },
+        {
+            "id": "meu",
+            "url_imagem": "https://i.pinimg.com/736x/a0/3e/b0/a03eb07e6705d25fe1fa418191b45bbb.jpg",
+            "techs": [],
+            "inventario": [],
+            "lacos": [],
+            "dados_basicos": {
+                "nome": "Angelluz",
+                "nivel": 1,
+                "xp_atual": 0,
+                "xp_proximo": 50,
+                "raca": "Humano",
+                "classe": "Cavaleiro",
+                "arquetipo": "Combatente",
+                "afinidade_elemental": "Fogo"
+            },
+            "status": {
+                "pv_maximo": 70,
+                "pm_maximo": 18,
+                "nd_esquiva_base": 9,
+                "rd_armadura": 2
+            },
+            "atributos": {
+                "poder": {
+                    "dado": "d10",
+                    "bruto": 9,
+                    "mod": 3,
+                    "total": 12,
+                    "bonus": 1
+                },
+                "vigor": {
+                    "dado": "d12",
+                    "bruto": 10,
+                    "mod": 0,
+                    "total": 10,
+                    "bonus": 1
+                },
+                "velocidade": {
+                    "dado": "d6",
+                    "bruto": 6,
+                    "mod": 11,
+                    "total": 17,
+                    "bonus": 2
+                },
+                "magia": {
+                    "dado": "d8",
+                    "bruto": 7,
+                    "mod": 3,
+                    "total": 10,
+                    "bonus": 1
+                },
+                "precisao": {
+                    "dado": "d4",
+                    "bruto": 8,
+                    "mod": 1,
+                    "total": 9,
+                    "bonus": 1
+                },
+                "esquiva": {
+                    "dado": "d6",
+                    "bruto": 9,
+                    "mod": 4,
+                    "total": 13,
+                    "bonus": 1
+                },
+                "defesa_magica": {
+                    "dado": "d8",
+                    "bruto": 10,
+                    "mod": 5,
+                    "total": 15,
+                    "bonus": 2
+                }
+            }
         }
     ]
 }
