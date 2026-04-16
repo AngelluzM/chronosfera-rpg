@@ -35,6 +35,7 @@
     					border-radius: 8px;
     					box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 		}
+
         /* FICHAS */
         .grid-fichas { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; margin-top: 20px; }
         .ficha-card { background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; }
@@ -70,14 +71,14 @@
         .btn-lacos { background: #9b59b6; }
         .btn-action:hover { opacity: 0.8; }
 
-        /* === MODAIS === */
+        /* MODAIS */
         .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); overflow-y: auto; }
         .modal-content { background: #f4f4f9; margin: 5% auto; padding: 30px; border-radius: 10px; max-width: 900px; width: 90%; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         .close { position: absolute; right: 25px; top: 20px; font-size: 32px; font-weight: bold; cursor: pointer; color: #777; transition: 0.2s; }
         .close:hover { color: #111; }
         #modalTitle { color: #2c3e50; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-top: 0; margin-bottom: 20px; font-size: 1.8em; }
 
-        /* === ITENS DE INVENTÁRIO === */
+        /* INVENTÁRIO */
         .inv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
         .inv-item { background: white; padding: 15px; border-radius: 8px; border: 1px solid #ddd; border-left: 4px solid #27ae60; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .inv-item h4 { margin: 0 0 10px 0; color: #2c3e50; display: flex; justify-content: space-between; align-items: center; }
@@ -87,7 +88,6 @@
         /* === TECHS === */
         .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
         .tech-card { background: white; border-radius: 10px; border: 1px solid #ddd; box-shadow: 0 3px 6px rgba(0,0,0,0.08); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s; }
-        .tech-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.12); }
         .tech-header { padding: 12px 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
         .tech-title { font-size: 1.2em; font-weight: bold; margin: 0; }
         .tech-badge { font-size: 0.8em; background: rgba(0,0,0,0.25); padding: 4px 8px; border-radius: 12px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
@@ -177,23 +177,12 @@
                 const imagemHtml = p.url_imagem && p.url_imagem.trim() !== "" ? `<img src="${p.url_imagem}" class="ficha-imagem" alt="Imagem">` : ``;
 
                 // Mapeamento dinâmico da tabela de atributos para evitar erros de undefined
-                const nomesAtr = {
-                    poder: "Poder", vigor: "Vigor", velocidade: "Velocidade", 
-                    magia: "Magia", precisao: "Precisão", esquiva: "Esquiva", defesa_magica: "Def. Mag."
-                };
+                const nomesAtr = { poder: "Poder", vigor: "Vigor", velocidade: "Velocidade", magia: "Magia", precisao: "Precisão", esquiva: "Esquiva", defesa_magica: "Def. Mag." };
 
                 let tabelaAtributosHtml = '';
                 Object.keys(nomesAtr).forEach(chave => {
                     const atr = p.atributos[chave] || { dado: "-", bruto: 0, mod: 0, total: 0, bonus: 0 };
-                    tabelaAtributosHtml += `
-                        <tr>
-                            <td>${nomesAtr[chave]}</td>
-                            <td>${atr.dado}</td>
-                            <td>${atr.bruto}</td>
-                            <td>+${atr.mod}</td>
-                            <td class="atr-destaque">${atr.total}</td>
-                            <td>+${atr.bonus}</td>
-                        </tr>`;
+                    tabelaAtributosHtml += `<tr><td>${nomesAtr[chave]}</td><td>${atr.dado}</td><td>${atr.bruto}</td><td>+${atr.mod}</td><td class="atr-destaque">${atr.total}</td><td>+${atr.bonus}</td></tr>`;
                 });
 
                 card.innerHTML = `
@@ -227,15 +216,36 @@
             });
         }
 
+        // === INVENTÁRIO COM ÍCONES DE EQUIPADO ===
         function abrirInventario(id) {
             const p = personagens.find(x => x.id === id);
             document.getElementById('modalTitle').innerText = "Inventário: " + p.dados_basicos.nome;
             let html = '<div class="inv-grid">';
+            
             if (Array.isArray(p.inventario) && p.inventario.length > 0) {
-                p.inventario.forEach(i => {
-                    html += `<div class="inv-item"><h4>${i.nome} <span class="inv-badge">x${i.quantidade}</span></h4><p>${i.desc}</p></div>`;
+                // Ordena: itens equipados aparecem primeiro
+                const itensOrdenados = [...p.inventario].sort((a, b) => (b.equipado === true) - (a.equipado === true));
+                
+                itensOrdenados.forEach(i => {
+                    const icone = i.equipado ? '⚔️' : '📦';
+                    const statusText = i.equipado ? 'Item Equipado' : 'Guardado na Mochila';
+                    const destaqueBg = i.equipado ? 'background-color: #f0fdf4; border-left: 4px solid #22c55e;' : '';
+                    
+                    html += `
+                        <div class="inv-item" style="${destaqueBg}">
+                            <h4 style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <span title="${statusText}" style="font-size: 1.3em;">${icone}</span>
+                                <span style="flex-grow: 1;">${i.nome}</span>
+                                <span class="inv-badge">x${i.quantidade}</span>
+                            </h4>
+                            <p>${i.desc || 'Sem descrição.'}</p>
+                        </div>
+                    `;
                 });
+            } else if (typeof p.inventario === 'string' && p.inventario.trim() !== '') {
+                html += `<p style="padding: 20px; white-space:pre-wrap;">${p.inventario}</p>`;
             } else { html += '<p style="padding: 20px;">Inventário vazio.</p>'; }
+            
             html += '</div>';
             document.getElementById('modalBody').innerHTML = html;
             document.getElementById('modalGeral').style.display = 'block';
