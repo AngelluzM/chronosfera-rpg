@@ -218,11 +218,13 @@
                 {
                     "nome": "Macacão de Lona Grossa",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Um equipamento de conforto e segurança para os mecânicos iniciantes, protege contra fagulhas e pequenas lascas de rebarbas e é muito resistente a cortes evitando acidentes ao trabalhar. confere +2 como armadura"
                 },
                 {
                     "nome": "Pistola de Ar Comprimido",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "A Pistola de Ar Comprimido é o equipamento padrão e inicial da Classe Mecânico. Ela representa o foco na Precisão e na versatilidade tecnológica, sendo uma arma de fogo baseada em tecnologia de pressão. Concede +1 no ataque e o dano é 1d8 + Atributo de Precisão"
                 }
             ],
