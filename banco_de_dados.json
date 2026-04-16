@@ -392,21 +392,25 @@
                 {
                     "nome": "Vestes Comuns",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Pano simples ou couro leve. São a vestimenta básica do dia a dia, como uma Túnica de Pano, ideal para quem está começando uma jornada."
                 },
                 {
                     "nome": "Botas de Couro",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Uma par de botas de couro que é confortável e protege os pés"
                 },
                 {
                     "nome": "Capa de Qualidade",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Uma capa feita de tecidos de qualidade"
                 },
                 {
                     "nome": "Espada de Bronze",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Uma lâmina forjada em bronze, simples e robusta. É a arma mais confiável que um aventureiro iniciante pode ter, representando um salto de qualidade em relação aos equipamentos improvisados de madeira. Causa 1d8+ Poder Total de Dano, concede maior chance de acerto quando utilizado por alguem treinado, +1 em ataque"
                 }
             ],
