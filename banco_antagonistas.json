@@ -122,6 +122,85 @@
             },
             "techs": [],
             "drops": []
+        },
+        {
+            "id": "diabrete_estatica",
+            "url_imagem": "https://i.pinimg.com/736x/26/f1/cd/26f1cdf32b912736e839ec2c989c57bb.jpg",
+            "dados_basicos": {
+                "nome": "Diabrete de Estática",
+                "nivel": 1,
+                "arquetipo": "Mob",
+                "afinidade_elemental": "Sombra",
+                "classe": "Antagonista"
+            },
+            "combate": {
+                "pv_maximo": 99,
+                "pm_maximo": 39,
+                "rd": 0,
+                "esquiva_base": 10,
+                "bonus_ataque": "+2",
+                "dano_base": "1d6 + 2"
+            },
+            "atributos": {
+                "poder": {
+                    "dado": "d10",
+                    "bruto": 9,
+                    "mod": 0,
+                    "total": 9,
+                    "bonus": 1
+                },
+                "vigor": {
+                    "dado": "d8",
+                    "bruto": 8,
+                    "mod": 0,
+                    "total": 8,
+                    "bonus": 1
+                },
+                "velocidade": {
+                    "dado": "d4",
+                    "bruto": 2,
+                    "mod": 0,
+                    "total": 2,
+                    "bonus": 0
+                },
+                "magia": {
+                    "dado": "d8",
+                    "bruto": 6,
+                    "mod": 0,
+                    "total": 6,
+                    "bonus": 1
+                },
+                "precisao": {
+                    "dado": "d4",
+                    "bruto": 3,
+                    "mod": 0,
+                    "total": 3,
+                    "bonus": 0
+                },
+                "esquiva": {
+                    "dado": "d12",
+                    "bruto": 7,
+                    "mod": 0,
+                    "total": 7,
+                    "bonus": 1
+                },
+                "defesa_magica": {
+                    "dado": "d10",
+                    "bruto": 8,
+                    "mod": 0,
+                    "total": 8,
+                    "bonus": 1
+                }
+            },
+            "techs": [
+                {
+                    "nome": "Sobrecarga Obscura",
+                    "alvo": "1 alvo",
+                    "valor": "1d8",
+                    "desc": "O Diabrete desaparece em um estalo de eletricidade negra e reaparece instantaneamente atrás do alvo, descarregando uma centelha de estática que corrói a visão e interfere em dispositivos eletrônicos."
+                }
+            ],
+            "drops": []
         }
     ]
 }
