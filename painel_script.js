@@ -1,5 +1,5 @@
 /**
- * CHRONOSFERA RPG - Motor de Tradução e Lógica do Painel
+ * CHRONOSFERA RPG - Lógica do Painel Mestre
  */
 
 let bancoDeDados = { personagens: [] };
@@ -22,7 +22,9 @@ window.onload = () => {
                 bancoDeDados = data;
                 atualizarSeletorHTML();
             }
-        }).catch(() => console.log("Banco de dados não carregado."));
+        }).catch(() => {
+            console.log("Iniciando sem banco de dados anterior.");
+        });
 };
 
 function calcularFibonacci(v) { 
@@ -42,22 +44,13 @@ function atualizarDadosMatriz() {
     document.getElementById("lbl_defesa_magica").innerText = "Defesa Mágica ("+d.defesa_magica+")";
 }
 
-// --- FUNÇÃO DE IMPORTAÇÃO CORRIGIDA ---
 function importarJSON(e) {
     const reader = new FileReader();
     reader.onload = (ev) => {
         try {
             const ficha = JSON.parse(ev.target.result);
-            // Deteta se é o formato da IA ou do Sistema
-            if (ficha.dados_basicos || ficha.nome_personagem) {
-                preencherFormulario(ficha);
-                alert("Ficha carregada com sucesso! Verifique os campos antes de salvar.");
-            } else {
-                alert("Erro: O ficheiro JSON não é reconhecido como uma ficha de personagem.");
-            }
-        } catch (err) { 
-            alert("Erro ao ler JSON: " + err.message); 
-        }
+            if (ficha.dados_basicos) preencherFormulario(ficha);
+        } catch (err) { alert("Erro ao importar."); }
         e.target.value = '';
     };
     reader.readAsText(e.target.files[0]);
@@ -72,40 +65,26 @@ function atualizarSeletorHTML() {
     });
 }
 
-// --- TRADUTOR DE CAMPOS (IA -> SISTEMA) ---
 function preencherFormulario(p) {
-    // Normalização dos dados da IA
-    const nome = p.nome_personagem || p.dados_basicos?.nome || '';
-    const classe = p.classe || p.dados_basicos?.classe || '';
-    const nivel = p.nivel || p.dados_basicos?.nivel || 1;
-    const afinidade = p.afinidade_elemental || p.dados_basicos?.afinidade_elemental || 'Neutro';
-    
-    // Gerar ID automático se não existir
-    const idSugerido = p.id || nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_');
-
-    document.getElementById("id").value = idSugerido;
-    document.getElementById("nome").value = nome;
-    document.getElementById("nivel").value = nivel;
+    document.getElementById("id").value = p.id || '';
+    document.getElementById("nome").value = p.dados_basicos?.nome || '';
+    document.getElementById("nivel").value = p.dados_basicos?.nivel || 1;
     document.getElementById("xp_atual").value = p.dados_basicos?.xp_atual || 0;
     document.getElementById("xp_proximo").value = p.dados_basicos?.xp_proximo || 50;
     document.getElementById("rd_armadura").value = p.status?.rd_armadura || 0;
     document.getElementById("raca").value = p.dados_basicos?.raca || '';
-    document.getElementById("classe").value = classe;
+    document.getElementById("classe").value = p.dados_basicos?.classe || '';
     document.getElementById("url_imagem").value = p.url_imagem || '';
-    document.getElementById("afinidade").value = afinidade;
+    document.getElementById("afinidade").value = p.dados_basicos?.afinidade_elemental || 'Neutro';
 
     atualizarDadosMatriz();
 
-    // Atributos (Lida com 'bruto' ou 'valor_bruto')
     const atrs = ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'];
     atrs.forEach(a => {
-        const valorBruto = p.atributos?.[a]?.valor_bruto || p.atributos?.[a]?.bruto || 0;
-        const valorMod = p.atributos?.[a]?.mod || 0;
-        document.getElementById(a + "_bruto").value = valorBruto;
-        document.getElementById(a + "_mod").value = valorMod;
+        document.getElementById(a + "_bruto").value = p.atributos?.[a]?.bruto || 0;
+        document.getElementById(a + "_mod").value = p.atributos?.[a]?.mod || 0;
     });
 
-    // Listas Dinâmicas
     document.getElementById('lista-inventario').innerHTML = '';
     if(Array.isArray(p.inventario)) p.inventario.forEach(i => adicionarItem(i));
 
@@ -122,13 +101,28 @@ function carregarParaEdicao() {
     if(p) preencherFormulario(p);
 }
 
+// === GERAÇÃO DINÂMICA COM CHECKBOX DE EQUIPADO ===
+
 function adicionarItem(i = {}) {
     const d = document.createElement('div'); d.className = 'box-dinamico item-box';
+    const isEquipado = i.equipado ? 'checked' : ''; // Verifica se o item veio como equipado do JSON
+    
     d.innerHTML = `
-        <button class="btn-remover" onclick="this.parentElement.remove()">Remover</button>
-        <div class="grid-2">
-            <div class="form-group"><label>Nome do Item</label><input type="text" class="i-nome" value="${i.nome || ''}"></div>
-            <div class="form-group"><label>Qtd</label><input type="number" class="i-qtd" value="${i.quantidade || 1}"></div>
+        <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
+        <div style="display: flex; gap: 15px; align-items: flex-end; margin-bottom: 15px;">
+            <div class="form-group" style="flex: 2; margin-bottom: 0;">
+                <label>Nome do Item</label>
+                <input type="text" class="i-nome" value="${i.nome || ''}">
+            </div>
+            <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                <label>Qtd</label>
+                <input type="number" class="i-qtd" value="${i.quantidade || 1}">
+            </div>
+            <div class="form-group" style="flex: 1; margin-bottom: 0; text-align: center; padding-bottom: 10px;">
+                <label style="cursor: pointer; display: inline-flex; align-items: center; gap: 5px; color: #27ae60;">
+                    <input type="checkbox" class="i-equip" ${isEquipado} style="width: 18px; height: 18px; margin: 0;"> Equipado
+                </label>
+            </div>
         </div>
         <div class="form-group"><label>Descrição / Efeito</label><textarea class="i-desc" rows="2">${i.desc || ''}</textarea></div>`;
     document.getElementById('lista-inventario').appendChild(d);
@@ -137,7 +131,7 @@ function adicionarItem(i = {}) {
 function adicionarLaco(l = {}) {
     const d = document.createElement('div'); d.className = 'box-dinamico laco-box';
     d.innerHTML = `
-        <button class="btn-remover" onclick="this.parentElement.remove()">Remover</button>
+        <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
         <div class="grid-2">
             <div class="form-group"><label>Vínculo com (Aliado)</label><input type="text" class="l-nome" value="${l.nome || ''}"></div>
             <div class="form-group"><label>Força do Laço (%)</label><input type="number" class="l-porc" value="${l.porcentagem || 0}"></div>
@@ -148,7 +142,7 @@ function adicionarLaco(l = {}) {
 function adicionarTech(t = {}) {
     const d = document.createElement('div'); d.className = 'box-dinamico tech-box';
     d.innerHTML = `
-        <button class="btn-remover" onclick="this.parentElement.remove()">Remover</button>
+        <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
         <div class="grid-2">
             <div class="form-group"><label>Habilidade</label><input type="text" class="t-nome" value="${t.nome || ''}"></div>
             <div class="grid-2">
@@ -170,16 +164,16 @@ function adicionarTech(t = {}) {
             </div>
             <div class="form-group"><label>Valor/Rolagem</label><input type="text" class="t-valor" value="${t.valor || ''}"></div>
         </div>
-        <div class="form-group"><label>Efeito</label><textarea class="t-desc" rows="2">${t.desc || ''}</textarea></div>
-        <div class="form-group"><label>Interação</label><textarea class="t-inter" rows="2">${t.inter || ''}</textarea></div>
-        <div class="form-group"><label>Combo</label><textarea class="t-combo" rows="2">${t.combo || ''}</textarea></div>`;
+        <div class="form-group"><label>Descrição Completa</label><textarea class="t-desc" rows="2">${t.desc || ''}</textarea></div>
+        <div class="form-group"><label>Interação Elemental</label><textarea class="t-inter" rows="2">${t.inter || ''}</textarea></div>
+        <div class="form-group"><label>Dica de Combo</label><textarea class="t-combo" rows="2">${t.combo || ''}</textarea></div>`;
     document.getElementById('lista-techs').appendChild(d);
 }
 
 function salvarPersonagem() {
     const id = document.getElementById("id").value;
     const cl = document.getElementById("classe").value;
-    if(!id || !cl) return alert("ID e Classe obrigatórios!");
+    if(!id || !cl) return alert("ID e Classe são obrigatórios!");
     
     const info = regrasClasses[cl];
     const attrs = {};
@@ -199,8 +193,11 @@ function salvarPersonagem() {
             desc: b.querySelector('.t-desc').value, inter: b.querySelector('.t-inter').value,
             combo: b.querySelector('.t-combo').value
         })),
+        // === SALVA O ESTADO DO CHECKBOX ===
         inventario: Array.from(document.querySelectorAll('.item-box')).map(b => ({
-            nome: b.querySelector('.i-nome').value, quantidade: parseInt(b.querySelector('.i-qtd').value)||1,
+            nome: b.querySelector('.i-nome').value, 
+            quantidade: parseInt(b.querySelector('.i-qtd').value) || 1,
+            equipado: b.querySelector('.i-equip').checked,
             desc: b.querySelector('.i-desc').value
         })),
         lacos: Array.from(document.querySelectorAll('.laco-box')).map(b => ({
