@@ -20,16 +20,19 @@
                 {
                     "nome": "Túnica Arcana",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Ela confere uma visual elegante e foi recebida pelo arcanista como prova de sua benção do destino, confere +1 a sua Defesa Mágica"
                 },
                 {
                     "nome": " Cajado de Quartzo Bruto",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Um instrumento para ajudar nas execuções de feitiços, concede +1 em Magia, o dano físico é considera igual ao bônus de Poder"
                 },
                 {
                     "nome": "Botas de Couro",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Uma par de botas de couro que é confortável e protege os pés"
                 }
             ],
