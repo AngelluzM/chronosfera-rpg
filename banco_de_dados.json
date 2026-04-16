@@ -305,11 +305,13 @@
                 {
                     "nome": "Vestimenta Selvagem",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Uma roupa de couro de animal pré-histórico, confere muita resistência a dano, armadura 3"
                 },
                 {
                     "nome": "Bota de Couro Selvagem",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Além de ser de couro de animal pré-histórico, é resistente e confere aderência e leveza facilitando os movimentos"
                 }
             ],
