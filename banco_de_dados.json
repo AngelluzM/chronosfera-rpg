@@ -113,26 +113,31 @@
                 {
                     "nome": "Máscara Doutor da Peste",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Uma máscara usada por praticantes de medicina"
                 },
                 {
                     "nome": "Luvas Achronos",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Uma par de luvas misteriosa que ficou agarrada nos mão dele, mistérios sobre ainda precisam ser descobertos"
                 },
                 {
                     "nome": "Vestes Antigas",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Conjuntos de roupas de muitos anos passados, confortáveis e em excelente estado"
                 },
                 {
                     "nome": " Sobretudo Antigo",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Um sobretudo de muitos anos passados, confortável e em excelente estado"
                 },
                 {
                     "nome": "Botas Antigas de Couro",
                     "quantidade": 1,
+                    "equipado": true,
                     "desc": "Um par de botas de couro de muitos anos passados, confortável e em excelente estado e protege os pés"
                 }
             ],
