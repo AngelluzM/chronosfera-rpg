@@ -22,7 +22,7 @@ function calcularFibonacci(v) {
 }
 
 // Atualiza visualmente o Total e Bônus na tabela do painel
-window.atualizarTotais = function() {
+function atualizarTotais() {
     ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'].forEach(a => {
         const bruto = parseInt(document.getElementById(a + "_bruto").value) || 0;
         const mod = parseInt(document.getElementById(a + "_mod").value) || 0;
@@ -32,10 +32,10 @@ window.atualizarTotais = function() {
         document.getElementById(a + "_total").innerText = total;
         document.getElementById(a + "_bonus").innerText = "+" + bonus;
     });
-};
+}
 
 // Rola os dados de verdade
-window.rolarAtributo = function(attr) {
+function rolarAtributo(attr) {
     const dadoStr = document.getElementById(attr + "_dado").value; 
     const faces = parseInt(dadoStr.replace('d', '')) || 10;
     const nivel = parseInt(document.getElementById("nivel").value) || 1;
@@ -56,12 +56,12 @@ window.rolarAtributo = function(attr) {
     }
     
     document.getElementById(attr + "_bruto").value = soma;
-    window.atualizarTotais();
+    atualizarTotais();
     return soma;
-};
+}
 
 // Renderiza a Sidebar com Imagem SVG Offline para evitar erro de conexão
-window.renderizarSidebar = function() {
+function renderizarSidebar() {
     const container = document.getElementById("lista-cards");
     container.innerHTML = '';
 
@@ -79,8 +79,9 @@ window.renderizarSidebar = function() {
         }
 
         // SVG Offline: Não precisa de internet e não gera erro de console!
-        const svgPlaceholder = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' style='background:%231a252f'%3E%3Ctext x='50%25' y='50%25' font-size='20' fill='%23bdc3c7' dominant-baseline='middle' text-anchor='middle'%3E?%3C/text%3E%3C/svg%3E";
-        const imgUrl = p.url_imagem && p.url_imagem.trim() !== "" ? p.url_imagem : svgPlaceholder;
+        // Criando uma imagem falsa (SVG) direto no código para evitar erros de conexão
+        const svgData = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50'%3E%3Crect width='50' height='50' fill='%231a252f'/%3E%3Ctext x='25' y='32' font-size='20' fill='%23bdc3c7' text-anchor='middle'%3E?%3C/text%3E%3C/svg%3E";
+        const imgUrl = p.url_imagem && p.url_imagem.trim() !== "" ? p.url_imagem : svgData;
 
         const card = document.createElement("div");
         card.className = "monster-card";
@@ -99,9 +100,9 @@ window.renderizarSidebar = function() {
         `;
         container.appendChild(card);
     });
-};
+}
 
-window.limparFormulario = function() {
+function limparFormulario() {
     document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
     document.getElementById("nivel").value = 1;
     document.getElementById("tipo").value = "Mob";
@@ -117,29 +118,29 @@ window.limparFormulario = function() {
 
     document.getElementById('lista-techs').innerHTML = '';
     document.getElementById('lista-drops').innerHTML = '';
-    window.atualizarTotais();
-};
+    atualizarTotais();
+}
 
-window.importarJSON = function(e) {
+function importarJSON(e) {
     const reader = new FileReader();
     reader.onload = (ev) => {
         try {
             const importado = JSON.parse(ev.target.result);
             if (importado.personagens) {
                 bancoAntagonistas = importado;
-                window.renderizarSidebar();
+                renderizarSidebar();
                 alert("Banco de dados carregado com sucesso!");
             } else {
-                window.preencherFormulario(importado);
+                preencherFormulario(importado);
                 alert("Ficha individual importada!");
             }
         } catch (err) { alert("Erro ao ler JSON."); }
         e.target.value = '';
     };
     reader.readAsText(e.target.files[0]);
-};
+}
 
-window.preencherFormulario = function(p) {
+function preencherFormulario(p) {
     document.getElementById("id").value = p.id || '';
     document.getElementById("nome").value = p.dados_basicos?.nome || p.nome_personagem || '';
     document.getElementById("nivel").value = p.dados_basicos?.nivel || p.nivel || 1;
@@ -166,23 +167,23 @@ window.preencherFormulario = function(p) {
     });
 
     document.getElementById('lista-techs').innerHTML = '';
-    if(Array.isArray(p.techs)) p.techs.forEach(t => window.adicionarTech(t));
+    if(Array.isArray(p.techs)) p.techs.forEach(t => adicionarTech(t));
 
     document.getElementById('lista-drops').innerHTML = '';
     if(Array.isArray(p.drops) || Array.isArray(p.inventario)) {
         const dropsList = p.drops || p.inventario;
-        dropsList.forEach(d => window.adicionarDrop(d));
+        dropsList.forEach(d => adicionarDrop(d));
     }
     
-    window.atualizarTotais();
-};
+    atualizarTotais();
+}
 
-window.carregarParaEdicao = function(id) {
+function carregarParaEdicao(id) {
     const p = bancoAntagonistas.personagens.find(x => x.id === id);
-    if (p) window.preencherFormulario(p);
-};
+    if (p) preencherFormulario(p);
+}
 
-window.gerarStatusAutomatico = function() {
+function gerarStatusAutomatico() {
     const nivel = parseInt(document.getElementById("nivel").value) || 1;
     const tipo = document.getElementById("tipo").value;
     
@@ -194,7 +195,7 @@ window.gerarStatusAutomatico = function() {
 
     ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'].forEach(a => {
         document.getElementById(a + "_mod").value = 0;
-        window.rolarAtributo(a); 
+        rolarAtributo(a); 
     });
 
     const vigorGid = parseInt(document.getElementById("vigor_bruto").value);
@@ -215,9 +216,9 @@ window.gerarStatusAutomatico = function() {
     document.getElementById("dano").value = `${baseDano} + ${poderBonus}`;
 
     alert(`Atributos rolados nos dados e calculados para um ${tipo} Nv ${nivel}!`);
-};
+}
 
-window.adicionarTech = function(t = {}) {
+function adicionarTech(t = {}) {
     const d = document.createElement('div'); d.className = 'box-dinamico tech-box';
     d.innerHTML = `
         <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
@@ -228,9 +229,9 @@ window.adicionarTech = function(t = {}) {
         </div>
         <div class="form-group"><label>Descrição do Efeito</label><textarea class="t-desc" rows="2">${t.desc || ''}</textarea></div>`;
     document.getElementById('lista-techs').appendChild(d);
-};
+}
 
-window.adicionarDrop = function(d = {}) {
+function adicionarDrop(d = {}) {
     const div = document.createElement('div'); div.className = 'box-dinamico drop-box';
     div.innerHTML = `
         <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
@@ -239,9 +240,9 @@ window.adicionarDrop = function(d = {}) {
             <div class="form-group"><label>Qtd ou Condição</label><input type="text" class="d-qtd" value="${d.quantidade || '100%'}"></div>
         </div>`;
     document.getElementById('lista-drops').appendChild(div);
-};
+}
 
-window.salvarAntagonista = function() {
+function salvarAntagonista() {
     const id = document.getElementById("id").value;
     const nome = document.getElementById("nome").value;
     if(!id || !nome) return alert("Erro: Nome e ID Único são obrigatórios!");
@@ -286,11 +287,11 @@ window.salvarAntagonista = function() {
     const idx = bancoAntagonistas.personagens.findIndex(x => x.id === id);
     if(idx > -1) bancoAntagonistas.personagens[idx] = p; else bancoAntagonistas.personagens.push(p);
     
-    window.renderizarSidebar();
+    renderizarSidebar();
     
     const blob = new Blob([JSON.stringify(bancoAntagonistas, null, 4)], { type: "application/json" });
     const a = document.createElement('a'); 
     a.href = URL.createObjectURL(blob); 
     a.download = "banco_antagonistas.json"; 
     a.click();
-};
+}
