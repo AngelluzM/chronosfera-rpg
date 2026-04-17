@@ -2,7 +2,8 @@
  * CHRONOSFERA RPG - Lógica do Laboratório de Antagonistas
  */
 
-let bancoAntagonistas = { personagens: [] };
+// Usando 'var' para evitar o erro 'has already been declared' em servidores locais
+var bancoAntagonistas = { personagens: [] };
 
 window.onload = () => {
     fetch('banco_antagonistas.json?v=' + new Date().getTime())
@@ -10,7 +11,7 @@ window.onload = () => {
         .then(data => {
             if (data.personagens) {
                 bancoAntagonistas = data;
-                renderizarSidebar();
+                window.renderizarSidebar();
             }
         }).catch(() => {
             document.getElementById("lista-cards").innerHTML = '<p style="text-align:center; color:#bdc3c7;">Nenhum banco encontrado. Crie o primeiro monstro!</p>';
@@ -56,9 +57,8 @@ window.rolarAtributo = function(attr) {
     return soma;
 };
 
-// === NOVA FUNÇÃO: Atualiza os status derivados SEM rolar dados ===
 window.atualizarStatusManual = function() {
-    window.atualizarTotais(); // Garante que os totais estão certos primeiro
+    window.atualizarTotais(); 
     
     const nivel = parseInt(document.getElementById("nivel").value) || 1;
     const tipo = document.getElementById("tipo").value;
@@ -69,7 +69,6 @@ window.atualizarStatusManual = function() {
     else if (tipo === "Boss") { mult = 8; baseDano = "3d8"; }
     else if (tipo === "NPC") { mult = 1.5; baseDano = "1d4"; }
 
-    // Pega o valor TOTAL (Bruto + Modificador) de cada atributo
     const vigorTotal = parseInt(document.getElementById("vigor_total").innerText);
     const magiaTotal = parseInt(document.getElementById("magia_total").innerText);
     const esquivaBonus = parseInt(document.getElementById("esquiva_bonus").innerText.replace('+',''));
@@ -121,7 +120,7 @@ window.renderizarSidebar = function() {
             <p><strong>PV:</strong> ${p.combate.pv_maximo} | <strong>PM:</strong> ${p.combate.pm_maximo} | <strong>RD:</strong> ${p.combate.rd}</p>
             <p><strong>Esq:</strong> ${p.combate.esquiva_base} | <strong>Atq:</strong> ${p.combate.bonus_ataque} | <strong>Dano:</strong> ${p.combate.dano_base}</p>
             <div class="tech-list"><strong>Techs:</strong> ${techsResumo}</div>
-            <button class="btn-editar" onclick="carregarParaEdicao('${p.id}')">✏️ Editar</button>
+            <button class="btn-editar" onclick="window.carregarParaEdicao('${p.id}')">✏️ Editar</button>
         `;
         container.appendChild(card);
     });
