@@ -127,7 +127,19 @@
         {
             "id": "maicon",
             "url_imagem": "https://i.pinimg.com/736x/08/9d/e4/089de4dfbd5949d095e81ba3d95b0dac.jpg",
-            "techs": [],
+            "techs": [
+                {
+                    "nome": "Bálsamo Restaurador",
+                    "custo": "3",
+                    "elemento": "Luz",
+                    "alvo": "1 Aliado",
+                    "tipo": "Cura",
+                    "valor": "1d6 + Magia Total",
+                    "desc": "Unindo seus profundos conhecimentos médicos aprendidos em Lynx com sua afinidade elemental, Orpheu arremessa um frasco contendo um extrato botânico infundido em pura energia luminosa. Ao quebrar sobre o aliado, a luz reage com o composto e estimula uma regeneração celular imediata. Cortes se fecham rapidamente e o vigor retorna de forma abrupta.",
+                    "inter": "Excelente para estancar sangramentos ou curar ferimentos físicos graves, regenerando rapidamente os tecidos lesionados do alvo.",
+                    "combo": ""
+                }
+            ],
             "inventario": [
                 {
                     "nome": "Máscara Doutor da Peste",
