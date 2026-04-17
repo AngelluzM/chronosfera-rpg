@@ -158,74 +158,93 @@
                     "quantidade": 1,
                     "equipado": true,
                     "desc": "Um par de botas de couro de muitos anos passados, confortável e em excelente estado e protege os pés"
+                },
+                {
+                    "nome": "Erva Medicinal Curativa",
+                    "quantidade": 1,
+                    "equipado": false,
+                    "desc": "Uma Erva Medicinal comum encontrada com um pouco de dificuldade, ao ser consumida recupera seu vigor e cansaço físico. Cura 2d6+3"
                 }
             ],
-            "lacos": [],
+            "lacos": [
+                {
+                    "nome": "Link Tekron",
+                    "porcentagem": 12
+                },
+                {
+                    "nome": "Baltazar",
+                    "porcentagem": 10
+                },
+                {
+                    "nome": "Hexzyr",
+                    "porcentagem": 6
+                }
+            ],
             "dados_basicos": {
                 "nome": "Orpheu de Lynx",
-                "nivel": 1,
-                "xp_atual": 0,
-                "xp_proximo": 50,
+                "nivel": 2,
+                "xp_atual": 75,
+                "xp_proximo": 100,
                 "raca": "Humano",
                 "classe": "Suporte",
                 "arquetipo": "Arcana",
                 "afinidade_elemental": "Luz"
             },
             "status": {
-                "pv_maximo": 29,
-                "pm_maximo": 29,
+                "pv_maximo": 41,
+                "pm_maximo": 33,
                 "nd_esquiva_base": 9,
                 "rd_armadura": 2
             },
             "atributos": {
                 "poder": {
                     "dado": "d4",
-                    "bruto": 2,
+                    "bruto": 4,
                     "mod": 0,
-                    "total": 2,
+                    "total": 4,
                     "bonus": 0
                 },
                 "vigor": {
                     "dado": "d6",
-                    "bruto": 5,
+                    "bruto": 8,
                     "mod": 0,
-                    "total": 5,
-                    "bonus": 0
+                    "total": 8,
+                    "bonus": 1
                 },
                 "velocidade": {
                     "dado": "d8",
-                    "bruto": 4,
+                    "bruto": 8,
                     "mod": 1,
-                    "total": 5,
-                    "bonus": 0
+                    "total": 9,
+                    "bonus": 1
                 },
                 "magia": {
                     "dado": "d10",
+                    "bruto": 14,
+                    "mod": 0,
+                    "total": 14,
+                    "bonus": 2
+                },
+                "precisao": {
+                    "dado": "d8",
+                    "bruto": 13,
+                    "mod": 0,
+                    "total": 13,
+                    "bonus": 1
+                },
+                "esquiva": {
+                    "dado": "d6",
                     "bruto": 9,
                     "mod": 0,
                     "total": 9,
                     "bonus": 1
                 },
-                "precisao": {
-                    "dado": "d8",
-                    "bruto": 7,
-                    "mod": 0,
-                    "total": 7,
-                    "bonus": 1
-                },
-                "esquiva": {
-                    "dado": "d6",
-                    "bruto": 6,
-                    "mod": 0,
-                    "total": 6,
-                    "bonus": 1
-                },
                 "defesa_magica": {
                     "dado": "d12",
-                    "bruto": 11,
+                    "bruto": 17,
                     "mod": 1,
-                    "total": 12,
-                    "bonus": 1
+                    "total": 18,
+                    "bonus": 2
                 }
             }
         },
