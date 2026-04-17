@@ -352,7 +352,7 @@
             "dados_basicos": {
                 "nome": "Carroça Automática Corrompida",
                 "nivel": 5,
-                "arquetipo": "Mob",
+                "arquetipo": "Boss",
                 "afinidade_elemental": "Neutro",
                 "classe": "Antagonista"
             },
