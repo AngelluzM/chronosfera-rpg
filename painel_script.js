@@ -44,6 +44,25 @@ function atualizarDadosMatriz() {
     document.getElementById("lbl_defesa_magica").innerText = "Defesa Mágica ("+d.defesa_magica+")";
 }
 
+function recalcularPVPM() {
+    const cl = document.getElementById("classe").value;
+    if(!cl || !regrasClasses[cl]) return alert("Selecione a Classe do personagem primeiro!");
+    const info = regrasClasses[cl];
+    
+    const vigorBruto = parseInt(document.getElementById("vigor_bruto").value) || 0;
+    const vigorMod = parseInt(document.getElementById("vigor_mod").value) || 0;
+    const magiaBruto = parseInt(document.getElementById("magia_bruto").value) || 0;
+    const magiaMod = parseInt(document.getElementById("magia_mod").value) || 0;
+    
+    const pvCalc = (vigorBruto + vigorMod) + info.pv_base;
+    const pmCalc = (magiaBruto + magiaMod) + info.pm_base;
+    
+    document.getElementById("pv_maximo").value = pvCalc;
+    document.getElementById("pm_maximo").value = pmCalc;
+    
+    alert(`Valores gerados para a classe ${cl}! Você ainda pode editá-los livremente.`);
+}
+
 function importarJSON(e) {
     const reader = new FileReader();
     reader.onload = (ev) => {
@@ -77,6 +96,10 @@ function preencherFormulario(p) {
     document.getElementById("url_imagem").value = p.url_imagem || '';
     document.getElementById("afinidade").value = p.dados_basicos?.afinidade_elemental || 'Neutro';
 
+    // Puxa Vida e Magia Livres para Edição
+    document.getElementById("pv_maximo").value = p.status?.pv_maximo || 0;
+    document.getElementById("pm_maximo").value = p.status?.pm_maximo || 0;
+
     atualizarDadosMatriz();
 
     const atrs = ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'];
@@ -101,11 +124,9 @@ function carregarParaEdicao() {
     if(p) preencherFormulario(p);
 }
 
-// === GERAÇÃO DINÂMICA COM CHECKBOX DE EQUIPADO ===
-
 function adicionarItem(i = {}) {
     const d = document.createElement('div'); d.className = 'box-dinamico item-box';
-    const isEquipado = i.equipado ? 'checked' : ''; // Verifica se o item veio como equipado do JSON
+    const isEquipado = i.equipado ? 'checked' : ''; 
     
     d.innerHTML = `
         <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
@@ -193,7 +214,6 @@ function salvarPersonagem() {
             desc: b.querySelector('.t-desc').value, inter: b.querySelector('.t-inter').value,
             combo: b.querySelector('.t-combo').value
         })),
-        // === SALVA O ESTADO DO CHECKBOX ===
         inventario: Array.from(document.querySelectorAll('.item-box')).map(b => ({
             nome: b.querySelector('.i-nome').value, 
             quantidade: parseInt(b.querySelector('.i-qtd').value) || 1,
@@ -209,8 +229,11 @@ function salvarPersonagem() {
             raca: document.getElementById("raca").value, classe: cl, arquetipo: info.arquetipo, afinidade_elemental: document.getElementById("afinidade").value
         },
         status: { 
-            pv_maximo: attrs.vigor.total + info.pv_base, pm_maximo: attrs.magia.total + info.pm_base, 
-            nd_esquiva_base: 8 + attrs.esquiva.bonus, rd_armadura: parseInt(document.getElementById("rd_armadura").value) || 0
+            // AGORA GUARDA O VALOR EXATO QUE VOCÊ DIGITOU NA TELA
+            pv_maximo: parseInt(document.getElementById("pv_maximo").value) || 0, 
+            pm_maximo: parseInt(document.getElementById("pm_maximo").value) || 0, 
+            nd_esquiva_base: 8 + attrs.esquiva.bonus, 
+            rd_armadura: parseInt(document.getElementById("rd_armadura").value) || 0
         },
         atributos: attrs
     };
