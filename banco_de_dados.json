@@ -67,8 +67,8 @@
                 "afinidade_elemental": "Gelo/Água"
             },
             "status": {
-                "pv_maximo": 33,
-                "pm_maximo": 42,
+                "pv_maximo": 42,
+                "pm_maximo": 46,
                 "nd_esquiva_base": 9,
                 "rd_armadura": 0
             },
