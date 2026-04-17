@@ -207,50 +207,50 @@
             "url_imagem": "https://i.pinimg.com/736x/e3/e0/36/e3e0369778a2b1b55b41a5273ac4b431.jpg",
             "dados_basicos": {
                 "nome": "Limo Quântico",
-                "nivel": 1,
+                "nivel": 3,
                 "arquetipo": "Elite",
                 "afinidade_elemental": "Neutro",
                 "classe": "Antagonista"
             },
             "combate": {
-                "pv_maximo": 290,
-                "pm_maximo": 93,
-                "rd": 6,
-                "esquiva_base": 11,
-                "bonus_ataque": "+4",
-                "dano_base": "2d6 + 3"
+                "pv_maximo": 135,
+                "pm_maximo": 45,
+                "rd": 5,
+                "esquiva_base": 12,
+                "bonus_ataque": "+3",
+                "dano_base": "2d10 + 1 + 2"
             },
             "atributos": {
                 "poder": {
-                    "dado": "d10",
+                    "dado": "d6",
                     "bruto": 10,
                     "mod": 0,
                     "total": 10,
                     "bonus": 1
                 },
                 "vigor": {
-                    "dado": "d10",
+                    "dado": "d8",
                     "bruto": 12,
                     "mod": 0,
                     "total": 12,
                     "bonus": 1
                 },
                 "velocidade": {
-                    "dado": "d10",
+                    "dado": "d8",
                     "bruto": 9,
                     "mod": 0,
                     "total": 9,
                     "bonus": 1
                 },
                 "magia": {
-                    "dado": "d10",
+                    "dado": "d8",
                     "bruto": 15,
                     "mod": 0,
                     "total": 15,
                     "bonus": 2
                 },
                 "precisao": {
-                    "dado": "d10",
+                    "dado": "d8",
                     "bruto": 22,
                     "mod": 0,
                     "total": 22,
@@ -264,7 +264,7 @@
                     "bonus": 1
                 },
                 "defesa_magica": {
-                    "dado": "d10",
+                    "dado": "d12",
                     "bruto": 45,
                     "mod": 0,
                     "total": 45,
