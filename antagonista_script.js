@@ -33,6 +33,32 @@ function atualizarTotais() {
     });
 }
 
+// === NOVA FUNÇÃO: Rola os dados de verdade! ===
+function rolarAtributo(attr) {
+    const dadoStr = document.getElementById(attr + "_dado").value; 
+    const faces = parseInt(dadoStr.replace('d', '')) || 10;
+    const nivel = parseInt(document.getElementById("nivel").value) || 1;
+    const tipo = document.getElementById("tipo").value;
+    
+    // Determina o número de dados a rolar com base no Tipo
+    let baseDados = 1;
+    if (tipo === "Elite") baseDados = 2;
+    if (tipo === "Subchefe") baseDados = 3;
+    if (tipo === "Boss") baseDados = 5;
+    
+    // Rola +1 dado a cada 3 níveis do monstro
+    const qtdDados = Math.max(1, Math.floor((nivel - 1) / 3) + baseDados);
+    
+    let soma = 0;
+    for(let i = 0; i < qtdDados; i++) {
+        soma += Math.floor(Math.random() * faces) + 1;
+    }
+    
+    document.getElementById(attr + "_bruto").value = soma;
+    atualizarTotais();
+    return soma;
+}
+
 // === AQUI FICA A INCLUSÃO DA IMAGEM NOS CARDS ===
 function renderizarSidebar() {
     const container = document.getElementById("lista-cards");
@@ -69,7 +95,7 @@ function renderizarSidebar() {
             <p><strong>PV:</strong> ${p.combate.pv_maximo} | <strong>PM:</strong> ${p.combate.pm_maximo} | <strong>RD:</strong> ${p.combate.rd}</p>
             <p><strong>Esq:</strong> ${p.combate.esquiva_base} | <strong>Atq:</strong> ${p.combate.bonus_ataque} | <strong>Dano:</strong> ${p.combate.dano_base}</p>
             <div class="tech-list"><strong>Techs:</strong> ${techsResumo}</div>
-            <button class="btn-editar" onclick="carregarParaEdicao('${p.id}')">✏️ Editar no Painel</button>
+            <button class="btn-editar" onclick="carregarParaEdicao('${p.id}')">✏️ Editar</button>
         `;
         container.appendChild(card);
     });
@@ -130,12 +156,10 @@ function preencherFormulario(p) {
 
     const atrs = ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'];
     atrs.forEach(a => {
-        // Deteta a rolagem (dado)
         document.getElementById(a + "_dado").value = p.atributos?.[a]?.dado || "d10";
         
-        // Melhora a captura do Valor Bruto vindo do GEM ou de JSONs antigos
         let vBruto = p.atributos?.[a]?.bruto || p.atributos?.[a]?.valor_bruto || p.atributos?.[a]?.valor || 0;
-        if (typeof vBruto === 'string') { vBruto = parseInt(vBruto.replace(/\D/g, '')) || 0; } // Converte "31" para 31
+        if (typeof vBruto === 'string') { vBruto = parseInt(vBruto.replace(/\D/g, '')) || 0; }
         
         document.getElementById(a + "_bruto").value = vBruto;
         document.getElementById(a + "_mod").value = p.atributos?.[a]?.mod || 0;
@@ -153,11 +177,6 @@ function preencherFormulario(p) {
     atualizarTotais();
 }
 
-function carregarParaEdicao(id) {
-    const p = bancoAntagonistas.personagens.find(x => x.id === id);
-    if (p) preencherFormulario(p);
-}
-
 function gerarStatusAutomatico() {
     const nivel = parseInt(document.getElementById("nivel").value) || 1;
     const tipo = document.getElementById("tipo").value;
@@ -168,18 +187,11 @@ function gerarStatusAutomatico() {
     else if (tipo === "Boss") { mult = 8; baseDano = "3d8"; }
     else if (tipo === "NPC") { mult = 1.5; baseDano = "1d4"; }
 
-    // Fórmula ajustada para gerar valores brutos mais realistas (ex: Nv 1 Mob ~ 18 pontos)
-    const baseAtr = Math.floor((nivel * 3 + 15) * mult);
-    
+    // Agora o gerador rola efetivamente os dados que estiverem selecionados na tela!
     ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'].forEach(a => {
-        const variacao = Math.random() * 0.4 - 0.2; 
-        let valorFim = Math.floor(baseAtr + (baseAtr * variacao));
-        if(valorFim < 0) valorFim = 0;
-        document.getElementById(a + "_bruto").value = valorFim;
         document.getElementById(a + "_mod").value = 0;
+        rolarAtributo(a); 
     });
-
-    atualizarTotais();
 
     const vigorGid = parseInt(document.getElementById("vigor_bruto").value);
     const magiaGid = parseInt(document.getElementById("magia_bruto").value);
@@ -198,7 +210,7 @@ function gerarStatusAutomatico() {
     const poderBonus = calcularFibonacci(poderGid);
     document.getElementById("dano").value = `${baseDano} + ${poderBonus}`;
 
-    alert(`Atributos gerados! Reveja os dados.`);
+    alert(`Atributos rolados nos dados e calculados para um ${tipo} Nv ${nivel}!`);
 }
 
 function adicionarTech(t = {}) {
