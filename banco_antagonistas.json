@@ -201,6 +201,78 @@
                 }
             ],
             "drops": []
+        },
+        {
+            "id": "limo_quantico",
+            "url_imagem": "",
+            "dados_basicos": {
+                "nome": "Limo Quantico",
+                "nivel": 1,
+                "arquetipo": "Elite",
+                "afinidade_elemental": "Neutro",
+                "classe": "Antagonista"
+            },
+            "combate": {
+                "pv_maximo": 290,
+                "pm_maximo": 93,
+                "rd": 1,
+                "esquiva_base": 11,
+                "bonus_ataque": "+4",
+                "dano_base": "2d6 + 3"
+            },
+            "atributos": {
+                "poder": {
+                    "dado": "d10",
+                    "bruto": 10,
+                    "mod": 0,
+                    "total": 10,
+                    "bonus": 1
+                },
+                "vigor": {
+                    "dado": "d10",
+                    "bruto": 12,
+                    "mod": 0,
+                    "total": 12,
+                    "bonus": 1
+                },
+                "velocidade": {
+                    "dado": "d10",
+                    "bruto": 9,
+                    "mod": 0,
+                    "total": 9,
+                    "bonus": 1
+                },
+                "magia": {
+                    "dado": "d10",
+                    "bruto": 15,
+                    "mod": 0,
+                    "total": 15,
+                    "bonus": 2
+                },
+                "precisao": {
+                    "dado": "d10",
+                    "bruto": 22,
+                    "mod": 0,
+                    "total": 22,
+                    "bonus": 2
+                },
+                "esquiva": {
+                    "dado": "d10",
+                    "bruto": 12,
+                    "mod": 0,
+                    "total": 12,
+                    "bonus": 1
+                },
+                "defesa_magica": {
+                    "dado": "d10",
+                    "bruto": 45,
+                    "mod": 0,
+                    "total": 45,
+                    "bonus": 3
+                }
+            },
+            "techs": [],
+            "drops": []
         }
     ]
 }
