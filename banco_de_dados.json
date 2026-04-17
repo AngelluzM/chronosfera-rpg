@@ -34,74 +34,93 @@
                     "quantidade": 1,
                     "equipado": true,
                     "desc": "Uma par de botas de couro que é confortável e protege os pés"
+                },
+                {
+                    "nome": "Erva Medicinal Curativa",
+                    "quantidade": 6,
+                    "equipado": false,
+                    "desc": "Uma Erva Medicinal comum encontrada com um pouco de dificuldade, ao ser consumida recupera seu vigor e cansaço físico. Cura 2d6+3"
                 }
             ],
-            "lacos": [],
+            "lacos": [
+                {
+                    "nome": "Orpheu de Lynx",
+                    "porcentagem": 10
+                },
+                {
+                    "nome": "Link Tekron",
+                    "porcentagem": 5
+                },
+                {
+                    "nome": "Hexzyr",
+                    "porcentagem": 8
+                }
+            ],
             "dados_basicos": {
                 "nome": "Baltazar",
-                "nivel": 1,
-                "xp_atual": 0,
-                "xp_proximo": 50,
+                "nivel": 2,
+                "xp_atual": 75,
+                "xp_proximo": 100,
                 "raca": "Humano",
                 "classe": "Feiticeiro",
                 "arquetipo": "Arcana",
                 "afinidade_elemental": "Gelo/Água"
             },
             "status": {
-                "pv_maximo": 30,
-                "pm_maximo": 36,
-                "nd_esquiva_base": 8,
+                "pv_maximo": 33,
+                "pm_maximo": 42,
+                "nd_esquiva_base": 9,
                 "rd_armadura": 0
             },
             "atributos": {
                 "poder": {
                     "dado": "d8",
-                    "bruto": 4,
+                    "bruto": 8,
                     "mod": 0,
-                    "total": 4,
-                    "bonus": 0
+                    "total": 8,
+                    "bonus": 1
                 },
                 "vigor": {
                     "dado": "d6",
-                    "bruto": 6,
+                    "bruto": 9,
                     "mod": 0,
-                    "total": 6,
+                    "total": 9,
                     "bonus": 1
                 },
                 "velocidade": {
                     "dado": "d8",
-                    "bruto": 7,
+                    "bruto": 11,
                     "mod": 0,
-                    "total": 7,
+                    "total": 11,
                     "bonus": 1
                 },
                 "magia": {
                     "dado": "d12",
-                    "bruto": 11,
+                    "bruto": 17,
                     "mod": 1,
-                    "total": 12,
-                    "bonus": 1
+                    "total": 18,
+                    "bonus": 2
                 },
                 "precisao": {
                     "dado": "d4",
-                    "bruto": 3,
-                    "mod": 0,
-                    "total": 3,
-                    "bonus": 0
-                },
-                "esquiva": {
-                    "dado": "d6",
                     "bruto": 5,
                     "mod": 0,
                     "total": 5,
                     "bonus": 0
                 },
+                "esquiva": {
+                    "dado": "d6",
+                    "bruto": 8,
+                    "mod": 0,
+                    "total": 8,
+                    "bonus": 1
+                },
                 "defesa_magica": {
                     "dado": "d10",
-                    "bruto": 8,
+                    "bruto": 13,
                     "mod": 1,
-                    "total": 9,
-                    "bonus": 1
+                    "total": 14,
+                    "bonus": 2
                 }
             }
         },
