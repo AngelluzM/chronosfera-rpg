@@ -206,7 +206,7 @@
             "id": "limo_quantico",
             "url_imagem": "",
             "dados_basicos": {
-                "nome": "Limo Quantico",
+                "nome": "Limo Quântico",
                 "nivel": 1,
                 "arquetipo": "Elite",
                 "afinidade_elemental": "Neutro",
@@ -215,7 +215,7 @@
             "combate": {
                 "pv_maximo": 290,
                 "pm_maximo": 93,
-                "rd": 1,
+                "rd": 6,
                 "esquiva_base": 11,
                 "bonus_ataque": "+4",
                 "dano_base": "2d6 + 3"
