@@ -266,11 +266,20 @@
                     "desc": "A Pistola de Ar Comprimido é o equipamento padrão e inicial da Classe Mecânico. Ela representa o foco na Precisão e na versatilidade tecnológica, sendo uma arma de fogo baseada em tecnologia de pressão. Concede +1 no ataque e o dano é 1d8 + Atributo de Precisão"
                 }
             ],
-            "lacos": [],
+            "lacos": [
+                {
+                    "nome": "Orpheu de Lynx",
+                    "porcentagem": 10
+                },
+                {
+                    "nome": "Baltazar",
+                    "porcentagem": 3
+                }
+            ],
             "dados_basicos": {
                 "nome": "Link Tekron",
                 "nivel": 1,
-                "xp_atual": 0,
+                "xp_atual": 49,
                 "xp_proximo": 50,
                 "raca": "Humano",
                 "classe": "Mecânico",
