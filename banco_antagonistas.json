@@ -273,6 +273,78 @@
             },
             "techs": [],
             "drops": []
+        },
+        {
+            "id": "Pérola Synko",
+            "url_imagem": "https://i.pinimg.com/736x/4f/4e/ca/4f4ecae2dea1b1af9f08d0807af054dc.jpg",
+            "dados_basicos": {
+                "nome": "Pérola Synko",
+                "nivel": 10,
+                "arquetipo": "NPC",
+                "afinidade_elemental": "Fogo",
+                "classe": "Antagonista"
+            },
+            "combate": {
+                "pv_maximo": 229,
+                "pm_maximo": 63,
+                "rd": 5,
+                "esquiva_base": 11,
+                "bonus_ataque": "+9",
+                "dano_base": "3d10 + 3 + 4"
+            },
+            "atributos": {
+                "poder": {
+                    "dado": "d6",
+                    "bruto": 31,
+                    "mod": 0,
+                    "total": 31,
+                    "bonus": 3
+                },
+                "vigor": {
+                    "dado": "d8",
+                    "bruto": 42,
+                    "mod": 0,
+                    "total": 42,
+                    "bonus": 3
+                },
+                "velocidade": {
+                    "dado": "d4",
+                    "bruto": 20,
+                    "mod": 0,
+                    "total": 20,
+                    "bonus": 2
+                },
+                "magia": {
+                    "dado": "d10",
+                    "bruto": 52,
+                    "mod": 0,
+                    "total": 52,
+                    "bonus": 4
+                },
+                "precisao": {
+                    "dado": "d12",
+                    "bruto": 63,
+                    "mod": 0,
+                    "total": 63,
+                    "bonus": 4
+                },
+                "esquiva": {
+                    "dado": "d6",
+                    "bruto": 30,
+                    "mod": 0,
+                    "total": 30,
+                    "bonus": 3
+                },
+                "defesa_magica": {
+                    "dado": "d8",
+                    "bruto": 41,
+                    "mod": 0,
+                    "total": 41,
+                    "bonus": 3
+                }
+            },
+            "techs": [],
+            "drops": []
         }
     ]
 }
