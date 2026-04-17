@@ -26,10 +26,7 @@
         .atr-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px; margin-bottom: 10px; align-items: center; }
         .atr-header { font-weight: bold; color: #2c3e50; border-bottom: 2px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; }
 
-        button { 
-            background-color: #3498db; color: white; padding: 14px 20px; border: none; border-radius: 4px; 
-            cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; transition: background 0.3s; 
-        }
+        button { background-color: #3498db; color: white; padding: 14px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; transition: background 0.3s; }
         button:hover { background-color: #2980b9; }
 
         /* === BLOCOS DINÂMICOS (ITENS, TECHS, LAÇOS) === */
@@ -41,11 +38,15 @@
         .btn-remover { background-color: #e74c3c; width: auto; padding: 6px 12px; font-size: 12px; position: absolute; right: 15px; top: 12px; margin: 0; z-index: 10; border-radius: 4px; color: white; border: none; cursor: pointer; }
         .btn-remover:hover { background-color: #c0392b; }
         
-        .btn-add-item { background-color: #27ae60; margin-bottom: 20px;}
-        .btn-add-laco { background-color: #e67e22; margin-bottom: 20px;}
-        .btn-add-tech { background-color: #9b59b6; margin-bottom: 20px;}
+        .btn-add { background-color: #34495e; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-bottom: 15px; font-size: 14px; width: auto; margin-top: 0; }
+        .btn-add-item { background-color: #27ae60; margin-bottom: 20px; width: 100%; margin-top: 5px;}
+        .btn-add-laco { background-color: #e67e22; margin-bottom: 20px; width: 100%; margin-top: 5px;}
+        .btn-add-tech { background-color: #9b59b6; margin-bottom: 20px; width: 100%; margin-top: 5px;}
         
-        .secao-titulo { margin-top: 40px; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+        .btn-recalcular { background-color: #f39c12; width: auto; font-size: 14px; padding: 8px 15px; margin-top: 0; margin-bottom: 20px;}
+        .btn-recalcular:hover { background-color: #e67e22; }
+        
+        .secao-titulo { margin-top: 40px; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; color: #2c3e50;}
     </style>
 </head>
 <body>
@@ -56,7 +57,7 @@
     <div class="import-section">
         <div class="grid-2">
             <div class="form-group">
-                <label>1. Personagens no Banco (Carregado Auto)</label>
+                <label>1. Personagens no Banco</label>
                 <select id="seletorPersonagem" onchange="carregarParaEdicao()">
                     <option value="">Aguardando banco_de_dados.json...</option>
                 </select>
@@ -70,14 +71,8 @@
 
     <h3 class="secao-titulo">👤 Identidade do Herói</h3>
     <div class="grid-2">
-        <div class="form-group">
-            <label>Nome do Personagem</label>
-            <input type="text" id="nome">
-        </div>
-        <div class="form-group">
-            <label>ID Único (ex: king_01)</label>
-            <input type="text" id="id">
-        </div>
+        <div class="form-group"><label>Nome do Personagem</label><input type="text" id="nome"></div>
+        <div class="form-group"><label>ID Único (ex: king_01)</label><input type="text" id="id"></div>
     </div>
 
     <div class="grid-4">
@@ -118,6 +113,13 @@
         </div>
     </div>
 
+    <h3 class="secao-titulo" style="color: #e74c3c;">⚔️ Status de Combate (Vida e Magia)</h3>
+    <div class="grid-2" style="max-width: 400px;">
+        <div class="form-group"><label style="color: #c0392b;">❤️ PV</label><input type="number" id="pv_maximo" value="0"></div>
+        <div class="form-group"><label style="color: #2980b9;">💧 PM</label><input type="number" id="pm_maximo" value="0"></div>
+    </div>
+    <button type="button" class="btn-recalcular" onclick="recalcularPVPM()">🔄 Gerar PV/PM Pela Classe e Atributos</button>
+
     <h3 class="secao-titulo">📊 Atributos e Modificadores</h3>
     <div class="atributos-tabela">
         <div class="atr-row atr-header">
@@ -138,13 +140,13 @@
 
     <h3 class="secao-titulo" style="color: #e67e22;">🤝 Laços</h3>
     <div id="lista-lacos"></div>
-    <button type="button" class="btn-add-laco" onclick="adicionarLaco()">+ Adicionar Laço</button>
+    <button type="button" class="btn-add-laco" onclick="adicionarLaço()">+ Adicionar Laço</button>
 
     <h3 class="secao-titulo" style="color: #9b59b6;">✨ Techs & Habilidades</h3>
     <div id="lista-techs"></div>
     <button type="button" class="btn-add-tech" onclick="adicionarTech()">+ Adicionar Habilidade</button>
 
-    <button onclick="salvarPersonagem()" style="background-color: #2c3e50; margin-top: 40px; margin-bottom: 60px;">
+    <button onclick="salvarPersonagem()" style="background-color: #2c3e50; margin-top: 40px; margin-bottom: 60px; font-size: 20px;">
         💾 SALVAR E BAIXAR BANCO ATUALIZADO
     </button>
 </div>
