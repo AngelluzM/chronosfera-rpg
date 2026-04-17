@@ -362,11 +362,20 @@
                     "desc": "Além de ser de couro de animal pré-histórico, é resistente e confere aderência e leveza facilitando os movimentos"
                 }
             ],
-            "lacos": [],
+            "lacos": [
+                {
+                    "nome": "Orpheu de Lynx",
+                    "porcentagem": 8
+                },
+                {
+                    "nome": "Baltazar",
+                    "porcentagem": 8
+                }
+            ],
             "dados_basicos": {
                 "nome": "Hexzyr",
                 "nivel": 1,
-                "xp_atual": 0,
+                "xp_atual": 17,
                 "xp_proximo": 50,
                 "raca": "Humano",
                 "classe": "Selvagem",
