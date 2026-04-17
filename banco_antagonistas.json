@@ -345,6 +345,78 @@
             },
             "techs": [],
             "drops": []
+        },
+        {
+            "id": "boss01",
+            "url_imagem": "https://i.pinimg.com/736x/d6/49/eb/d649eb887c32f51bd966bb28d7944ca0.jpg",
+            "dados_basicos": {
+                "nome": "Carroça Automática Corrompida",
+                "nivel": 5,
+                "arquetipo": "Mob",
+                "afinidade_elemental": "Neutro",
+                "classe": "Antagonista"
+            },
+            "combate": {
+                "pv_maximo": 185,
+                "pm_maximo": 57,
+                "rd": 10,
+                "esquiva_base": 12,
+                "bonus_ataque": "+3",
+                "dano_base": "3d6 + 3 + Poder Total"
+            },
+            "atributos": {
+                "poder": {
+                    "dado": "d12",
+                    "bruto": 35,
+                    "mod": 0,
+                    "total": 35,
+                    "bonus": 3
+                },
+                "vigor": {
+                    "dado": "d10",
+                    "bruto": 27,
+                    "mod": 0,
+                    "total": 27,
+                    "bonus": 3
+                },
+                "velocidade": {
+                    "dado": "d8",
+                    "bruto": 22,
+                    "mod": 0,
+                    "total": 22,
+                    "bonus": 2
+                },
+                "magia": {
+                    "dado": "d6",
+                    "bruto": 16,
+                    "mod": 0,
+                    "total": 16,
+                    "bonus": 2
+                },
+                "precisao": {
+                    "dado": "d4",
+                    "bruto": 11,
+                    "mod": 0,
+                    "total": 11,
+                    "bonus": 1
+                },
+                "esquiva": {
+                    "dado": "d8",
+                    "bruto": 20,
+                    "mod": 0,
+                    "total": 20,
+                    "bonus": 2
+                },
+                "defesa_magica": {
+                    "dado": "d10",
+                    "bruto": 30,
+                    "mod": 0,
+                    "total": 30,
+                    "bonus": 3
+                }
+            },
+            "techs": [],
+            "drops": []
         }
     ]
 }
