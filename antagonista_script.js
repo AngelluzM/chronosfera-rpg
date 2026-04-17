@@ -21,8 +21,7 @@ function calcularFibonacci(v) {
     return v >= 82 ? 5 : v >= 48 ? 4 : v >= 27 ? 3 : v >= 14 ? 2 : v >= 6 ? 1 : 0; 
 }
 
-// Atualiza visualmente o Total e Bônus na tabela do painel
-function atualizarTotais() {
+window.atualizarTotais = function() {
     ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'].forEach(a => {
         const bruto = parseInt(document.getElementById(a + "_bruto").value) || 0;
         const mod = parseInt(document.getElementById(a + "_mod").value) || 0;
@@ -32,22 +31,19 @@ function atualizarTotais() {
         document.getElementById(a + "_total").innerText = total;
         document.getElementById(a + "_bonus").innerText = "+" + bonus;
     });
-}
+};
 
-// Rola os dados de verdade
-function rolarAtributo(attr) {
+window.rolarAtributo = function(attr) {
     const dadoStr = document.getElementById(attr + "_dado").value; 
     const faces = parseInt(dadoStr.replace('d', '')) || 10;
     const nivel = parseInt(document.getElementById("nivel").value) || 1;
     const tipo = document.getElementById("tipo").value;
     
-    // Determina o número de dados a rolar com base no Tipo
     let baseDados = 1;
     if (tipo === "Elite") baseDados = 2;
     if (tipo === "Subchefe") baseDados = 3;
     if (tipo === "Boss") baseDados = 5;
     
-    // Rola +1 dado a cada 3 níveis do monstro
     const qtdDados = Math.max(1, Math.floor((nivel - 1) / 3) + baseDados);
     
     let soma = 0;
@@ -56,12 +52,43 @@ function rolarAtributo(attr) {
     }
     
     document.getElementById(attr + "_bruto").value = soma;
-    atualizarTotais();
+    window.atualizarTotais();
     return soma;
-}
+};
 
-// Renderiza a Sidebar com Imagem SVG Offline para evitar erro de conexão
-function renderizarSidebar() {
+// === NOVA FUNÇÃO: Atualiza os status derivados SEM rolar dados ===
+window.atualizarStatusManual = function() {
+    window.atualizarTotais(); // Garante que os totais estão certos primeiro
+    
+    const nivel = parseInt(document.getElementById("nivel").value) || 1;
+    const tipo = document.getElementById("tipo").value;
+    
+    let mult = 1; let baseDano = "1d6";
+    if (tipo === "Elite") { mult = 2.5; baseDano = "2d6"; }
+    else if (tipo === "Subchefe") { mult = 4; baseDano = "2d8"; }
+    else if (tipo === "Boss") { mult = 8; baseDano = "3d8"; }
+    else if (tipo === "NPC") { mult = 1.5; baseDano = "1d4"; }
+
+    // Pega o valor TOTAL (Bruto + Modificador) de cada atributo
+    const vigorTotal = parseInt(document.getElementById("vigor_total").innerText);
+    const magiaTotal = parseInt(document.getElementById("magia_total").innerText);
+    const esquivaBonus = parseInt(document.getElementById("esquiva_bonus").innerText.replace('+',''));
+    const precisaoBonus = parseInt(document.getElementById("precisao_bonus").innerText.replace('+',''));
+    const poderBonus = parseInt(document.getElementById("poder_bonus").innerText.replace('+',''));
+
+    document.getElementById("pv").value = Math.floor((vigorTotal * 5) + (nivel * 10 * mult));
+    document.getElementById("pm").value = Math.floor((magiaTotal * 2) + (nivel * 5));
+    document.getElementById("esquiva_base").value = 8 + esquivaBonus + Math.floor(nivel/3);
+    document.getElementById("rd").value = Math.floor(nivel * (mult / 2));
+    
+    const bonusAtq = precisaoBonus + Math.floor(nivel/2);
+    document.getElementById("ataque").value = "+" + bonusAtq;
+    document.getElementById("dano").value = `${baseDano} + ${poderBonus}`;
+    
+    alert("Status de Combate atualizados com base nos atributos atuais!");
+};
+
+window.renderizarSidebar = function() {
     const container = document.getElementById("lista-cards");
     container.innerHTML = '';
 
@@ -78,8 +105,6 @@ function renderizarSidebar() {
             techsResumo = p.techs.map(t => t.nome).join(", ");
         }
 
-        // SVG Offline: Não precisa de internet e não gera erro de console!
-        // Criando uma imagem falsa (SVG) direto no código para evitar erros de conexão
         const svgData = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50'%3E%3Crect width='50' height='50' fill='%231a252f'/%3E%3Ctext x='25' y='32' font-size='20' fill='%23bdc3c7' text-anchor='middle'%3E?%3C/text%3E%3C/svg%3E";
         const imgUrl = p.url_imagem && p.url_imagem.trim() !== "" ? p.url_imagem : svgData;
 
@@ -100,9 +125,9 @@ function renderizarSidebar() {
         `;
         container.appendChild(card);
     });
-}
+};
 
-function limparFormulario() {
+window.limparFormulario = function() {
     document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
     document.getElementById("nivel").value = 1;
     document.getElementById("tipo").value = "Mob";
@@ -118,29 +143,29 @@ function limparFormulario() {
 
     document.getElementById('lista-techs').innerHTML = '';
     document.getElementById('lista-drops').innerHTML = '';
-    atualizarTotais();
-}
+    window.atualizarTotais();
+};
 
-function importarJSON(e) {
+window.importarJSON = function(e) {
     const reader = new FileReader();
     reader.onload = (ev) => {
         try {
             const importado = JSON.parse(ev.target.result);
             if (importado.personagens) {
                 bancoAntagonistas = importado;
-                renderizarSidebar();
+                window.renderizarSidebar();
                 alert("Banco de dados carregado com sucesso!");
             } else {
-                preencherFormulario(importado);
+                window.preencherFormulario(importado);
                 alert("Ficha individual importada!");
             }
         } catch (err) { alert("Erro ao ler JSON."); }
         e.target.value = '';
     };
     reader.readAsText(e.target.files[0]);
-}
+};
 
-function preencherFormulario(p) {
+window.preencherFormulario = function(p) {
     document.getElementById("id").value = p.id || '';
     document.getElementById("nome").value = p.dados_basicos?.nome || p.nome_personagem || '';
     document.getElementById("nivel").value = p.dados_basicos?.nivel || p.nivel || 1;
@@ -167,58 +192,31 @@ function preencherFormulario(p) {
     });
 
     document.getElementById('lista-techs').innerHTML = '';
-    if(Array.isArray(p.techs)) p.techs.forEach(t => adicionarTech(t));
+    if(Array.isArray(p.techs)) p.techs.forEach(t => window.adicionarTech(t));
 
     document.getElementById('lista-drops').innerHTML = '';
     if(Array.isArray(p.drops) || Array.isArray(p.inventario)) {
         const dropsList = p.drops || p.inventario;
-        dropsList.forEach(d => adicionarDrop(d));
+        dropsList.forEach(d => window.adicionarDrop(d));
     }
     
-    atualizarTotais();
-}
+    window.atualizarTotais();
+};
 
-function carregarParaEdicao(id) {
+window.carregarParaEdicao = function(id) {
     const p = bancoAntagonistas.personagens.find(x => x.id === id);
-    if (p) preencherFormulario(p);
-}
+    if (p) window.preencherFormulario(p);
+};
 
-function gerarStatusAutomatico() {
-    const nivel = parseInt(document.getElementById("nivel").value) || 1;
-    const tipo = document.getElementById("tipo").value;
-    
-    let mult = 1; let baseDano = "1d6";
-    if (tipo === "Elite") { mult = 2.5; baseDano = "2d6"; }
-    else if (tipo === "Subchefe") { mult = 4; baseDano = "2d8"; }
-    else if (tipo === "Boss") { mult = 8; baseDano = "3d8"; }
-    else if (tipo === "NPC") { mult = 1.5; baseDano = "1d4"; }
-
+window.gerarStatusAutomatico = function() {
     ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'].forEach(a => {
         document.getElementById(a + "_mod").value = 0;
-        rolarAtributo(a); 
+        window.rolarAtributo(a); 
     });
+    window.atualizarStatusManual();
+};
 
-    const vigorGid = parseInt(document.getElementById("vigor_bruto").value);
-    const magiaGid = parseInt(document.getElementById("magia_bruto").value);
-    const esquivaGid = parseInt(document.getElementById("esquiva_bruto").value);
-    const precisaoGid = parseInt(document.getElementById("precisao_bruto").value);
-    const poderGid = parseInt(document.getElementById("poder_bruto").value);
-
-    document.getElementById("pv").value = Math.floor((vigorGid * 5) + (nivel * 10 * mult));
-    document.getElementById("pm").value = Math.floor((magiaGid * 2) + (nivel * 5));
-    document.getElementById("esquiva_base").value = 8 + calcularFibonacci(esquivaGid) + Math.floor(nivel/3);
-    document.getElementById("rd").value = Math.floor(nivel * (mult / 2));
-    
-    const bonusAtq = calcularFibonacci(precisaoGid) + Math.floor(nivel/2);
-    document.getElementById("ataque").value = "+" + bonusAtq;
-    
-    const poderBonus = calcularFibonacci(poderGid);
-    document.getElementById("dano").value = `${baseDano} + ${poderBonus}`;
-
-    alert(`Atributos rolados nos dados e calculados para um ${tipo} Nv ${nivel}!`);
-}
-
-function adicionarTech(t = {}) {
+window.adicionarTech = function(t = {}) {
     const d = document.createElement('div'); d.className = 'box-dinamico tech-box';
     d.innerHTML = `
         <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
@@ -229,9 +227,9 @@ function adicionarTech(t = {}) {
         </div>
         <div class="form-group"><label>Descrição do Efeito</label><textarea class="t-desc" rows="2">${t.desc || ''}</textarea></div>`;
     document.getElementById('lista-techs').appendChild(d);
-}
+};
 
-function adicionarDrop(d = {}) {
+window.adicionarDrop = function(d = {}) {
     const div = document.createElement('div'); div.className = 'box-dinamico drop-box';
     div.innerHTML = `
         <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
@@ -240,9 +238,9 @@ function adicionarDrop(d = {}) {
             <div class="form-group"><label>Qtd ou Condição</label><input type="text" class="d-qtd" value="${d.quantidade || '100%'}"></div>
         </div>`;
     document.getElementById('lista-drops').appendChild(div);
-}
+};
 
-function salvarAntagonista() {
+window.salvarAntagonista = function() {
     const id = document.getElementById("id").value;
     const nome = document.getElementById("nome").value;
     if(!id || !nome) return alert("Erro: Nome e ID Único são obrigatórios!");
@@ -287,11 +285,11 @@ function salvarAntagonista() {
     const idx = bancoAntagonistas.personagens.findIndex(x => x.id === id);
     if(idx > -1) bancoAntagonistas.personagens[idx] = p; else bancoAntagonistas.personagens.push(p);
     
-    renderizarSidebar();
+    window.renderizarSidebar();
     
     const blob = new Blob([JSON.stringify(bancoAntagonistas, null, 4)], { type: "application/json" });
     const a = document.createElement('a'); 
     a.href = URL.createObjectURL(blob); 
     a.download = "banco_antagonistas.json"; 
     a.click();
-}
+};
