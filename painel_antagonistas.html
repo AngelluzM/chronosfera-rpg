@@ -32,7 +32,8 @@
         
 		        /* === PAINEL CENTRAL (FORMULÁRIO) === */
         .btn-novo { background-color: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; }
-        .btn-gerar { background-color: #f39c12; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; font-size: 1.1em; }
+        .btn-gerar { background-color: #f39c12; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; font-size: 1.1em; transition: 0.2s;}
+        .btn-gerar:hover { background-color: #d68910; }
         
         .form-section { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .secao-titulo { margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; color: #c0392b; font-size: 1.2em; }
@@ -44,21 +45,24 @@
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
         .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
         
-        /* Grelha de Atributos com a coluna "Dado" restaurada (6 colunas) */
+        /* Grelha de Atributos Ajustada para os Botões de Dado */
         .atributos-tabela { background: #fdf9f9; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; margin-top: 20px; }
-        .atr-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; align-items: center; text-align: center; }
+        .atr-row { display: grid; grid-template-columns: 1.2fr 1fr 1.5fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; align-items: center; text-align: center; }
         .atr-header { font-weight: bold; color: #c0392b; border-bottom: 2px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; }
         .atr-row span:first-child { text-align: left; font-weight: bold; color: #555; }
         .atr-row select { padding: 8px 5px; }
         .atr-total { font-weight: bold; color: #c0392b; font-size: 1.1em; background: #fff; padding: 8px; border-radius: 4px; border: 1px dashed #e74c3c; }
         .atr-bonus { font-weight: bold; color: #2980b9; font-size: 1.1em; background: #e8f4f8; padding: 8px; border-radius: 4px; }
 
+        .btn-rolar { background: #34495e; color: white; border: none; border-radius: 4px; cursor: pointer; padding: 0 10px; font-size: 1.2em; transition: 0.2s; display: flex; align-items: center; justify-content: center;}
+        .btn-rolar:hover { background: #f39c12; }
+        
+		        /* Dinâmicos */
         .box-dinamico { background: #fdfdfd; border: 1px solid #dcdde1; border-radius: 6px; padding: 15px; margin-bottom: 15px; position: relative; }
         .tech-box { border-left: 5px solid #8e44ad; }
         .drop-box { border-left: 5px solid #f1c40f; }
         .btn-remover { background-color: #e74c3c; width: auto; padding: 5px 10px; font-size: 12px; position: absolute; right: 15px; top: 10px; border: none; color: white; border-radius: 4px; cursor: pointer;}
         
-		        /* Dinâmicos */
         .btn-add { background-color: #34495e; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-bottom: 15px; }
         .btn-salvar { background-color: #c0392b; color: white; padding: 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 18px; font-weight: bold; width: 100%; margin-top: 20px; margin-bottom: 50px; }
         
@@ -110,7 +114,7 @@
             <div class="form-group"><label>Avatar (URL da Imagem)</label><input type="text" id="url_imagem" placeholder="Link da arte"></div>
         </div>
         
-        <button class="btn-gerar" onclick="gerarStatusAutomatico()">🎲 Auto-Gerar Atributos e Combate</button>
+        <button class="btn-gerar" onclick="gerarStatusAutomatico()">🎲 Auto-Gerar Status e Atributos</button>
     </div>
 
     <div class="form-section">
@@ -119,7 +123,7 @@
             <div class="form-group"><label>❤️ PV Máx</label><input type="number" id="pv" value="10"></div>
             <div class="form-group"><label>💧 PM Máx</label><input type="number" id="pm" value="5"></div>
             <div class="form-group"><label>🛡️ RD (Armadura)</label><input type="number" id="rd" value="0"></div>
-            <div class="form-group"><label>🏃 Esquiva Base (ND)</label><input type="number" id="esquiva_base" value="8"></div>
+            <div class="form-group"><label>🏃 Esquiva (ND)</label><input type="number" id="esquiva_base" value="8"></div>
         </div>
         <div class="grid-2">
             <div class="form-group"><label>🎯 Bônus de Ataque</label><input type="text" id="ataque" placeholder="Ex: +5"></div>
@@ -129,13 +133,13 @@
         <h3 class="secao-titulo" style="margin-top: 30px;">📊 Atributos e Modificadores</h3>
         <div class="atributos-tabela">
             <div class="atr-row atr-header">
-                <span>Atributo</span><span>Dado</span><span>Bruto</span><span>Mod. (Buffs)</span><span>Total</span><span>Bônus</span>
+                <span>Atributo</span><span>Dado</span><span>Bruto</span><span>Modificadores</span><span>Total</span><span>Bônus</span>
             </div>
             
             <div class="atr-row">
                 <span>Poder</span>
                 <select id="poder_dado"><option>d4</option><option>d6</option><option>d8</option><option selected>d10</option><option>d12</option><option>d20</option></select>
-                <input type="number" id="poder_bruto" value="0" oninput="atualizarTotais()">
+                <div style="display: flex; gap: 5px;"><button type="button" class="btn-rolar" onclick="rolarAtributo('poder')" title="Rolar Dado">🎲</button><input type="number" id="poder_bruto" value="0" oninput="atualizarTotais()"></div>
                 <input type="number" id="poder_mod" value="0" oninput="atualizarTotais()">
                 <span id="poder_total" class="atr-total">0</span>
                 <span id="poder_bonus" class="atr-bonus">+0</span>
@@ -143,7 +147,7 @@
             <div class="atr-row">
                 <span>Vigor</span>
                 <select id="vigor_dado"><option>d4</option><option>d6</option><option>d8</option><option selected>d10</option><option>d12</option><option>d20</option></select>
-                <input type="number" id="vigor_bruto" value="0" oninput="atualizarTotais()">
+                <div style="display: flex; gap: 5px;"><button type="button" class="btn-rolar" onclick="rolarAtributo('vigor')" title="Rolar Dado">🎲</button><input type="number" id="vigor_bruto" value="0" oninput="atualizarTotais()"></div>
                 <input type="number" id="vigor_mod" value="0" oninput="atualizarTotais()">
                 <span id="vigor_total" class="atr-total">0</span>
                 <span id="vigor_bonus" class="atr-bonus">+0</span>
@@ -151,7 +155,7 @@
             <div class="atr-row">
                 <span>Velocidade</span>
                 <select id="velocidade_dado"><option>d4</option><option>d6</option><option>d8</option><option selected>d10</option><option>d12</option><option>d20</option></select>
-                <input type="number" id="velocidade_bruto" value="0" oninput="atualizarTotais()">
+                <div style="display: flex; gap: 5px;"><button type="button" class="btn-rolar" onclick="rolarAtributo('velocidade')" title="Rolar Dado">🎲</button><input type="number" id="velocidade_bruto" value="0" oninput="atualizarTotais()"></div>
                 <input type="number" id="velocidade_mod" value="0" oninput="atualizarTotais()">
                 <span id="velocidade_total" class="atr-total">0</span>
                 <span id="velocidade_bonus" class="atr-bonus">+0</span>
@@ -159,7 +163,7 @@
             <div class="atr-row">
                 <span>Magia</span>
                 <select id="magia_dado"><option>d4</option><option>d6</option><option>d8</option><option selected>d10</option><option>d12</option><option>d20</option></select>
-                <input type="number" id="magia_bruto" value="0" oninput="atualizarTotais()">
+                <div style="display: flex; gap: 5px;"><button type="button" class="btn-rolar" onclick="rolarAtributo('magia')" title="Rolar Dado">🎲</button><input type="number" id="magia_bruto" value="0" oninput="atualizarTotais()"></div>
                 <input type="number" id="magia_mod" value="0" oninput="atualizarTotais()">
                 <span id="magia_total" class="atr-total">0</span>
                 <span id="magia_bonus" class="atr-bonus">+0</span>
@@ -167,7 +171,7 @@
             <div class="atr-row">
                 <span>Precisão</span>
                 <select id="precisao_dado"><option>d4</option><option>d6</option><option>d8</option><option selected>d10</option><option>d12</option><option>d20</option></select>
-                <input type="number" id="precisao_bruto" value="0" oninput="atualizarTotais()">
+                <div style="display: flex; gap: 5px;"><button type="button" class="btn-rolar" onclick="rolarAtributo('precisao')" title="Rolar Dado">🎲</button><input type="number" id="precisao_bruto" value="0" oninput="atualizarTotais()"></div>
                 <input type="number" id="precisao_mod" value="0" oninput="atualizarTotais()">
                 <span id="precisao_total" class="atr-total">0</span>
                 <span id="precisao_bonus" class="atr-bonus">+0</span>
@@ -175,7 +179,7 @@
             <div class="atr-row">
                 <span>Esquiva</span>
                 <select id="esquiva_dado"><option>d4</option><option>d6</option><option>d8</option><option selected>d10</option><option>d12</option><option>d20</option></select>
-                <input type="number" id="esquiva_bruto" value="0" oninput="atualizarTotais()">
+                <div style="display: flex; gap: 5px;"><button type="button" class="btn-rolar" onclick="rolarAtributo('esquiva')" title="Rolar Dado">🎲</button><input type="number" id="esquiva_bruto" value="0" oninput="atualizarTotais()"></div>
                 <input type="number" id="esquiva_mod" value="0" oninput="atualizarTotais()">
                 <span id="esquiva_total" class="atr-total">0</span>
                 <span id="esquiva_bonus" class="atr-bonus">+0</span>
@@ -183,7 +187,7 @@
             <div class="atr-row">
                 <span>Defesa Mágica</span>
                 <select id="defesa_magica_dado"><option>d4</option><option>d6</option><option>d8</option><option selected>d10</option><option>d12</option><option>d20</option></select>
-                <input type="number" id="defesa_magica_bruto" value="0" oninput="atualizarTotais()">
+                <div style="display: flex; gap: 5px;"><button type="button" class="btn-rolar" onclick="rolarAtributo('defesa_magica')" title="Rolar Dado">🎲</button><input type="number" id="defesa_magica_bruto" value="0" oninput="atualizarTotais()"></div>
                 <input type="number" id="defesa_magica_mod" value="0" oninput="atualizarTotais()">
                 <span id="defesa_magica_total" class="atr-total">0</span>
                 <span id="defesa_magica_bonus" class="atr-bonus">+0</span>
