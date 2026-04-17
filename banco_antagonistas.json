@@ -134,12 +134,12 @@
                 "classe": "Antagonista"
             },
             "combate": {
-                "pv_maximo": 99,
-                "pm_maximo": 39,
+                "pv_maximo": 50,
+                "pm_maximo": 17,
                 "rd": 0,
-                "esquiva_base": 10,
-                "bonus_ataque": "+2",
-                "dano_base": "1d6 + 2"
+                "esquiva_base": 9,
+                "bonus_ataque": "+0",
+                "dano_base": "1d6 + 1"
             },
             "atributos": {
                 "poder": {
@@ -196,7 +196,7 @@
                 {
                     "nome": "Sobrecarga Obscura",
                     "alvo": "1 alvo",
-                    "valor": "1d8",
+                    "valor": "1d8+Magia Total",
                     "desc": "O Diabrete desaparece em um estalo de eletricidade negra e reaparece instantaneamente atrás do alvo, descarregando uma centelha de estática que corrói a visão e interfere em dispositivos eletrônicos."
                 }
             ],
