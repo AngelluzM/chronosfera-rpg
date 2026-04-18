@@ -239,7 +239,7 @@
                 "rd": 5,
                 "esquiva_base": 12,
                 "bonus_ataque": "+3",
-                "dano_base": "2d10 + 1 + 2"
+                "dano_base": "2d10 + 1 + Magia Total"
             },
             "atributos": {
                 "poder": {
@@ -436,7 +436,20 @@
                     "bonus": 3
                 }
             },
-            "techs": [],
+            "techs": [
+                {
+                    "nome": "Atropelamento Inercial",
+                    "alvo": "Linha Reta",
+                    "valor": "Dano 2d8 + Poder Total",
+                    "desc": "Se o Karma de ataque for Negativo, o motor solta uma fuligem tóxica que aplica Lentidão no alvo (Zera Velocidade e remove bônus de Esquiva por 1 turno)."
+                },
+                {
+                    "nome": "Rugido do Pistão (Efeito do Glitch)",
+                    "alvo": "GLOBAL",
+                    "valor": "4d8 + Magita Total",
+                    "desc": "Uma fumaça negra e sólida irrompe da chaminé, carregada de estática purpúrea que distorce a realidade em blocos de pixels. Ao redor do veículo, o ar vibra num ruído digital ensurdecedor, corrompendo os sentidos e transformando aliados em ameaças desconhecidas. Representa a Falha assumindo o controle total. Aplica Confusão em quem falhar no teste de Defesa Mágica (O jogador ataca um aliado aleatório no próximo turno). "
+                }
+            ],
             "drops": []
         }
     ]
