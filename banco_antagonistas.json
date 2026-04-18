@@ -2,7 +2,7 @@
     "personagens": [
         {
             "id": "mobini1",
-            "url_imagem": "",
+            "url_imagem": "https://i.pinimg.com/736x/79/52/48/795248a2887ed7de7715ea50913c555b.jpg",
             "dados_basicos": {
                 "nome": "Greebowl",
                 "nivel": 1,
@@ -11,41 +11,62 @@
                 "classe": "Antagonista"
             },
             "combate": {
-                "pv_maximo": 10,
-                "pm_maximo": 0,
-                "rd": 0,
-                "esquiva_base": 8,
-                "bonus_ataque": "+0",
-                "dano_base": "1d4"
+                "pv_maximo": 65,
+                "pm_maximo": 21,
+                "rd": 6,
+                "esquiva_base": 9,
+                "bonus_ataque": "+1",
+                "dano_base": "3d4 + 0 + Poder Bruto"
             },
             "atributos": {
                 "poder": {
-                    "valor": 0,
+                    "dado": "d4",
+                    "bruto": 2,
+                    "mod": 0,
+                    "total": 2,
                     "bonus": 0
                 },
                 "vigor": {
-                    "valor": 0,
-                    "bonus": 0
+                    "dado": "d12",
+                    "bruto": 11,
+                    "mod": 0,
+                    "total": 11,
+                    "bonus": 1
                 },
                 "velocidade": {
-                    "valor": 0,
-                    "bonus": 0
+                    "dado": "d12",
+                    "bruto": 10,
+                    "mod": 0,
+                    "total": 10,
+                    "bonus": 1
                 },
                 "magia": {
-                    "valor": 0,
-                    "bonus": 0
+                    "dado": "d10",
+                    "bruto": 8,
+                    "mod": 0,
+                    "total": 8,
+                    "bonus": 1
                 },
                 "precisao": {
-                    "valor": 0,
-                    "bonus": 0
+                    "dado": "d10",
+                    "bruto": 10,
+                    "mod": 0,
+                    "total": 10,
+                    "bonus": 1
                 },
                 "esquiva": {
-                    "valor": 0,
-                    "bonus": 0
+                    "dado": "d8",
+                    "bruto": 7,
+                    "mod": 0,
+                    "total": 7,
+                    "bonus": 1
                 },
                 "defesa_magica": {
-                    "valor": 0,
-                    "bonus": 0
+                    "dado": "d8",
+                    "bruto": 6,
+                    "mod": 0,
+                    "total": 6,
+                    "bonus": 1
                 }
             },
             "techs": [],
