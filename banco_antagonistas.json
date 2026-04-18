@@ -464,6 +464,85 @@
                 }
             ],
             "drops": []
+        },
+        {
+            "id": "Eco-Vigila",
+            "url_imagem": "https://i.pinimg.com/736x/16/6b/e8/166be855a8f840f80be1f54080c3f277.jpg",
+            "dados_basicos": {
+                "nome": "Eco Vigila",
+                "nivel": 2,
+                "arquetipo": "Mob",
+                "afinidade_elemental": "Luz",
+                "classe": "Antagonista"
+            },
+            "combate": {
+                "pv_maximo": 35,
+                "pm_maximo": 26,
+                "rd": 1,
+                "esquiva_base": 12,
+                "bonus_ataque": "+2",
+                "dano_base": "1d6 + 0"
+            },
+            "atributos": {
+                "poder": {
+                    "dado": "d6",
+                    "bruto": 5,
+                    "mod": 0,
+                    "total": 5,
+                    "bonus": 0
+                },
+                "vigor": {
+                    "dado": "d4",
+                    "bruto": 3,
+                    "mod": 0,
+                    "total": 3,
+                    "bonus": 0
+                },
+                "velocidade": {
+                    "dado": "d12",
+                    "bruto": 10,
+                    "mod": 0,
+                    "total": 10,
+                    "bonus": 1
+                },
+                "magia": {
+                    "dado": "d8",
+                    "bruto": 8,
+                    "mod": 0,
+                    "total": 8,
+                    "bonus": 1
+                },
+                "precisao": {
+                    "dado": "d12",
+                    "bruto": 12,
+                    "mod": 0,
+                    "total": 12,
+                    "bonus": 1
+                },
+                "esquiva": {
+                    "dado": "d6",
+                    "bruto": 5,
+                    "mod": 0,
+                    "total": 5,
+                    "bonus": 0
+                },
+                "defesa_magica": {
+                    "dado": "d8",
+                    "bruto": 3,
+                    "mod": 0,
+                    "total": 3,
+                    "bonus": 0
+                }
+            },
+            "techs": [
+                {
+                    "nome": "Rasgo de Frame",
+                    "alvo": "1 Alvo",
+                    "valor": "2d8 + Precisão Total",
+                    "desc": "A Harpia mergulha em direção ao alvo, mas sofre um glitch agressivo no meio do trajeto, desaparecendo e reaparecendo instantaneamente nas costas da vítima, ignorando qualquer cobertura física. Se o ataque atingir o jogador, ele deve fazer um teste de Defesa Mágica. Se falhar, seu sistema nervoso sofre o status de Lag: o jogador perde sua Ação de Movimento e seu ND de Esquiva é reduzido pela metade (arredondado para baixo) durante o próximo turno."
+                }
+            ],
+            "drops": []
         }
     ]
 }
