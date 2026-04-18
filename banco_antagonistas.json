@@ -292,7 +292,20 @@
                     "bonus": 3
                 }
             },
-            "techs": [],
+            "techs": [
+                {
+                    "nome": "Golpe de Superposição",
+                    "alvo": "1 Alvo",
+                    "valor": "3d8 + Poder Total",
+                    "desc": "O limo não apenas atira um pedaço de si, ele existe em dois lugares ao mesmo tempo por uma fração de segundo, atacando de um ângulo que seria impossível defender. Se o ataque resultar em Karma Positivo para o Limo, o golpe ignora totalmente a Armadura (RD) do jogador. O ataque acerta em um milissegundo onde o alvo ainda não havia levantado o escudo."
+                },
+                {
+                    "nome": "Mitose Paradoxal",
+                    "alvo": "Área Pequena (Círculo ao redor do Limo) 2m de Raio",
+                    "valor": "2d8 + Magia Total",
+                    "desc": "Como mecanismo de defesa ou ataque em área, o Limo vibra violentamente e se divide, mas as cópias são \"erros temporais\" instáveis que logo colapsam em uma poça de ácido estático. O chão coberto pelo Limo distorce a passagem do tempo. Qualquer jogador atingido sofre Lentidão (perde bônus de Esquiva e tem sua velocidade zerada) por 1 turno, pois está literalmente grudado em um momento do passado."
+                }
+            ],
             "drops": []
         },
         {
