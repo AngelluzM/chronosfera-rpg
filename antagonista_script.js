@@ -2,7 +2,6 @@
  * CHRONOSFERA RPG - Lógica do Laboratório de Antagonistas
  */
 
-// Usando 'var' para evitar o erro 'has already been declared' em servidores locais
 var bancoAntagonistas = { personagens: [] };
 
 window.onload = () => {
@@ -57,6 +56,7 @@ window.rolarAtributo = function(attr) {
     return soma;
 };
 
+// === LÓGICA DE STATUS MANUAL ATUALIZADA (Ataque por Bônus / Dano por Total) ===
 window.atualizarStatusManual = function() {
     window.atualizarTotais(); 
     
@@ -69,22 +69,46 @@ window.atualizarStatusManual = function() {
     else if (tipo === "Boss") { mult = 8; baseDano = "3d8"; }
     else if (tipo === "NPC") { mult = 1.5; baseDano = "1d4"; }
 
-    const vigorTotal = parseInt(document.getElementById("vigor_total").innerText);
-    const magiaTotal = parseInt(document.getElementById("magia_total").innerText);
-    const esquivaBonus = parseInt(document.getElementById("esquiva_bonus").innerText.replace('+',''));
-    const precisaoBonus = parseInt(document.getElementById("precisao_bonus").innerText.replace('+',''));
-    const poderBonus = parseInt(document.getElementById("poder_bonus").innerText.replace('+',''));
+    // Captura os Totais
+    const vigorTotal = parseInt(document.getElementById("vigor_total").innerText) || 0;
+    const magiaTotal = parseInt(document.getElementById("magia_total").innerText) || 0;
+    const poderTotal = parseInt(document.getElementById("poder_total").innerText) || 0;
+    const precisaoTotal = parseInt(document.getElementById("precisao_total").innerText) || 0;
+    
+    // Captura os Bônus
+    const esquivaBonus = parseInt(document.getElementById("esquiva_bonus").innerText.replace('+','')) || 0;
+    const precisaoBonus = parseInt(document.getElementById("precisao_bonus").innerText.replace('+','')) || 0;
+    const poderBonus = parseInt(document.getElementById("poder_bonus").innerText.replace('+','')) || 0;
+    const magiaBonus = parseInt(document.getElementById("magia_bonus").innerText.replace('+','')) || 0;
 
+    // Vida, Magia, Esquiva e RD
     document.getElementById("pv").value = Math.floor((vigorTotal * 5) + (nivel * 10 * mult));
     document.getElementById("pm").value = Math.floor((magiaTotal * 2) + (nivel * 5));
     document.getElementById("esquiva_base").value = 8 + esquivaBonus + Math.floor(nivel/3);
     document.getElementById("rd").value = Math.floor(nivel * (mult / 2));
     
-    const bonusAtq = precisaoBonus + Math.floor(nivel/2);
-    document.getElementById("ataque").value = "+" + bonusAtq;
-    document.getElementById("dano").value = `${baseDano} + ${poderBonus}`;
+    // --- INTELIGÊNCIA DE COMBATE ---
+    // O monstro vai usar o seu melhor atributo ofensivo como base
+    let bonusPrincipal = poderBonus;
+    let totalPrincipal = poderTotal;
     
-    alert("Status de Combate atualizados com base nos atributos atuais!");
+    // Se Precisão for o maior (Foco em ataques à distância)
+    if (precisaoBonus > poderBonus && precisaoBonus >= magiaBonus) {
+        bonusPrincipal = precisaoBonus;
+        totalPrincipal = precisaoTotal;
+    } 
+    // Se Magia for a maior (Foco em ataques mágicos)
+    else if (magiaBonus > poderBonus && magiaBonus > precisaoBonus) {
+        bonusPrincipal = magiaBonus;
+        totalPrincipal = magiaTotal;
+    }
+
+    // Aplica a regra: Ataque usa o Bônus, Dano usa o Total
+    const bonusAtq = bonusPrincipal + Math.floor(nivel/2);
+    document.getElementById("ataque").value = "+" + bonusAtq;
+    document.getElementById("dano").value = `${baseDano} + ${totalPrincipal}`;
+    
+    alert("Status de Combate atualizados! O gerador identificou o melhor atributo ofensivo para o cálculo de Dano (Total) e Ataque (Bônus).");
 };
 
 window.renderizarSidebar = function() {
