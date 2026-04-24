@@ -22,20 +22,28 @@
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
         .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
         
+        /* === TABELA DE ATRIBUTOS EXPANDIDA === */
         .atributos-tabela { background: #f9f9fc; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; margin-top: 10px; }
-        .atr-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px; margin-bottom: 10px; align-items: center; }
+        .atr-row { display: grid; grid-template-columns: 1.5fr 0.8fr 1fr 1fr 0.8fr 0.8fr; gap: 15px; margin-bottom: 10px; align-items: center; text-align: center; }
         .atr-header { font-weight: bold; color: #2c3e50; border-bottom: 2px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; }
+        .atr-row span:first-child { text-align: left; font-weight: bold; }
+        
+        .atr-total { font-weight: bold; color: #3498db; background: #eef7ff; padding: 8px; border-radius: 4px; }
+        .atr-bonus { font-weight: bold; color: #27ae60; background: #ebfaf0; padding: 8px; border-radius: 4px; }
 
-        button { background-color: #3498db; color: white; padding: 14px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; transition: background 0.3s; }
+        button { background-color: #3498db; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
         button:hover { background-color: #2980b9; }
 
         /* === BLOCOS DINÂMICOS (ITENS, TECHS, LAÇOS) === */
+        .btn-rolar { background: #34495e; padding: 5px 10px; font-size: 1.1em; }
+        .btn-rolar:hover { background: #f39c12; }
+
         .box-dinamico { background: #fdfdfd; border: 1px solid #dcdde1; border-radius: 6px; padding: 15px; margin-bottom: 15px; position: relative; }
         .tech-box { border-left: 5px solid #9b59b6; }
         .laco-box { border-left: 5px solid #e67e22; }
         .item-box { border-left: 5px solid #27ae60; }
         
-        .btn-remover { background-color: #e74c3c; width: auto; padding: 6px 12px; font-size: 12px; position: absolute; right: 15px; top: 12px; margin: 0; z-index: 10; border-radius: 4px; color: white; border: none; cursor: pointer; }
+        .btn-remover { background-color: #e74c3c; color: white; width: auto; padding: 6px 12px; font-size: 12px; position: absolute; right: 15px; top: 12px; margin: 0; z-index: 10; border-radius: 4px; color: white; border: none; cursor: pointer; }
         .btn-remover:hover { background-color: #c0392b; }
         
         .btn-add { background-color: #34495e; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-bottom: 15px; font-size: 14px; width: auto; margin-top: 0; }
@@ -57,13 +65,13 @@
     <div class="import-section">
         <div class="grid-2">
             <div class="form-group">
-                <label>1. Personagens no Banco</label>
+                <label>1. Personagens no Banco de dados</label>
                 <select id="seletorPersonagem" onchange="carregarParaEdicao()">
-                    <option value="">Aguardando banco_de_dados.json...</option>
+                    <option value="">Carregando personagens...</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>2. OU Importar Ficha do GEM (.json)</label>
+                <label>2. Importar do GEM (.json)</label>
                 <input type="file" id="arquivoImport" accept=".json" onchange="importarJSON(event)">
             </div>
         </div>
@@ -72,7 +80,7 @@
     <h3 class="secao-titulo">👤 Identidade do Herói</h3>
     <div class="grid-2">
         <div class="form-group"><label>Nome do Personagem</label><input type="text" id="nome"></div>
-        <div class="form-group"><label>ID Único (ex: king_01)</label><input type="text" id="id"></div>
+        <div class="form-group"><label>ID Único</label><input type="text" id="id"></div>
     </div>
 
     <div class="grid-4">
@@ -83,7 +91,7 @@
     </div>
 
     <div class="grid-2">
-        <div class="form-group"><label>Raça / Origem</label><input type="text" id="raca"></div>
+        <div class="form-group"><label>Raça</label><input type="text" id="raca"></div>
         <div class="form-group">
             <label>Classe</label>
             <select id="classe" onchange="atualizarDadosMatriz()">
@@ -98,8 +106,7 @@
             </select>
         </div>
     </div>
-
-    <div class="grid-2">
+	<div class="grid-2">
         <div class="form-group"><label>URL da Imagem</label><input type="text" id="url_imagem"></div>
         <div class="form-group">
             <label>Afinidade Elemental</label>
@@ -114,39 +121,44 @@
     </div>
 
     <h3 class="secao-titulo" style="color: #e74c3c;">⚔️ Status de Combate (Vida e Magia)</h3>
-    <div class="grid-2" style="max-width: 400px;">
-        <div class="form-group"><label style="color: #c0392b;">❤️ PV</label><input type="number" id="pv_maximo" value="0"></div>
-        <div class="form-group"><label style="color: #2980b9;">💧 PM</label><input type="number" id="pm_maximo" value="0"></div>
-    </div>
-    <button type="button" class="btn-recalcular" onclick="recalcularPVPM()">🔄 Gerar PV/PM Pela Classe e Atributos</button>
 
-    <h3 class="secao-titulo">📊 Atributos e Modificadores</h3>
+    <h3 class="secao-titulo" style="color: #e74c3c;">⚔️ Status de Combate</h3>
+    <div class="grid-2" style="max-width: 400px;">
+        <div class="form-group"><label>❤️ PV </label><input type="number" id="pv_maximo" value="0"></div>
+        <div class="form-group"><label>💧 PM </label><input type="number" id="pm_maximo" value="0"></div>
+    </div>
+    <button type="button" onclick="recalcularPVPM()" style="background-color: #f39c12; width: auto; padding: 8px 15px;">🔄 Recalcular por Atributos</button>
+
+    <h3 class="secao-titulo">📊 Atributos</h3>
     <div class="atributos-tabela">
         <div class="atr-row atr-header">
-            <span>Atributo</span><span>Valor Bruto</span><span>Modificador</span>
+            <span>Atributo</span><span>Dado</span><span>Bruto</span><span>Mod.</span><span>Total</span><span>Bônus</span>
         </div>
-        <div class="atr-row"><span id="lbl_poder">Poder</span><input type="number" id="poder_bruto" value="0"><input type="number" id="poder_mod" value="0"></div>
-        <div class="atr-row"><span id="lbl_vigor">Vigor</span><input type="number" id="vigor_bruto" value="0"><input type="number" id="vigor_mod" value="0"></div>
-        <div class="atr-row"><span id="lbl_velocidade">Velocidade</span><input type="number" id="velocidade_bruto" value="0"><input type="number" id="velocidade_mod" value="0"></div>
-        <div class="atr-row"><span id="lbl_magia">Magia</span><input type="number" id="magia_bruto" value="0"><input type="number" id="magia_mod" value="0"></div>
-        <div class="atr-row"><span id="lbl_precisao">Precisão</span><input type="number" id="precisao_bruto" value="0"><input type="number" id="precisao_mod" value="0"></div>
-        <div class="atr-row"><span id="lbl_esquiva">Esquiva</span><input type="number" id="esquiva_bruto" value="0"><input type="number" id="esquiva_mod" value="0"></div>
-        <div class="atr-row"><span id="lbl_defesa_magica">Defesa Mágica</span><input type="number" id="defesa_magica_bruto" value="0"><input type="number" id="defesa_magica_mod" value="0"></div>
+        
+        <div id="tabela-corpo">
+            <div class="atr-row"><span>Poder</span><span id="dado_poder">-<button type="button" class="btn-rolar" onclick="rolarAtributo('poder')">🎲</button></span><input type="number" id="poder_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="poder_mod" value="0" oninput="atualizarTotais()"><span id="poder_total" class="atr-total">0</span><span id="poder_bonus" class="atr-bonus">+0</span></div>
+            <div class="atr-row"><span>Vigor</span><span id="dado_vigor">-<button type="button" class="btn-rolar" onclick="rolarAtributo('vigor')">🎲</button></span><input type="number" id="vigor_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="vigor_mod" value="0" oninput="atualizarTotais()"><span id="vigor_total" class="atr-total">0</span><span id="vigor_bonus" class="atr-bonus">+0</span></div>
+            <div class="atr-row"><span>Velocidade</span><span id="dado_velocidade">-<button type="button" class="btn-rolar" onclick="rolarAtributo('velocidade')">🎲</button></span><input type="number" id="velocidade_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="velocidade_mod" value="0" oninput="atualizarTotais()"><span id="velocidade_total" class="atr-total">0</span><span id="velocidade_bonus" class="atr-bonus">+0</span></div>
+            <div class="atr-row"><span>Magia</span><span id="dado_magia">-<button type="button" class="btn-rolar" onclick="rolarAtributo('magia')">🎲</button></span><input type="number" id="magia_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="magia_mod" value="0" oninput="atualizarTotais()"><span id="magia_total" class="atr-total">0</span><span id="magia_bonus" class="atr-bonus">+0</span></div>
+            <div class="atr-row"><span>Precisão</span><span id="dado_precisao">-<button type="button" class="btn-rolar" onclick="rolarAtributo('precisao')">🎲</button></span><input type="number" id="precisao_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="precisao_mod" value="0" oninput="atualizarTotais()"><span id="precisao_total" class="atr-total">0</span><span id="precisao_bonus" class="atr-bonus">+0</span></div>
+            <div class="atr-row"><span>Esquiva</span><span id="dado_esquiva">-<button type="button" class="btn-rolar" onclick="rolarAtributo('esquiva')">🎲</button></span><input type="number" id="esquiva_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="esquiva_mod" value="0" oninput="atualizarTotais()"><span id="esquiva_total" class="atr-total">0</span><span id="esquiva_bonus" class="atr-bonus">+0</span></div>
+            <div class="atr-row"><span>Defesa Mágica</span><span id="dado_defesa_magica">-<button type="button" class="btn-rolar" onclick="rolarAtributo('defesa_magica')">🎲</button></span><input type="number" id="defesa_magica_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="defesa_magica_mod" value="0" oninput="atualizarTotais()"><span id="defesa_magica_total" class="atr-total">0</span><span id="defesa_magica_bonus" class="atr-bonus">+0</span></div>
+        </div>
     </div>
 
     <h3 class="secao-titulo" style="color: #27ae60;">🎒 Inventário</h3>
     <div id="lista-inventario"></div>
-    <button type="button" class="btn-add-item" onclick="adicionarItem()">+ Adicionar Item</button>
+    <button type="button" class="btn-add" style="background:#27ae60; width:100%" onclick="adicionarItem()">+ Adicionar Item</button>
 
     <h3 class="secao-titulo" style="color: #e67e22;">🤝 Laços</h3>
     <div id="lista-lacos"></div>
-    <button type="button" class="btn-add-laco" onclick="adicionarLaco()">+ Adicionar Laço</button>
+    <button type="button" class="btn-add" style="background:#e67e22; width:100%" onclick="adicionarLaco()">+ Adicionar Laço</button>
 
     <h3 class="secao-titulo" style="color: #9b59b6;">✨ Techs & Habilidades</h3>
     <div id="lista-techs"></div>
-    <button type="button" class="btn-add-tech" onclick="adicionarTech()">+ Adicionar Habilidade</button>
+    <button type="button" class="btn-add" style="background:#9b59b6; width:100%" onclick="adicionarTech()">+ Adicionar Habilidade</button>
 
-    <button onclick="salvarPersonagem()" style="background-color: #2c3e50; margin-top: 40px; margin-bottom: 60px; font-size: 20px;">
+    <button onclick="salvarPersonagem()" style="background-color: #2c3e50; margin-top: 40px; margin-bottom: 60px; font-size: 20px; width: 100%;">
         💾 SALVAR E BAIXAR BANCO ATUALIZADO
     </button>
 </div>
