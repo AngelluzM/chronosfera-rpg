@@ -1,0 +1,76 @@
+{
+    "itens": [
+        {
+            "id": "ID-SUP001",
+            "nome": "Poção",
+            "qualidade": "Comum",
+            "tipo": "Suprimento",
+            "loot_chance": 45,
+            "descricao": "Uma poção de coloração verde-clara extraída das flores da Vila da Alvorada. Recupera 50 PV de um aliado, causando um aquecimento imediato que fecha cortes superficiais e alivia a fadiga.",
+            "requisitos": []
+        },
+        {
+            "id": "ID-SUP002",
+            "nome": "Poção Média",
+            "qualidade": "Aprimorada",
+            "tipo": "Suprimento",
+            "loot_chance": 15,
+            "descricao": "Uma versão refinada e mais densa destilada com pó de quartzo das montanhas. Recupera 100 PV de um aliado, forçando as células a \"lembrarem\" de seu estado saudável rapidamente.",
+            "requisitos": []
+        },
+        {
+            "id": "ID-SUP003",
+            "nome": "Éter Cristalizado",
+            "qualidade": "Comum",
+            "tipo": "Suprimento",
+            "loot_chance": 30,
+            "descricao": "Frasco com um líquido azul cintilante feito da condensação de estática mágica. Recupera 10 PM de um aliado, trazendo clareza mental instantânea e recarregando o fluxo neural para o uso de TECHs.",
+            "requisitos": []
+        },
+        {
+            "id": "ID-SUP004",
+            "nome": "Éter Concentrado",
+            "qualidade": "Aprimorada",
+            "tipo": "Suprimento",
+            "loot_chance": 10,
+            "descricao": "Versão pura e instável do Éter que emite um brilho azul-neon. Recupera 20 PM de um aliado, proporcionando restauração imediata do fluxo mágico com um intenso sabor de menta congelante.",
+            "requisitos": []
+        },
+        {
+            "id": "ID-SUP006",
+            "nome": "Erva Panaceia",
+            "qualidade": "Mística",
+            "tipo": "Suprimento",
+            "loot_chance": 15,
+            "descricao": "Uma folha de coloração prateada encontrada perto de fendas temporais. Remove todos os status negativos básicos (Veneno, Cegueira, Mudez) de um aliado ao ser mastigada.",
+            "requisitos": []
+        },
+        {
+            "id": "ID-SUP005",
+            "nome": "Centelha de Chronos",
+            "qualidade": "Mística",
+            "tipo": "Suprimento",
+            "loot_chance": 5,
+            "descricao": "Composto alquímico em pó que reage ao pulso temporal. Revive um aliado nocauteado (0 PV) com 50 PV, criando uma micro distorção temporal que reverte o estado celular para os segundos exatos antes do colapso.",
+            "requisitos": []
+        },
+        {
+            "id": "ID-SUP007",
+            "nome": "Éter Maior",
+            "qualidade": "Mística",
+            "tipo": "Suprimento",
+            "loot_chance": 4,
+            "descricao": "Um frasco zumbidor contendo estática mágica altamente pressurizada. Recupera 50 PM de um aliado, desobstruindo imediatamente os canais neurais.",
+            "requisitos": []
+        },
+        {
+            "id": "ID-SUP008",
+            "nome": "Éter Supremo",
+            "qualidade": "Lendária",
+            "tipo": "Suprimento",
+            "loot_chance": 1,
+            "descricao": "Contém um líquido que se assemelha a uma aurora boreal aprisionada em vidro. Recupera 75 PM de um aliado, sobrecarregando a aura temporariamente.",
+            "requisitos": []
+        }
+    ]
+}
