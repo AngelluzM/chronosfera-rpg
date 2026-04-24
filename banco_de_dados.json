@@ -550,6 +550,80 @@
                     "bonus": 0
                 }
             }
+        },
+        {
+            "id": "renan",
+            "url_imagem": "https://i.pinimg.com/736x/1b/26/e6/1b26e697320d3c61da1e9ffc0769105e.jpg",
+            "techs": [],
+            "inventario": [],
+            "lacos": [],
+            "dados_basicos": {
+                "nome": "Harry Benimon Greyriat",
+                "nivel": 1,
+                "xp_atual": 0,
+                "xp_proximo": 50,
+                "raca": "Humano",
+                "classe": "Cavaleiro",
+                "arquetipo": "Combatente",
+                "afinidade_elemental": "Fogo"
+            },
+            "status": {
+                "pv_maximo": 67,
+                "pm_maximo": 13,
+                "nd_esquiva_base": 8,
+                "rd_armadura": 0
+            },
+            "atributos": {
+                "poder": {
+                    "dado": "d10",
+                    "bruto": 9,
+                    "mod": 0,
+                    "total": 9,
+                    "bonus": 1
+                },
+                "vigor": {
+                    "dado": "d12",
+                    "bruto": 7,
+                    "mod": 0,
+                    "total": 7,
+                    "bonus": 1
+                },
+                "velocidade": {
+                    "dado": "d6",
+                    "bruto": 3,
+                    "mod": 0,
+                    "total": 3,
+                    "bonus": 0
+                },
+                "magia": {
+                    "dado": "d8",
+                    "bruto": 5,
+                    "mod": 0,
+                    "total": 5,
+                    "bonus": 0
+                },
+                "precisao": {
+                    "dado": "d4",
+                    "bruto": 4,
+                    "mod": 0,
+                    "total": 4,
+                    "bonus": 0
+                },
+                "esquiva": {
+                    "dado": "d6",
+                    "bruto": 2,
+                    "mod": 0,
+                    "total": 2,
+                    "bonus": 0
+                },
+                "defesa_magica": {
+                    "dado": "d8",
+                    "bruto": 4,
+                    "mod": 0,
+                    "total": 4,
+                    "bonus": 0
+                }
+            }
         }
     ]
 }
