@@ -120,8 +120,6 @@
         </div>
     </div>
 
-    <h3 class="secao-titulo" style="color: #e74c3c;">⚔️ Status de Combate (Vida e Magia)</h3>
-
     <h3 class="secao-titulo" style="color: #e74c3c;">⚔️ Status de Combate</h3>
     <div class="grid-2" style="max-width: 400px;">
         <div class="form-group"><label>❤️ PV </label><input type="number" id="pv_maximo" value="0"></div>
@@ -136,9 +134,9 @@
         </div>
         
         <div id="tabela-corpo">
-            <div class="atr-row"><span>Poder</span><span id="dado_poder">-<button type="button" class="btn-rolar" onclick="rolarAtributo('poder')">🎲</button></span><input type="number" id="poder_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="poder_mod" value="0" oninput="atualizarTotais()"><span id="poder_total" class="atr-total">0</span><span id="poder_bonus" class="atr-bonus">+0</span></div>
-            <div class="atr-row"><span>Vigor</span><span id="dado_vigor">-<button type="button" class="btn-rolar" onclick="rolarAtributo('vigor')">🎲</button></span><input type="number" id="vigor_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="vigor_mod" value="0" oninput="atualizarTotais()"><span id="vigor_total" class="atr-total">0</span><span id="vigor_bonus" class="atr-bonus">+0</span></div>
-            <div class="atr-row"><span>Velocidade</span><span id="dado_velocidade">-<button type="button" class="btn-rolar" onclick="rolarAtributo('velocidade')">🎲</button></span><input type="number" id="velocidade_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="velocidade_mod" value="0" oninput="atualizarTotais()"><span id="velocidade_total" class="atr-total">0</span><span id="velocidade_bonus" class="atr-bonus">+0</span></div>
+            <div class="atr-row"><span>Poder<button type="button" class="btn-rolar" onclick="rolarAtributo('poder')">🎲</button></span><span id="dado_poder">-</span><input type="number" id="poder_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="poder_mod" value="0" oninput="atualizarTotais()"><span id="poder_total" class="atr-total">0</span><span id="poder_bonus" class="atr-bonus">+0</span></div>
+            <div class="atr-row"><span>Vigor<button type="button" class="btn-rolar" onclick="rolarAtributo('vigor')">🎲</button></span><span id="dado_vigor">-</span><input type="number" id="vigor_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="vigor_mod" value="0" oninput="atualizarTotais()"><span id="vigor_total" class="atr-total">0</span><span id="vigor_bonus" class="atr-bonus">+0</span></div>
+            <div class="atr-row"><span>Velocidade</span><span id="dado_velocidade">-</span><button type="button" class="btn-rolar" onclick="rolarAtributo('velocidade')">🎲</button><input type="number" id="velocidade_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="velocidade_mod" value="0" oninput="atualizarTotais()"><span id="velocidade_total" class="atr-total">0</span><span id="velocidade_bonus" class="atr-bonus">+0</span></div>
             <div class="atr-row"><span>Magia</span><span id="dado_magia">-<button type="button" class="btn-rolar" onclick="rolarAtributo('magia')">🎲</button></span><input type="number" id="magia_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="magia_mod" value="0" oninput="atualizarTotais()"><span id="magia_total" class="atr-total">0</span><span id="magia_bonus" class="atr-bonus">+0</span></div>
             <div class="atr-row"><span>Precisão</span><span id="dado_precisao">-<button type="button" class="btn-rolar" onclick="rolarAtributo('precisao')">🎲</button></span><input type="number" id="precisao_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="precisao_mod" value="0" oninput="atualizarTotais()"><span id="precisao_total" class="atr-total">0</span><span id="precisao_bonus" class="atr-bonus">+0</span></div>
             <div class="atr-row"><span>Esquiva</span><span id="dado_esquiva">-<button type="button" class="btn-rolar" onclick="rolarAtributo('esquiva')">🎲</button></span><input type="number" id="esquiva_bruto" value="0" oninput="atualizarTotais()"><input type="number" id="esquiva_mod" value="0" oninput="atualizarTotais()"><span id="esquiva_total" class="atr-total">0</span><span id="esquiva_bonus" class="atr-bonus">+0</span></div>
