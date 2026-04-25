@@ -37,7 +37,7 @@ function atualizarDadosMatriz() {
     
     Object.keys(d).forEach(attr => {
         const label = document.getElementById("dado_" + attr);
-        if(label) label.innerText = d[attr] + <button type="button" class="btn-rolar" onclick="rolarAtributo('[attr]')">🎲</button>;
+        if(label) label.innerText = d[attr];
     });
     atualizarTotais();
 }
