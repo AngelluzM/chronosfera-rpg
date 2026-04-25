@@ -5,7 +5,7 @@
             "nome": "Poção",
             "qualidade": "Comum",
             "tipo": "Suprimento",
-            "loot_chance": 45,
+            "loot_chance": 15,
             "descricao": "Uma poção de coloração verde-clara extraída das flores da Vila da Alvorada. Recupera 50 PV de um aliado, causando um aquecimento imediato que fecha cortes superficiais e alivia a fadiga.",
             "requisitos": []
         },
@@ -70,6 +70,15 @@
             "tipo": "Suprimento",
             "loot_chance": 1,
             "descricao": "Contém um líquido que se assemelha a uma aurora boreal aprisionada em vidro. Recupera 75 PM de um aliado, sobrecarregando a aura temporariamente.",
+            "requisitos": []
+        },
+        {
+            "id": "ID-SUP011",
+            "nome": "Erva Medicinal Curativa",
+            "qualidade": "Comum",
+            "tipo": "Suprimento",
+            "loot_chance": 40,
+            "descricao": "Uma erva comum, porém difícil de encontrar in natura . Ao ser consumida ou mastigada, alivia rapidamente o cansaço físico e estabiliza o vigor do usuário. Recupera 2d6+3 PV.",
             "requisitos": []
         }
     ]
