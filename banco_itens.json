@@ -151,6 +151,37 @@
             "loot_chance": 25,
             "descricao": "Um sobretudo espesso e elegante de uma era esquecida. Serve perfeitamente para esconder equipamentos e proteger do clima rigoroso das estradas, oferecendo uma leve camada extra de proteção. Concede +1 em Defesa Física.",
             "requisitos": []
+        },
+        {
+            "id": "ID-ACC006",
+            "nome": "Botas Antigas de Couro",
+            "qualidade": "Comum",
+            "tipo": "Acessório",
+            "loot_chance": 35,
+            "descricao": "Um par de botas de couro muito antigo, mas incrivelmente resistente. São extremamente confortáveis e protegem os pés contra terrenos irregulares, farpas de metal ou pedras pontiagudas das ruínas. (Apenas estético/narrativo no nível 1).",
+            "requisitos": []
+        },
+        {
+            "id": "ID-ARM006",
+            "nome": "Macacão de Lona Grossa",
+            "qualidade": "Comum",
+            "tipo": "Armadura",
+            "loot_chance": 25,
+            "descricao": "Um traje de corpo inteiro projetado para conforto e segurança de engenheiros de campo. O tecido denso protege contra fagulhas, lascas de rebarbas e possui alta resistência a cortes, evitando acidentes graves em oficinas ou durante o combate. Concede +2 de Defesa Física.",
+            "requisitos": [
+                "Classe Mecânico"
+            ]
+        },
+        {
+            "id": "ID-WEP006",
+            "nome": "Pistola de Ar Comprimido",
+            "qualidade": "Comum",
+            "tipo": "Arma",
+            "loot_chance": 20,
+            "descricao": "O equipamento padrão e inicial das patrulhas mecânicas. Representando a versatilidade tecnológica da Era da Paz, esta arma dispara projéteis baseados em pura pressão pneumática em vez de pólvora tradicional. Concede +1 nos testes de ataque (Precisão). O dano causado é de 1d8 + Bônus de Precisão.",
+            "requisitos": [
+                "Precisão Min 10"
+            ]
         }
     ]
 }
