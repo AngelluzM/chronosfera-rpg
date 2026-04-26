@@ -80,6 +80,77 @@
             "loot_chance": 40,
             "descricao": "Uma erva comum, porém difícil de encontrar in natura . Ao ser consumida ou mastigada, alivia rapidamente o cansaço físico e estabiliza o vigor do usuário. Recupera 2d6+3 PV.",
             "requisitos": []
+        },
+        {
+            "id": "ID-ARM003",
+            "nome": "Túnica Arcana",
+            "qualidade": "Comum",
+            "tipo": "Armadura",
+            "loot_chance": 10,
+            "descricao": "Uma túnica elegante recebida como prova da bênção do destino e sintonia elemental do usuário. Concede +1 à Defesa Mágica, ajudando a dissipar impactos de pura estática.",
+            "requisitos": [
+                "Classe Feiticeiro"
+            ]
+        },
+        {
+            "id": "ID-WEP005",
+            "nome": "Cajado de Quartzo Bruto",
+            "qualidade": "Comum",
+            "tipo": "Arma",
+            "loot_chance": 25,
+            "descricao": "Um instrumento de madeira rústica com um cristal não lapidado no topo, essencial para a canalização de feitiços de Nível 1. Concede +1 em Magia. Quando usado para ataques físicos básicos (corpo-a-corpo), o dano base é igual ao bônus de Poder do usuário em vez do dano padrão da arma.",
+            "requisitos": [
+                "Magia 10"
+            ]
+        },
+        {
+            "id": "ID-ACC003",
+            "nome": "Botas de Couro Simples",
+            "qualidade": "Comum",
+            "tipo": "Armadura",
+            "loot_chance": 35,
+            "descricao": "Um par de botas de couro resistente, confortável e ideal para longas caminhadas através das planícies do Continente Central.",
+            "requisitos": []
+        },
+        {
+            "id": "ID-ACC004",
+            "nome": "Máscara Doutor da Peste",
+            "qualidade": "Aprimorada",
+            "tipo": "Acessório",
+            "loot_chance": 2,
+            "descricao": "Uma máscara tradicional com bico de pássaro, usada por praticantes de medicina de eras passadas para filtrar miasmas e doenças. (Narrativamente, ajuda a filtrar gases tóxicos e esconder a identidade do usuário).",
+            "requisitos": [
+                "Classe Suporte"
+            ]
+        },
+        {
+            "id": "ID-ACC005",
+            "nome": "Luvas Achronos",
+            "qualidade": "Relíquia",
+            "tipo": "Acessório",
+            "loot_chance": 0,
+            "descricao": "Um par de luvas feitas de um material desconhecido que emite uma leve distorção visual. Elas ficaram temporalmente e fisicamente agarradas às mãos do usuário. Seus verdadeiros poderes e a ligação com a anomalia \"Achronos\" ainda precisam ser descobertos, mas elas vibram quando próximas a fendas temporais.",
+            "requisitos": [
+                "Vinculado ao Usuário"
+            ]
+        },
+        {
+            "id": "ID-ARM004",
+            "nome": "Vestes Antigas",
+            "qualidade": "Comum",
+            "tipo": "Armadura",
+            "loot_chance": 30,
+            "descricao": "Um conjunto de roupas datadas de muitos anos no passado, possivelmente antes da Era da Paz. Estão surpreendentemente confortáveis e em excelente estado de conservação, não sofrendo o desgaste natural do tempo. Concede +1 em Defesa Física.",
+            "requisitos": []
+        },
+        {
+            "id": "ID-ARM005",
+            "nome": "Sobretudo Antigo",
+            "qualidade": "Comum",
+            "tipo": "Armadura",
+            "loot_chance": 25,
+            "descricao": "Um sobretudo espesso e elegante de uma era esquecida. Serve perfeitamente para esconder equipamentos e proteger do clima rigoroso das estradas, oferecendo uma leve camada extra de proteção. Concede +1 em Defesa Física.",
+            "requisitos": []
         }
     ]
 }
