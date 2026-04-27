@@ -182,6 +182,27 @@
             "requisitos": [
                 "Precisão Min 10"
             ]
+        },
+        {
+            "id": "ID-ARM007",
+            "nome": "Vestimenta Selvagem",
+            "qualidade": "Comum",
+            "tipo": "Arma",
+            "loot_chance": 20,
+            "descricao": "Uma roupa rústica confeccionada com o couro espesso de uma fera de uma era esquecida, possivelmente trazida por uma fenda temporal. Apesar do visual primitivo, o material é incrivelmente denso e absorve impactos pesados com facilidade. Concede +3 de Defesa Física.",
+            "requisitos": [
+                "Classe Selvagem",
+                "Vigor min 12"
+            ]
+        },
+        {
+            "id": "ID-ACC007",
+            "nome": "Bota de Couro Selvagem",
+            "qualidade": "Comum",
+            "tipo": "Acessório",
+            "loot_chance": 25,
+            "descricao": "Feita do mesmo couro pré-histórico da vestimenta principal. Seu design sem solado rígido confere uma aderência perfeita ao solo e uma leveza absurda, permitindo que o usuário sinta o terreno e reaja por instinto. Facilita a movimentação em terrenos irregulares e concede +1 em Velocidade.",
+            "requisitos": []
         }
     ]
 }
