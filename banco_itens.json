@@ -100,7 +100,8 @@
             "loot_chance": 25,
             "descricao": "Um instrumento de madeira rústica com um cristal não lapidado no topo, essencial para a canalização de feitiços de Nível 1. Concede +1 em Magia. Quando usado para ataques físicos básicos (corpo-a-corpo), o dano base é igual ao bônus de Poder do usuário em vez do dano padrão da arma.",
             "requisitos": [
-                "Magia 10"
+                "Magia 4",
+                "Classe Feiticeiro"
             ]
         },
         {
@@ -180,7 +181,7 @@
             "loot_chance": 20,
             "descricao": "O equipamento padrão e inicial das patrulhas mecânicas. Representando a versatilidade tecnológica da Era da Paz, esta arma dispara projéteis baseados em pura pressão pneumática em vez de pólvora tradicional. Concede +1 nos testes de ataque (Precisão). O dano causado é de 1d8 + Bônus de Precisão.",
             "requisitos": [
-                "Precisão Min 10"
+                "Precisão Min 4"
             ]
         },
         {
@@ -203,6 +204,62 @@
             "loot_chance": 25,
             "descricao": "Feita do mesmo couro pré-histórico da vestimenta principal. Seu design sem solado rígido confere uma aderência perfeita ao solo e uma leveza absurda, permitindo que o usuário sinta o terreno e reaja por instinto. Facilita a movimentação em terrenos irregulares e concede +1 em Velocidade.",
             "requisitos": []
+        },
+        {
+            "id": "ID-ARM008",
+            "nome": "Vestes Comuns",
+            "qualidade": "Comum",
+            "tipo": "Armadura",
+            "loot_chance": 45,
+            "descricao": "Vestimenta básica do dia a dia feita de pano simples ou couro leve. Ideal para quem está começando uma jornada pelas estradas de Áurea, oferecendo proteção básica contra o clima e arranhões, mas garantindo total liberdade de movimento. Concede +1 de Defesa Física.",
+            "requisitos": []
+        },
+        {
+            "id": "ID-WEP007",
+            "nome": "Espada de Bronze",
+            "qualidade": "Comum",
+            "tipo": "Arma",
+            "loot_chance": 25,
+            "descricao": "Uma lâmina forjada em bronze, simples, balanceada e robusta. É a arma mais confiável que um aventureiro iniciante pode ter, marcando a transição de alguém que usava equipamentos improvisados de madeira para um verdadeiro guerreiro. Concede +1 nos testes de ataque (Precisão/Poder). Causa 1d8 + Bônus de Poder como dano físico.",
+            "requisitos": [
+                "Poder min 4",
+                "Classe Espadachim"
+            ]
+        },
+        {
+            "id": "ID-WEP008",
+            "nome": "Lâmina de Vanguarda",
+            "qualidade": "Comum",
+            "tipo": "Arma",
+            "loot_chance": 15,
+            "descricao": "Uma espada larga de proporções imponentes, forjada com uma liga de aço-cromo desconhecida na Era da Paz. O metal possui um brilho frio e azulado, e o peso é perfeitamente equilibrado por contrapesos internos no punho. Concede +1 em testes de ataque. Dano: 1d10 + Bónus de Poder Total.",
+            "requisitos": [
+                "Classe Cavaleiro",
+                "Poder min 5"
+            ]
+        },
+        {
+            "id": "ID-ARM009",
+            "nome": "Couraça de Infantaria Pesada",
+            "qualidade": "Comum",
+            "tipo": "Arma",
+            "loot_chance": 8,
+            "descricao": "Uma armadura completa que cobre o utilizador do pescoço aos pés. As placas são angulares e aerodinâmicas, presas por tiras de polímero sintético extremamente duráveis. Embora pareça medieval, a sua resistência a impactos supera qualquer forja de Áurea no ano 1000. Concede +4 de Armadura, mas reduz a Velocidade em -1 devido ao peso massivo.",
+            "requisitos": [
+                "Classe Cavaleiro",
+                "Vigor min 5"
+            ]
+        },
+        {
+            "id": "ID-ACC010",
+            "nome": "Elmo de Combate Integrado",
+            "qualidade": "Aprimorada",
+            "tipo": "Acessório",
+            "loot_chance": 12,
+            "descricao": "Um elmo fechado com uma viseira de vidro temperado escurecido. Foi desenhado para proteger soldados em campos de batalha caóticos. Além da proteção craniana, o visor ajuda a filtrar luzes intensas e clarões mágicos. Concede +1 de Armadura e +1 de Defesa Mágica contra o elemento Luz.",
+            "requisitos": [
+                "Classe Cavaleiro"
+            ]
         }
     ]
 }
