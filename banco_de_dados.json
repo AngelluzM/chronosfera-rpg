@@ -554,9 +554,6 @@
         {
             "id": "renan",
             "url_imagem": "https://i.pinimg.com/736x/1b/26/e6/1b26e697320d3c61da1e9ffc0769105e.jpg",
-            "techs": [],
-            "inventario": [],
-            "lacos": [],
             "dados_basicos": {
                 "nome": "Harry Benimon Greyriat",
                 "nivel": 1,
@@ -571,18 +568,18 @@
                 "pv_maximo": 67,
                 "pm_maximo": 13,
                 "nd_esquiva_base": 8,
-                "rd_armadura": 0
+                "rd_armadura": 5
             },
             "atributos": {
                 "poder": {
-                    "dado": "d10",
+                    "dado": "d12",
                     "bruto": 9,
                     "mod": 0,
                     "total": 9,
                     "bonus": 1
                 },
                 "vigor": {
-                    "dado": "d12",
+                    "dado": "d10",
                     "bruto": 7,
                     "mod": 0,
                     "total": 7,
@@ -591,8 +588,8 @@
                 "velocidade": {
                     "dado": "d6",
                     "bruto": 3,
-                    "mod": 0,
-                    "total": 3,
+                    "mod": -1,
+                    "total": 2,
                     "bonus": 0
                 },
                 "magia": {
@@ -619,11 +616,33 @@
                 "defesa_magica": {
                     "dado": "d8",
                     "bruto": 4,
-                    "mod": 0,
-                    "total": 4,
+                    "mod": 1,
+                    "total": 5,
                     "bonus": 0
                 }
-            }
+            },
+            "inventario": [
+                {
+                    "nome": "Lâmina de Vanguarda",
+                    "quantidade": 1,
+                    "equipado": true,
+                    "desc": "Uma espada larga de proporções imponentes, forjada com uma liga de aço-cromo desconhecida na Era da Paz. O metal possui um brilho frio e azulado, e o peso é perfeitamente equilibrado por contrapesos internos no punho. Concede +1 em testes de ataque. Dano: 1d10 + Bónus de Poder Total."
+                },
+                {
+                    "nome": "Couraça de Infantaria Pesada",
+                    "quantidade": 1,
+                    "equipado": true,
+                    "desc": "Uma armadura completa que cobre o utilizador do pescoço aos pés. As placas são angulares e aerodinâmicas, presas por tiras de polímero sintético extremamente duráveis. Embora pareça medieval, a sua resistência a impactos supera qualquer forja de Áurea no ano 1000. Concede +4 de Armadura, mas reduz a Velocidade em -1 devido ao peso massivo."
+                },
+                {
+                    "nome": "Elmo de Combate Integrado",
+                    "quantidade": 1,
+                    "equipado": true,
+                    "desc": "Um elmo fechado com uma viseira de vidro temperado escurecido. Foi desenhado para proteger soldados em campos de batalha caóticos. Além da proteção craniana, o visor ajuda a filtrar luzes intensas e clarões mágicos. Concede +1 de Armadura e +1 de Defesa Mágica contra o elemento Luz."
+                }
+            ],
+            "techs": [],
+            "lacos": []
         },
         {
             "id": "deniz",
