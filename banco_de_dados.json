@@ -3,19 +3,73 @@
         {
             "id": "juan",
             "url_imagem": "https://i.pinimg.com/736x/c7/d2/96/c7d296b5374dcef0463499e10a48fce5.jpg",
-            "techs": [
-                {
-                    "nome": "Estaca de Gelo",
-                    "custo": "2 PM",
-                    "elemento": "Água/Gelo",
-                    "alvo": "1 inimigo",
-                    "tipo": "Dano",
-                    "valor": "1d8 + Magia Total",
-                    "desc": "Junta a humidade do ar gerando uma estaca de gelo e disparando contra um inimigo.",
-                    "inter": "",
-                    "combo": ""
+            "dados_basicos": {
+                "nome": "Baltazar",
+                "nivel": 3,
+                "xp_atual": 75,
+                "xp_proximo": 150,
+                "raca": "Humano",
+                "classe": "Feiticeiro",
+                "arquetipo": "Arcana",
+                "afinidade_elemental": "Gelo/Água"
+            },
+            "status": {
+                "pv_maximo": 54,
+                "pm_maximo": 50,
+                "nd_esquiva_base": 9,
+                "rd_armadura": 0
+            },
+            "atributos": {
+                "poder": {
+                    "dado": "d8",
+                    "bruto": 12,
+                    "mod": 0,
+                    "total": 12,
+                    "bonus": 1
+                },
+                "vigor": {
+                    "dado": "d6",
+                    "bruto": 12,
+                    "mod": 0,
+                    "total": 12,
+                    "bonus": 1
+                },
+                "velocidade": {
+                    "dado": "d8",
+                    "bruto": 15,
+                    "mod": 0,
+                    "total": 15,
+                    "bonus": 2
+                },
+                "magia": {
+                    "dado": "d12",
+                    "bruto": 23,
+                    "mod": 1,
+                    "total": 24,
+                    "bonus": 2
+                },
+                "precisao": {
+                    "dado": "d4",
+                    "bruto": 7,
+                    "mod": 0,
+                    "total": 7,
+                    "bonus": 1
+                },
+                "esquiva": {
+                    "dado": "d6",
+                    "bruto": 11,
+                    "mod": 0,
+                    "total": 11,
+                    "bonus": 1
+                },
+                "defesa_magica": {
+                    "dado": "d10",
+                    "bruto": 18,
+                    "mod": 1,
+                    "total": 19,
+                    "bonus": 2
                 }
-            ],
+            },
             "inventario": [
                 {
                     "nome": "Túnica Arcana",
@@ -42,87 +96,32 @@
                     "desc": "Uma Erva Medicinal comum encontrada com um pouco de dificuldade, ao ser consumida recupera seu vigor e cansaço físico. Cura 2d6+3"
                 }
             ],
+            "techs": [
+                {
+                    "nome": "Estaca de Gelo",
+                    "custo": "2 PM",
+                    "desc": "Junta a humidade do ar gerando uma estaca de gelo e disparando contra um inimigo."
+                },
+                {
+                    "nome": "",
+                    "custo": "",
+                    "desc": ""
+                }
+            ],
             "lacos": [
                 {
                     "nome": "Orpheu de Lynx",
-                    "porcentagem": 10
+                    "porcentagem": 12
                 },
                 {
                     "nome": "Link Tekron",
-                    "porcentagem": 5
+                    "porcentagem": 4
                 },
                 {
                     "nome": "Hexzyr",
-                    "porcentagem": 8
+                    "porcentagem": 5
                 }
-            ],
-            "dados_basicos": {
-                "nome": "Baltazar",
-                "nivel": 2,
-                "xp_atual": 75,
-                "xp_proximo": 100,
-                "raca": "Humano",
-                "classe": "Feiticeiro",
-                "arquetipo": "Arcana",
-                "afinidade_elemental": "Gelo/Água"
-            },
-            "status": {
-                "pv_maximo": 42,
-                "pm_maximo": 46,
-                "nd_esquiva_base": 9,
-                "rd_armadura": 0
-            },
-            "atributos": {
-                "poder": {
-                    "dado": "d8",
-                    "bruto": 8,
-                    "mod": 0,
-                    "total": 8,
-                    "bonus": 1
-                },
-                "vigor": {
-                    "dado": "d6",
-                    "bruto": 9,
-                    "mod": 0,
-                    "total": 9,
-                    "bonus": 1
-                },
-                "velocidade": {
-                    "dado": "d8",
-                    "bruto": 11,
-                    "mod": 0,
-                    "total": 11,
-                    "bonus": 1
-                },
-                "magia": {
-                    "dado": "d12",
-                    "bruto": 17,
-                    "mod": 1,
-                    "total": 18,
-                    "bonus": 2
-                },
-                "precisao": {
-                    "dado": "d4",
-                    "bruto": 5,
-                    "mod": 0,
-                    "total": 5,
-                    "bonus": 0
-                },
-                "esquiva": {
-                    "dado": "d6",
-                    "bruto": 8,
-                    "mod": 0,
-                    "total": 8,
-                    "bonus": 1
-                },
-                "defesa_magica": {
-                    "dado": "d10",
-                    "bruto": 13,
-                    "mod": 1,
-                    "total": 14,
-                    "bonus": 2
-                }
-            }
+            ]
         },
         {
             "id": "maicon",
