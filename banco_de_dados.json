@@ -717,6 +717,80 @@
                     "bonus": 0
                 }
             }
+        },
+        {
+            "id": "cannabis",
+            "url_imagem": "https://i.pinimg.com/736x/b5/a8/f8/b5a8f86dd2350fde2a283acb4fa89d1a.jpg",
+            "dados_basicos": {
+                "nome": "Kylen Serin",
+                "nivel": 1,
+                "xp_atual": 0,
+                "xp_proximo": 50,
+                "raca": "Humano",
+                "classe": "Espadachim",
+                "arquetipo": "Equilibrada",
+                "afinidade_elemental": "Neutro"
+            },
+            "status": {
+                "pv_maximo": 41,
+                "pm_maximo": 8,
+                "nd_esquiva_base": 9,
+                "rd_armadura": 0
+            },
+            "atributos": {
+                "poder": {
+                    "dado": "d10",
+                    "bruto": 9,
+                    "mod": 0,
+                    "total": 9,
+                    "bonus": 1
+                },
+                "vigor": {
+                    "dado": "d6",
+                    "bruto": 5,
+                    "mod": 0,
+                    "total": 5,
+                    "bonus": 0
+                },
+                "velocidade": {
+                    "dado": "d12",
+                    "bruto": 10,
+                    "mod": 0,
+                    "total": 10,
+                    "bonus": 1
+                },
+                "magia": {
+                    "dado": "d4",
+                    "bruto": 4,
+                    "mod": 0,
+                    "total": 4,
+                    "bonus": 0
+                },
+                "precisao": {
+                    "dado": "d8",
+                    "bruto": 5,
+                    "mod": 0,
+                    "total": 5,
+                    "bonus": 0
+                },
+                "esquiva": {
+                    "dado": "d8",
+                    "bruto": 7,
+                    "mod": 0,
+                    "total": 7,
+                    "bonus": 1
+                },
+                "defesa_magica": {
+                    "dado": "d6",
+                    "bruto": 2,
+                    "mod": 0,
+                    "total": 2,
+                    "bonus": 0
+                }
+            },
+            "inventario": [],
+            "techs": [],
+            "lacos": []
         }
     ]
 }
