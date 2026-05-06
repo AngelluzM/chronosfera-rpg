@@ -263,11 +263,11 @@
         },
         {
             "id": "ID-WEP001",
-            "nome": "Espada de Bronze",
+            "nome": "Espada de Madeira",
             "qualidade": "Comum",
             "tipo": "Arma",
             "loot_chance": 45,
-            "descricao": "Uma lâmina forjada em bronze, simples e robusta. É a arma mais confiável que um aventureiro iniciante pode ter, representando um salto de qualidade em relação aos equipamentos improvisados de madeira. Causa 1d8+ Poder Total de Dano, concede maior chance de acerto quando utilizado por alguém treinado, +1 em ataque",
+            "descricao": "Uma lâmina forjada em bronze, simples e robusta. É a arma mais confiável que um aventureiro iniciante pode ter, representando um salto de qualidade em relação aos equipamentos improvisados de madeira. Causa 1d4+ Poder Total de Dano, concede maior chance de acerto quando utilizado por alguém treinado, +1 em ataque",
             "requisitos": [
                 "Classe Espadachim"
             ]
