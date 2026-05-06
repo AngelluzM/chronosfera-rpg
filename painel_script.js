@@ -149,7 +149,7 @@ function carregarParaEdicao() {
     if(p) preencherFormulario(p);
 }
 
-function adicionarItem(i = {}) {
+/*function adicionarItem(i = {}) {
     const d = document.createElement('div'); d.className = 'box-dinamico item-box';
     const isEquipado = i.equipado ? 'checked' : ''; 
     d.innerHTML = `
@@ -163,7 +163,7 @@ function adicionarItem(i = {}) {
         </div>
         <textarea class="i-desc" placeholder="Descrição">${i.desc || ''}</textarea>`;
     document.getElementById('lista-inventario').appendChild(d);
-}
+}*/
 
 function adicionarLaco(l = {}) {
     const d = document.createElement('div'); d.className = 'box-dinamico laco-box';
@@ -185,6 +185,61 @@ function adicionarTech(t = {}) {
             <div class="grid-2"><input type="text" class="t-custo" placeholder="Custo" value="${t.custo || ''}"><input type="text" class="t-elemento" placeholder="Elem" value="${t.elemento || ''}"></div>
         </div>
         <textarea class="t-desc" placeholder="Descrição">${t.desc || ''}</textarea>`;
+    document.getElementById('lista-techs').appendChild(d);
+}
+
+function adicionarTech(t = {}) {
+    const d = document.createElement('div'); d.className = 'box-dinamico tech-box';
+    d.innerHTML = `
+        <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
+        <div class="grid-2">
+            <div class="form-group">
+                <label>Habilidade</label>
+                <input type="text" class="t-nome" placeholder="Ex: Impacto de Égide" value="${t.nome || ''}">
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Custo (PM)</label>
+                    <input type="text" class="t-custo" placeholder="2 PM" value="${t.custo || ''}">
+                </div>
+                <div class="form-group">
+                    <label>Elemento</label>
+                    <input type="text" class="t-elemento" placeholder="Neutro" value="${t.elemento || ''}">
+                </div>
+            </div>
+        </div>
+        <div class="grid-3">
+            <div class="form-group">
+                <label>Alvo</label>
+                <input type="text" class="t-alvo" placeholder="1 Inimigo" value="${t.alvo || ''}">
+            </div>
+            <div class="form-group">
+                <label>Tipo</label>
+                <select class="t-tipo">
+                    <option value="Dano" ${t.tipo=='Dano'?'selected':''}>Dano</option>
+                    <option value="Cura" ${t.tipo=='Cura'?'selected':''}>Cura</option>
+                    <option value="Bônus" ${t.tipo=='Bônus'?'selected':''}>Bônus</option>
+                    <option value="Escudo" ${t.tipo=='Escudo'?'selected':''}>Escudo</option>
+                    <option value="Especial" ${t.tipo=='Especial'?'selected':''}>Especial</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Valor / Rolagem</label>
+                <input type="text" class="t-valor" placeholder="1d8 + Poder Total" value="${t.valor || ''}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Descrição do Efeito</label>
+            <textarea class="t-desc" rows="2" placeholder="O que a habilidade faz...">${t.desc || ''}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Interação Elemental</label>
+            <textarea class="t-inter" rows="2" placeholder="Ex: Dobra dano em alvos lentos...">${t.inter || ''}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Dica de Combo</label>
+            <textarea class="t-combo" rows="2" placeholder="Sugestão de uso conjunto...">${t.combo || ''}</textarea>
+        </div>`;
     document.getElementById('lista-techs').appendChild(d);
 }
 
