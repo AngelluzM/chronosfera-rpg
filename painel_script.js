@@ -5,7 +5,7 @@
 var bancoDeDados = { personagens: [] };
 
 const regrasClasses = {
-    "Cavaleiro": { arquetipo: "Combatente", pv_base: 60, pm_base: 8, dados: { vigor: "d10", poder: "d12", magia: "d8", defesa_magica: "d8", velocidade: "d6", esquiva: "d6", precisao: "d4" } },
+    "Cavaleiro": { arquetipo: "Combatente", pv_base: 60, pm_base: 8, dados: { poder: "d12", vigor: "d10", magia: "d8", defesa_magica: "d8", velocidade: "d6", esquiva: "d6", precisao: "d4" } },
     "Construto": { arquetipo: "Combatente", pv_base: 72, pm_base: 6, dados: { poder: "d10", vigor: "d12", precisao: "d8", defesa_magica: "d8", magia: "d6", esquiva: "d6", velocidade: "d4" } },
     "Espadachim": { arquetipo: "Equilibrada", pv_base: 36, pm_base: 4, dados: { velocidade: "d12", poder: "d10", esquiva: "d8", precisao: "d8", vigor: "d6", defesa_magica: "d6", magia: "d4" } },
     "Selvagem": { arquetipo: "Equilibrada", pv_base: 48, pm_base: 4, dados: { esquiva: "d12", poder: "d10", velocidade: "d8", vigor: "d8", precisao: "d6", defesa_magica: "d6", magia: "d4" } },
@@ -29,7 +29,6 @@ function calcularFibonacci(v) {
     return v >= 82 ? 5 : v >= 48 ? 4 : v >= 27 ? 3 : v >= 14 ? 2 : v >= 6 ? 1 : 0; 
 }
 
-// Atualiza os labels dos dados e os valores Totais na UI
 function atualizarDadosMatriz() {
     const c = document.getElementById("classe").value;
     if(!c || !regrasClasses[c]) return;
@@ -42,7 +41,6 @@ function atualizarDadosMatriz() {
     atualizarTotais();
 }
 
-// Rola o dado específico do atributo
 function rolarAtributo(attr) {
     const c = document.getElementById("classe").value;
     if(!c) return alert("Selecione uma classe primeiro!");
@@ -55,7 +53,6 @@ function rolarAtributo(attr) {
     atualizarTotais();
 }
 
-// Calcula Total e Bônus em tempo real
 function atualizarTotais() {
     const atrs = ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'];
     atrs.forEach(a => {
@@ -149,43 +146,42 @@ function carregarParaEdicao() {
     if(p) preencherFormulario(p);
 }
 
-/*function adicionarItem(i = {}) {
+function adicionarItem(i = {}) {
     const d = document.createElement('div'); d.className = 'box-dinamico item-box';
     const isEquipado = i.equipado ? 'checked' : ''; 
     d.innerHTML = `
         <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
-        <div class="grid-2">
-            <div class="form-group"><label>Item</label><input type="text" class="i-nome" value="${i.nome || ''}"></div>
-            <div class="grid-2">
-                <div class="form-group"><label>Qtd</label><input type="number" class="i-qtd" value="${i.quantidade || 1}"></div>
-                <div class="form-group"><label>Equipado</label><input type="checkbox" class="i-equip" ${isEquipado} style="width:20px;height:20px"></div>
+        <div style="display: flex; gap: 15px; align-items: flex-end; margin-bottom: 15px;">
+            <div class="form-group" style="flex: 2; margin-bottom: 0;">
+                <label>Nome do Item</label>
+                <input type="text" class="i-nome" value="${i.nome || ''}">
+            </div>
+            <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                <label>Qtd</label>
+                <input type="number" class="i-qtd" value="${i.quantidade || 1}">
+            </div>
+            <div class="form-group" style="flex: 1; margin-bottom: 0; text-align: center; padding-bottom: 10px;">
+                <label style="cursor: pointer; display: inline-flex; align-items: center; gap: 5px; color: #27ae60;">
+                    <input type="checkbox" class="i-equip" ${isEquipado} style="width: 18px; height: 18px; margin: 0;"> Equipado
+                </label>
             </div>
         </div>
-        <textarea class="i-desc" placeholder="Descrição">${i.desc || ''}</textarea>`;
+        <div class="form-group">
+            <label>Descrição / Efeito</label>
+            <textarea class="i-desc" rows="2">${i.desc || ''}</textarea>
+        </div>`;
     document.getElementById('lista-inventario').appendChild(d);
-}*/
+}
 
 function adicionarLaco(l = {}) {
     const d = document.createElement('div'); d.className = 'box-dinamico laco-box';
     d.innerHTML = `
         <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
         <div class="grid-2">
-            <div class="form-group"><label>Vínculo</label><input type="text" class="l-nome" value="${l.nome || ''}"></div>
-            <div class="form-group"><label>%</label><input type="number" class="l-porc" value="${l.porcentagem || 0}"></div>
+            <div class="form-group"><label>Vínculo com (Aliado)</label><input type="text" class="l-nome" value="${l.nome || ''}"></div>
+            <div class="form-group"><label>Força do Laço (%)</label><input type="number" class="l-porc" value="${l.porcentagem || 0}"></div>
         </div>`;
     document.getElementById('lista-lacos').appendChild(d);
-}
-
-function adicionarTech(t = {}) {
-    const d = document.createElement('div'); d.className = 'box-dinamico tech-box';
-    d.innerHTML = `
-        <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
-        <div class="grid-2">
-            <input type="text" class="t-nome" placeholder="Habilidade" value="${t.nome || ''}">
-            <div class="grid-2"><input type="text" class="t-custo" placeholder="Custo" value="${t.custo || ''}"><input type="text" class="t-elemento" placeholder="Elem" value="${t.elemento || ''}"></div>
-        </div>
-        <textarea class="t-desc" placeholder="Descrição">${t.desc || ''}</textarea>`;
-    document.getElementById('lista-techs').appendChild(d);
 }
 
 function adicionarTech(t = {}) {
@@ -275,8 +271,15 @@ function salvarPersonagem() {
             equipado: b.querySelector('.i-equip').checked, desc: b.querySelector('.i-desc').value
         })),
         techs: Array.from(document.querySelectorAll('.tech-box')).map(b => ({
-        nome: b.querySelector('.t-nome').value, custo: b.querySelector('.t-custo').value, elemento: b.querySelector('.t-elemento').value, alvo: b.querySelector('.t-alvo').value, tipo: b.querySelector('.t-tipo').value,
-        valor: b.querySelector('.t-valor').value, desc: b.querySelector('.t-desc').value, inter: b.querySelector('.t-inter').value, combo: b.querySelector('.t-combo').value
+            nome: b.querySelector('.t-nome').value,
+            custo: b.querySelector('.t-custo').value,
+            elemento: b.querySelector('.t-elemento').value,
+            alvo: b.querySelector('.t-alvo').value,
+            tipo: b.querySelector('.t-tipo').value,
+            valor: b.querySelector('.t-valor').value,
+            desc: b.querySelector('.t-desc').value,
+            inter: b.querySelector('.t-inter').value,
+            combo: b.querySelector('.t-combo').value
         })),
         lacos: Array.from(document.querySelectorAll('.laco-box')).map(b => ({
             nome: b.querySelector('.l-nome').value, porcentagem: parseInt(b.querySelector('.l-porc').value)||0
