@@ -586,69 +586,69 @@
             "url_imagem": "https://i.pinimg.com/736x/1b/26/e6/1b26e697320d3c61da1e9ffc0769105e.jpg",
             "dados_basicos": {
                 "nome": "Harry Benimon Greyriat",
-                "nivel": 1,
-                "xp_atual": 0,
-                "xp_proximo": 50,
+                "nivel": 2,
+                "xp_atual": 54,
+                "xp_proximo": 100,
                 "raca": "Humano",
                 "classe": "Cavaleiro",
                 "arquetipo": "Combatente",
                 "afinidade_elemental": "Fogo"
             },
             "status": {
-                "pv_maximo": 67,
-                "pm_maximo": 13,
+                "pv_maximo": 97,
+                "pm_maximo": 15,
                 "nd_esquiva_base": 8,
                 "rd_armadura": 5
             },
             "atributos": {
                 "poder": {
                     "dado": "d12",
+                    "bruto": 15,
+                    "mod": 0,
+                    "total": 15,
+                    "bonus": 2
+                },
+                "vigor": {
+                    "dado": "d10",
+                    "bruto": 12,
+                    "mod": 0,
+                    "total": 12,
+                    "bonus": 1
+                },
+                "velocidade": {
+                    "dado": "d6",
+                    "bruto": 6,
+                    "mod": -1,
+                    "total": 5,
+                    "bonus": 0
+                },
+                "magia": {
+                    "dado": "d8",
                     "bruto": 9,
                     "mod": 0,
                     "total": 9,
                     "bonus": 1
                 },
-                "vigor": {
-                    "dado": "d10",
-                    "bruto": 7,
+                "precisao": {
+                    "dado": "d4",
+                    "bruto": 6,
                     "mod": 0,
-                    "total": 7,
+                    "total": 6,
                     "bonus": 1
                 },
-                "velocidade": {
+                "esquiva": {
                     "dado": "d6",
-                    "bruto": 3,
-                    "mod": -1,
-                    "total": 2,
-                    "bonus": 0
-                },
-                "magia": {
-                    "dado": "d8",
                     "bruto": 5,
                     "mod": 0,
                     "total": 5,
                     "bonus": 0
                 },
-                "precisao": {
-                    "dado": "d4",
-                    "bruto": 4,
-                    "mod": 0,
-                    "total": 4,
-                    "bonus": 0
-                },
-                "esquiva": {
-                    "dado": "d6",
-                    "bruto": 2,
-                    "mod": 0,
-                    "total": 2,
-                    "bonus": 0
-                },
                 "defesa_magica": {
                     "dado": "d8",
-                    "bruto": 4,
+                    "bruto": 8,
                     "mod": 1,
-                    "total": 5,
-                    "bonus": 0
+                    "total": 9,
+                    "bonus": 1
                 }
             },
             "inventario": [
@@ -671,8 +671,33 @@
                     "desc": "Um elmo fechado com uma viseira de vidro temperado escurecido. Foi desenhado para proteger soldados em campos de batalha caóticos. Além da proteção craniana, o visor ajuda a filtrar luzes intensas e clarões mágicos. Concede +1 de Armadura e +1 de Defesa Mágica contra o elemento Luz."
                 }
             ],
-            "techs": [],
-            "lacos": []
+            "techs": [
+                {
+                    "nome": "Investida de Combustão",
+                    "custo": "2 PM",
+                    "elemento": "Fogo",
+                    "alvo": "1 Inimigo (Até 6m)",
+                    "tipo": "Dano",
+                    "valor": "1d8 + Poder Total",
+                    "desc": "Redirecionando a pressão térmica mágica para as solas de suas botas táticas, Harry se lança para frente como um aríete, usando seu ombro ou escudo envolto em chamas para atropelar o adversário. A força gravitacional do avanço combinado ao calor pega o alvo desprevenido. Após sofrer o dano, o alvo recebe o status Derrubado.\nKarma Negativo: Falha de Exaustão. O propulsor mágico engasga no final do percurso, fazendo Harry tropeçar ou perder sua base. Ele sofre o status Desequilibrado (Desvantagem de Karma no seu próximo teste).",
+                    "inter": "",
+                    "combo": ""
+                }
+            ],
+            "lacos": [
+                {
+                    "nome": "Baltazar",
+                    "porcentagem": 8
+                },
+                {
+                    "nome": "Orpheu de Lynx",
+                    "porcentagem": 8
+                },
+                {
+                    "nome": "Kylen Serin",
+                    "porcentagem": 5
+                }
+            ]
         },
         {
             "id": "deniz",
@@ -842,7 +867,13 @@
                 {
                     "nome": "Corte do Vácuo",
                     "custo": "2 PM",
-                    "desc": "Explorando sua altíssima mobilidade, Kylen avança em uma fração de segundo, quebrando a resistência do ar. Ele desfere um corte horizontal tão rápido e preciso que o inimigo só percebe que foi atingido quando Kylen já está embainhando a espada atrás dele. Sendo um golpe de puro impacto físico, é brutal contra alvos sem armadura pesada. Ignora -2 de RD e causa 1d10+Poder Total de Dano"
+                    "elemento": "Neutro",
+                    "alvo": "1 Alvo (Corpo a Corpo)",
+                    "tipo": "Dano",
+                    "valor": "1d10 + Poder Total",
+                    "desc": "Explorando sua altíssima mobilidade, Kylen avança em uma fração de segundo, quebrando a resistência do ar. Ele desfere um corte horizontal tão rápido e preciso que o inimigo só percebe que foi atingido quando Kylen já está embainhando a espada atrás dele. Sendo um golpe de puro impacto físico, é brutal contra alvos sem armadura pesada. Ignora -2 de RD e causa 1d10+Poder Total de Dano",
+                    "inter": "O violento deslocamento de ar afeta o campo de batalha. Se o alvo (ou a trajetória do corte) estiver coberto por Fumaça, Gás ou Neblina, o vácuo dissipa o efeito instantaneamente, limpando a visão naquela linha. Além disso, se o alvo estiver com o status Incendiado (como pelo Fogo do Harry), o vácuo superalimenta a chama por um milissegundo antes de apagá-la, causando uma micro-explosão que dá +2 de Dano Fixo ao alvo e remove o status Incendiado.",
+                    "combo": ""
                 }
             ],
             "lacos": [
