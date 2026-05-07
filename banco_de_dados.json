@@ -100,12 +100,13 @@
                 {
                     "nome": "Estaca de Gelo",
                     "custo": "2 PM",
-                    "desc": "Junta a humidade do ar gerando uma estaca de gelo e disparando contra um inimigo."
-                },
-                {
-                    "nome": "",
-                    "custo": "",
-                    "desc": ""
+                    "elemento": "",
+                    "alvo": "",
+                    "tipo": "Dano",
+                    "valor": "1d8 + Magia Total",
+                    "desc": "Junta a humidade do ar gerando uma estaca de gelo e disparando contra um inimigo.",
+                    "inter": "",
+                    "combo": ""
                 }
             ],
             "lacos": [
