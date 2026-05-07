@@ -252,7 +252,7 @@
                     "tipo": "Cura",
                     "valor": "1d6 + Magia Total",
                     "desc": "Unindo seus profundos conhecimentos médicos aprendidos em Lynx com sua afinidade elemental, Orpheu arremessa um frasco contendo um extrato botânico infundido em pura energia luminosa. Ao quebrar sobre o aliado, a luz reage com o composto e estimula uma regeneração celular imediata. Cortes se fecham rapidamente e o vigor retorna de forma abrupta.",
-                    "inter": "Excelente para estancar sangramentos ou curar ferimentos físicos graves, regenerando rapidamente os tecidos lesionados do alvo.",
+                    "inter": "Se o alvo possuir o status Sangramento, a luz pura do extrato cauteriza a ferida de imediato, removendo o status negativo automaticamente. Caso o aliado esteja sob o efeito de Água/Molhado, a luz fotônica se refrata nas gotículas ao redor do seu corpo, criando um prisma brilhante que concede +2 de Defesa Mágica ao alvo até o próximo turno.",
                     "combo": ""
                 },
                 {
@@ -263,7 +263,7 @@
                     "tipo": "Cura",
                     "valor": "1d6 + Magia Total",
                     "desc": "Concentrando luz pura, Orpheu dispara um feixe de fótons condensados que atua como uma agulha e linha energéticas, \"costurando\" ferimentos à distância de forma quase instantânea. O feixe cauteriza e limpa a ferida imediatamente. Além de curar os PV, a tech remove 1 status físico negativo (como Sangramento ou Envenenamento).\nKarma Negativo: Exaustão Ocular. O esforço visual extremo para alinhar os feixes fotônicos em alvos distantes causa vertigem. Orpheu sofre Desvantagem de Karma no seu próximo teste.",
-                    "inter": "",
+                    "inter": "Se o aliado estiver com o status Molhado (Água), as gotículas refratam o feixe curativo, criando uma aura de prisma protetora que concede +1 de Defesa Mágica ao alvo até ao próximo turno. Caso o aliado esteja sob o efeito de debuffs de Sombra/Escuridão (como Cegueira mágica), a intensidade da luz purga a escuridão instantaneamente, dissipando o efeito sem consumir o limite de remoção de status da própria habilidade.",
                     "combo": ""
                 }
             ],
