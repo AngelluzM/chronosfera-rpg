@@ -101,10 +101,21 @@
                     "nome": "Estaca de Gelo",
                     "custo": "2 PM",
                     "elemento": "",
-                    "alvo": "",
+                    "alvo": "À Distância (1 Alvo)",
                     "tipo": "Dano",
                     "valor": "1d8 + Magia Total",
-                    "desc": "Junta a humidade do ar gerando uma estaca de gelo e disparando contra um inimigo.",
+                    "desc": "Baltazar condensa bruscamente a umidade do ar ao seu redor, moldando uma lança de gelo afiada que é disparada em alta velocidade contra o inimigo.\nKarma Negativo: Frio Residual. A condensação falha e retrocede. Baltazar congela superficialmente os próprios dedos, sofrendo -1 de Precisão Mágica no seu próximo ataque.",
+                    "inter": "",
+                    "combo": ""
+                },
+                {
+                    "nome": "Géiser Esmagador",
+                    "custo": "2 PM",
+                    "elemento": "Gelo/Água",
+                    "alvo": "À Distância (1 Alvo)",
+                    "tipo": "Dano",
+                    "valor": "1d8 + Magia Total",
+                    "desc": "Baltazar espalma a mão no ar, manipulando violentamente a humidade do subsolo. Uma coluna de água de altíssima pressão irrompe do chão, exatamente debaixo do inimigo, lançando-o num impacto brutal que desfaz a sua postura de combate.\n⚠️ Karma Negativo: A rutura da pressão subterrânea fragmenta e inunda o solo ao redor do próprio Baltazar. A casa onde ele se encontra transforma-se em Lama Escorregadia (Terreno Difícil), exigindo o dobro do movimento para conseguir sair do local no turno seguinte.",
                     "inter": "",
                     "combo": ""
                 }
