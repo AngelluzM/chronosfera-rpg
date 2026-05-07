@@ -105,7 +105,7 @@
                     "tipo": "Dano",
                     "valor": "1d8 + Magia Total",
                     "desc": "Baltazar condensa bruscamente a umidade do ar ao seu redor, moldando uma lança de gelo afiada que é disparada em alta velocidade contra o inimigo.\nKarma Negativo: Frio Residual. A condensação falha e retrocede. Baltazar congela superficialmente os próprios dedos, sofrendo -1 de Precisão Mágica no seu próximo ataque.",
-                    "inter": "",
+                    "inter": "Se o alvo estiver sob o status Incendiado (Fogo), a perfuração causa um choque térmico violento dentro da ferida, fazendo a estaca explodir em estilhaços e vapor. Isso causa +2 de Dano Fixo imediato e remove o status Incendiado. Caso o alvo esteja Molhado, o frio da estaca congela a água em seu corpo no impacto, aplicando o status Enrijecido (-2 em Velocidade) até o próximo turno.",
                     "combo": ""
                 },
                 {
@@ -116,7 +116,7 @@
                     "tipo": "Dano",
                     "valor": "1d8 + Magia Total",
                     "desc": "Baltazar espalma a mão no ar, manipulando violentamente a humidade do subsolo. Uma coluna de água de altíssima pressão irrompe do chão, exatamente debaixo do inimigo, lançando-o num impacto brutal que desfaz a sua postura de combate.\n⚠️ Karma Negativo: A rutura da pressão subterrânea fragmenta e inunda o solo ao redor do próprio Baltazar. A casa onde ele se encontra transforma-se em Lama Escorregadia (Terreno Difícil), exigindo o dobro do movimento para conseguir sair do local no turno seguinte.",
-                    "inter": "",
+                    "inter": "O status Molhado transforma o alvo em um condutor perfeito. Se o inimigo for atingido por uma Tech de Raio/Eletricidade (Luz) na próxima rodada, ele sofre +2 de Dano Fixo e o choque arca para um inimigo adjacente (causando 1 ponto de dano inevitável). Além disso, se o Géiser atingir um alvo Incendiado (Fogo), a água apaga a chama instantaneamente, mas a violenta evaporação cria uma nuvem de vapor que cega temporariamente o alvo, aplicando Desvantagem de Karma no próximo ataque dele.",
                     "combo": ""
                 }
             ],
