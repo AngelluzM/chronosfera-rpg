@@ -680,7 +680,7 @@
                     "tipo": "Dano",
                     "valor": "1d8 + Poder Total",
                     "desc": "Redirecionando a pressão térmica mágica para as solas de suas botas táticas, Harry se lança para frente como um aríete, usando seu ombro ou escudo envolto em chamas para atropelar o adversário. A força gravitacional do avanço combinado ao calor pega o alvo desprevenido. Após sofrer o dano, o alvo recebe o status Derrubado.\nKarma Negativo: Falha de Exaustão. O propulsor mágico engasga no final do percurso, fazendo Harry tropeçar ou perder sua base. Ele sofre o status Desequilibrado (Desvantagem de Karma no seu próximo teste).",
-                    "inter": "",
+                    "inter": "Se o alvo estiver sob o status Congelado (Gelo), o choque térmico do escudo flamejante estilhaça a defesa instantaneamente, fazendo este ataque ignorar 2 pontos de RD (Armadura). Adicionalmente, se o avanço cruzar uma área de Lama Escorregadia ou poças (Água), o intenso calor das botas vaporiza a umidade, removendo a condição de Terreno Difícil na linha do trajeto percorrido.",
                     "combo": ""
                 }
             ],
