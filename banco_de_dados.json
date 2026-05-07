@@ -254,6 +254,17 @@
                     "desc": "Unindo seus profundos conhecimentos médicos aprendidos em Lynx com sua afinidade elemental, Orpheu arremessa um frasco contendo um extrato botânico infundido em pura energia luminosa. Ao quebrar sobre o aliado, a luz reage com o composto e estimula uma regeneração celular imediata. Cortes se fecham rapidamente e o vigor retorna de forma abrupta.",
                     "inter": "Excelente para estancar sangramentos ou curar ferimentos físicos graves, regenerando rapidamente os tecidos lesionados do alvo.",
                     "combo": ""
+                },
+                {
+                    "nome": "Sutura Fotônica",
+                    "custo": "2 PM",
+                    "elemento": "Luz",
+                    "alvo": "À Distância (1 Aliado)",
+                    "tipo": "Cura",
+                    "valor": "1d6 + Magia Total",
+                    "desc": "Concentrando luz pura, Orpheu dispara um feixe de fótons condensados que atua como uma agulha e linha energéticas, \"costurando\" ferimentos à distância de forma quase instantânea. O feixe cauteriza e limpa a ferida imediatamente. Além de curar os PV, a tech remove 1 status físico negativo (como Sangramento ou Envenenamento).\nKarma Negativo: Exaustão Ocular. O esforço visual extremo para alinhar os feixes fotônicos em alvos distantes causa vertigem. Orpheu sofre Desvantagem de Karma no seu próximo teste.",
+                    "inter": "",
+                    "combo": ""
                 }
             ],
             "lacos": [
