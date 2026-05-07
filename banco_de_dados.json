@@ -138,19 +138,73 @@
         {
             "id": "maicon",
             "url_imagem": "https://i.pinimg.com/736x/08/9d/e4/089de4dfbd5949d095e81ba3d95b0dac.jpg",
-            "techs": [
-                {
-                    "nome": "Bálsamo Restaurador",
-                    "custo": "3",
-                    "elemento": "Luz",
-                    "alvo": "1 Aliado",
-                    "tipo": "Cura",
-                    "valor": "1d6 + Magia Total",
-                    "desc": "Unindo seus profundos conhecimentos médicos aprendidos em Lynx com sua afinidade elemental, Orpheu arremessa um frasco contendo um extrato botânico infundido em pura energia luminosa. Ao quebrar sobre o aliado, a luz reage com o composto e estimula uma regeneração celular imediata. Cortes se fecham rapidamente e o vigor retorna de forma abrupta.",
-                    "inter": "Excelente para estancar sangramentos ou curar ferimentos físicos graves, regenerando rapidamente os tecidos lesionados do alvo.",
-                    "combo": ""
+            "dados_basicos": {
+                "nome": "Orpheu de Lynx",
+                "nivel": 3,
+                "xp_atual": 115,
+                "xp_proximo": 150,
+                "raca": "Humano",
+                "classe": "Suporte",
+                "arquetipo": "Arcana",
+                "afinidade_elemental": "Luz"
+            },
+            "status": {
+                "pv_maximo": 53,
+                "pm_maximo": 37,
+                "nd_esquiva_base": 9,
+                "rd_armadura": 2
+            },
+            "atributos": {
+                "poder": {
+                    "dado": "d4",
+                    "bruto": 6,
+                    "mod": 0,
+                    "total": 6,
+                    "bonus": 1
+                },
+                "vigor": {
+                    "dado": "d6",
+                    "bruto": 11,
+                    "mod": 0,
+                    "total": 11,
+                    "bonus": 1
+                },
+                "velocidade": {
+                    "dado": "d8",
+                    "bruto": 12,
+                    "mod": 1,
+                    "total": 13,
+                    "bonus": 1
+                },
+                "magia": {
+                    "dado": "d10",
+                    "bruto": 19,
+                    "mod": 0,
+                    "total": 19,
+                    "bonus": 2
+                },
+                "precisao": {
+                    "dado": "d8",
+                    "bruto": 17,
+                    "mod": 0,
+                    "total": 17,
+                    "bonus": 2
+                },
+                "esquiva": {
+                    "dado": "d6",
+                    "bruto": 12,
+                    "mod": 0,
+                    "total": 12,
+                    "bonus": 1
+                },
+                "defesa_magica": {
+                    "dado": "d12",
+                    "bruto": 23,
+                    "mod": 1,
+                    "total": 24,
+                    "bonus": 2
                 }
-            ],
+            },
             "inventario": [
                 {
                     "nome": "Máscara Doutor da Peste",
@@ -189,87 +243,41 @@
                     "desc": "Uma Erva Medicinal comum encontrada com um pouco de dificuldade, ao ser consumida recupera seu vigor e cansaço físico. Cura 2d6+3"
                 }
             ],
+            "techs": [
+                {
+                    "nome": "Bálsamo Restaurador",
+                    "custo": "3",
+                    "elemento": "Luz",
+                    "alvo": "1 Aliado",
+                    "tipo": "Cura",
+                    "valor": "1d6 + Magia Total",
+                    "desc": "Unindo seus profundos conhecimentos médicos aprendidos em Lynx com sua afinidade elemental, Orpheu arremessa um frasco contendo um extrato botânico infundido em pura energia luminosa. Ao quebrar sobre o aliado, a luz reage com o composto e estimula uma regeneração celular imediata. Cortes se fecham rapidamente e o vigor retorna de forma abrupta.",
+                    "inter": "Excelente para estancar sangramentos ou curar ferimentos físicos graves, regenerando rapidamente os tecidos lesionados do alvo.",
+                    "combo": ""
+                }
+            ],
             "lacos": [
                 {
                     "nome": "Link Tekron",
-                    "porcentagem": 12
+                    "porcentagem": 11
                 },
                 {
                     "nome": "Baltazar",
-                    "porcentagem": 10
+                    "porcentagem": 13
                 },
                 {
                     "nome": "Hexzyr",
+                    "porcentagem": 4
+                },
+                {
+                    "nome": "Harry Benimon Greyriat",
+                    "porcentagem": 6
+                },
+                {
+                    "nome": "Kylen Serin",
                     "porcentagem": 6
                 }
-            ],
-            "dados_basicos": {
-                "nome": "Orpheu de Lynx",
-                "nivel": 2,
-                "xp_atual": 75,
-                "xp_proximo": 100,
-                "raca": "Humano",
-                "classe": "Suporte",
-                "arquetipo": "Arcana",
-                "afinidade_elemental": "Luz"
-            },
-            "status": {
-                "pv_maximo": 41,
-                "pm_maximo": 33,
-                "nd_esquiva_base": 9,
-                "rd_armadura": 2
-            },
-            "atributos": {
-                "poder": {
-                    "dado": "d4",
-                    "bruto": 4,
-                    "mod": 0,
-                    "total": 4,
-                    "bonus": 0
-                },
-                "vigor": {
-                    "dado": "d6",
-                    "bruto": 8,
-                    "mod": 0,
-                    "total": 8,
-                    "bonus": 1
-                },
-                "velocidade": {
-                    "dado": "d8",
-                    "bruto": 8,
-                    "mod": 1,
-                    "total": 9,
-                    "bonus": 1
-                },
-                "magia": {
-                    "dado": "d10",
-                    "bruto": 14,
-                    "mod": 0,
-                    "total": 14,
-                    "bonus": 2
-                },
-                "precisao": {
-                    "dado": "d8",
-                    "bruto": 13,
-                    "mod": 0,
-                    "total": 13,
-                    "bonus": 1
-                },
-                "esquiva": {
-                    "dado": "d6",
-                    "bruto": 9,
-                    "mod": 0,
-                    "total": 9,
-                    "bonus": 1
-                },
-                "defesa_magica": {
-                    "dado": "d12",
-                    "bruto": 17,
-                    "mod": 1,
-                    "total": 18,
-                    "bonus": 2
-                }
-            }
+            ]
         },
         {
             "id": "vinicius-void",
