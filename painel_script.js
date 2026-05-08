@@ -64,6 +64,10 @@ function atualizarTotais() {
         document.getElementById(a + "_total").innerText = total;
         document.getElementById(a + "_bonus").innerText = "+" + bonus;
     });
+
+    // --- ADICIONE ESTA LINHA ABAIXO ---
+    const bonusEsquiva = parseInt(document.getElementById("esquiva_bonus").innerText.replace('+', '')) || 0;
+    document.getElementById("nd_esquiva").value = 8 + bonusEsquiva;
 }
 
 function recalcularPVPM() {
@@ -119,6 +123,7 @@ function preencherFormulario(p) {
     document.getElementById("afinidade").value = p.dados_basicos?.afinidade_elemental || 'Neutro';
     document.getElementById("pv_maximo").value = p.status?.pv_maximo || 0;
     document.getElementById("pm_maximo").value = p.status?.pm_maximo || 0;
+    document.getElementById("nd_esquiva").value = p.status?.nd_esquiva_base || 8;
 
     atualizarDadosMatriz();
 
@@ -263,7 +268,8 @@ function salvarPersonagem() {
         status: { 
             pv_maximo: parseInt(document.getElementById("pv_maximo").value) || 0,
             pm_maximo: parseInt(document.getElementById("pm_maximo").value) || 0,
-            nd_esquiva_base: 8 + attrs.esquiva.bonus, rd_armadura: parseInt(document.getElementById("rd_armadura").value) || 0
+            nd_esquiva_base: parseInt(document.getElementById("nd_esquiva").value) || 8, 
+            rd_armadura: parseInt(document.getElementById("rd_armadura").value) || 0
         },
         atributos: attrs,
         inventario: Array.from(document.querySelectorAll('.item-box')).map(b => ({
