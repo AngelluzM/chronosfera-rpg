@@ -67,7 +67,7 @@ function atualizarTotais() {
 
     // --- ADICIONE ESTA LINHA ABAIXO ---
     const bonusEsquiva = parseInt(document.getElementById("esquiva_bonus").innerText.replace('+', '')) || 0;
-    document.getElementById("nd_esquiva").value = 8 + bonusEsquiva;
+    document.getElementById("nd_esquiva_base").value = 8 + bonusEsquiva;
 }
 
 function recalcularPVPM() {
@@ -91,7 +91,7 @@ function atualizarNDEsquiva() {
     const bonusEsquiva = parseInt(document.getElementById("esquiva_bonus").innerText.replace('+', '')) || 0;
     
     // Aplica a regra de ND Base (8 + Bônus)
-    document.getElementById("nd_esquiva").value = 8 + bonusEsquiva;
+    document.getElementById("nd_esquiva_base").value = 8 + bonusEsquiva;
 }
 
 function importarJSON(e) {
@@ -280,7 +280,7 @@ function salvarPersonagem() {
         status: { 
             pv_maximo: parseInt(document.getElementById("pv_maximo").value) || 0,
             pm_maximo: parseInt(document.getElementById("pm_maximo").value) || 0,
-            nd_esquiva_base: parseInt(document.getElementById("nd_esquiva").value) || 8, 
+            nd_esquiva_base: parseInt(document.getElementById("nd_esquiva_base").value) || 8, 
             rd_armadura: parseInt(document.getElementById("rd_armadura").value) || 0
         },
         atributos: attrs,
