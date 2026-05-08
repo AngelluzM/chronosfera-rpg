@@ -82,6 +82,18 @@ function recalcularPVPM() {
     document.getElementById("pm_maximo").value = magiaTotal + info.pm_base;
 }
 
+// Função exclusiva para atualizar o ND de Esquiva sem mexer no PV e PM
+function atualizarNDEsquiva() {
+    // Garante que o Bônus na tela está atualizado primeiro
+    atualizarTotais(); 
+    
+    // Pega o valor do Bônus de Esquiva (ex: "+2" vira 2)
+    const bonusEsquiva = parseInt(document.getElementById("esquiva_bonus").innerText.replace('+', '')) || 0;
+    
+    // Aplica a regra de ND Base (8 + Bônus)
+    document.getElementById("nd_esquiva").value = 8 + bonusEsquiva;
+}
+
 function importarJSON(e) {
     const reader = new FileReader();
     reader.onload = (ev) => {
