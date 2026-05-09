@@ -55,19 +55,29 @@ function rolarAtributo(attr) {
 
 function atualizarTotais() {
     const atrs = ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'];
+    let bonusVelocidadeDireto = 0; // Variável para guardar a matemática exata da Velocidade
+
     atrs.forEach(a => {
         const bruto = parseInt(document.getElementById(a + "_bruto").value) || 0;
         const mod = parseInt(document.getElementById(a + "_mod").value) || 0;
         const total = bruto + mod;
         const bonus = calcularFibonacci(total);
         
+        // Atualiza o visual na tela
         document.getElementById(a + "_total").innerText = total;
         document.getElementById(a + "_bonus").innerText = "+" + bonus;
+
+        // Se o loop passar pela VELOCIDADE, guarda o bônus para a Esquiva
+        if (a === 'velocidade') {
+            bonusVelocidadeDireto = bonus;
+        }
     });
 
-    // --- ADICIONE ESTA LINHA ABAIXO ---
-    const bonusEsquiva = parseInt(document.getElementById("esquiva_bonus").innerText.replace('+', '')) || 0;
-    document.getElementById("nd_esquiva_base").value = 8 + bonusEsquiva;
+    // Calcula o ND com base na matemática pura (8 + Bônus de Velocidade)
+    const campoND = document.getElementById("nd_esquiva_base");
+    if (campoND) {
+        campoND.value = 8 + bonusVelocidadeDireto;
+    }
 }
 
 function recalcularPVPM() {
@@ -84,14 +94,9 @@ function recalcularPVPM() {
 
 // Função exclusiva para atualizar o ND de Esquiva sem mexer no PV e PM
 function atualizarNDEsquiva() {
-    // Garante que o Bônus na tela está atualizado primeiro
+    // Ao chamar atualizarTotais, o ND já é refeito com precisão total
     atualizarTotais(); 
-    
-    // Pega o valor do Bônus de Esquiva (ex: "+2" vira 2)
-    const bonusEsquiva = parseInt(document.getElementById("esquiva_bonus").innerText.replace('+', '')) || 0;
-    
-    // Aplica a regra de ND Base (8 + Bônus)
-    document.getElementById("nd_esquiva_base").value = 8 + bonusEsquiva;
+    alert("ND de Esquiva verificado e atualizado com o Bônus de Velocidade atual!");
 }
 
 function importarJSON(e) {
