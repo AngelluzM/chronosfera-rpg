@@ -135,7 +135,7 @@ function preencherFormulario(p) {
     document.getElementById("afinidade").value = p.dados_basicos?.afinidade_elemental || 'Neutro';
     document.getElementById("pv_maximo").value = p.status?.pv_maximo || 0;
     document.getElementById("pm_maximo").value = p.status?.pm_maximo || 0;
-    document.getElementById("nd_esquiva").value = p.status?.nd_esquiva_base || 8;
+    document.getElementById("nd_esquiva_base").value = p.status?.nd_esquiva_base || 8;
 
     atualizarDadosMatriz();
 
