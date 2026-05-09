@@ -789,7 +789,7 @@
             "status": {
                 "pv_maximo": 59,
                 "pm_maximo": 11,
-                "nd_esquiva_base": 9,
+                "nd_esquiva_base": 10,
                 "rd_armadura": 0
             },
             "atributos": {
