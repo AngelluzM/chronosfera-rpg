@@ -53,9 +53,10 @@ function rolarAtributo(attr) {
     atualizarTotais();
 }
 
+// CORREÇÃO AQUI: Agora guarda a Velocidade com segurança
 function atualizarTotais() {
     const atrs = ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'];
-    let bonusVelocidadeDireto = 0; // Variável para guardar a matemática exata da Velocidade
+    let bonusVelocidadeDireto = 0; 
 
     atrs.forEach(a => {
         const bruto = parseInt(document.getElementById(a + "_bruto").value) || 0;
@@ -63,17 +64,16 @@ function atualizarTotais() {
         const total = bruto + mod;
         const bonus = calcularFibonacci(total);
         
-        // Atualiza o visual na tela
         document.getElementById(a + "_total").innerText = total;
         document.getElementById(a + "_bonus").innerText = "+" + bonus;
 
-        // Se o loop passar pela VELOCIDADE, guarda o bônus para a Esquiva
+        // Guarda o bônus de velocidade para a Esquiva
         if (a === 'velocidade') {
             bonusVelocidadeDireto = bonus;
         }
     });
 
-    // Calcula o ND com base na matemática pura (8 + Bônus de Velocidade)
+    // Aplica a regra: 8 + Bônus de Velocidade
     const campoND = document.getElementById("nd_esquiva_base");
     if (campoND) {
         campoND.value = 8 + bonusVelocidadeDireto;
@@ -92,9 +92,8 @@ function recalcularPVPM() {
     document.getElementById("pm_maximo").value = magiaTotal + info.pm_base;
 }
 
-// Função exclusiva para atualizar o ND de Esquiva sem mexer no PV e PM
+// CORREÇÃO AQUI: Agora aciona apenas o atualizarTotais (que já faz a conta da velocidade)
 function atualizarNDEsquiva() {
-    // Ao chamar atualizarTotais, o ND já é refeito com precisão total
     atualizarTotais(); 
     alert("ND de Esquiva verificado e atualizado com o Bônus de Velocidade atual!");
 }
@@ -140,6 +139,8 @@ function preencherFormulario(p) {
     document.getElementById("afinidade").value = p.dados_basicos?.afinidade_elemental || 'Neutro';
     document.getElementById("pv_maximo").value = p.status?.pv_maximo || 0;
     document.getElementById("pm_maximo").value = p.status?.pm_maximo || 0;
+    
+    // CORREÇÃO AQUI: Mudado de nd_esquiva para nd_esquiva_base
     document.getElementById("nd_esquiva_base").value = p.status?.nd_esquiva_base || 8;
 
     atualizarDadosMatriz();
