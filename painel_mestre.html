@@ -121,17 +121,15 @@
     </div>
 
     <h3 class="secao-titulo" style="color: #e74c3c;">⚔️ Status de Combate</h3>
-    <div class="grid-4" style="max-width: 600px;">
-        <div class="form-group"><label style="color: #c0392b;">❤️ PV Máximo</label><input type="number" id="pv_maximo" value="0"></div>
-        <div class="form-group"><label style="color: #2980b9;">💧 PM Máximo</label><input type="number" id="pm_maximo" value="0"></div>
-        <div class="form-group"><label style="color: #117a65;">🏃 ND Esquiva</label><input type="number" id="nd_esquiva_base" value="8"></div>
-        <div class="form-group">
-            <label>&nbsp;</label>
-            <button type="button" onclick="atualizarNDEsquiva()" style="background-color: #117a65; margin-top: 0; padding: 12px;">🔄 Atualizar ND</button>
-        </div>
+    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; align-items: end; max-width: 850px; margin-bottom: 15px;">
+        <div class="form-group" style="margin-bottom: 0;"><label style="color: #c0392b;">❤️ PV Máx</label><input type="number" id="pv_maximo" value="0"></div>
+        <div class="form-group" style="margin-bottom: 0;"><label style="color: #2980b9;">💧 PM Máx</label><input type="number" id="pm_maximo" value="0"></div>
+        <div class="form-group" style="margin-bottom: 0;"><label style="color: #117a65;">🏃 ND Esquiva</label><input type="number" id="nd_esquiva_base" value="8"></div>
+        <div class="form-group" style="margin-bottom: 0;"><label style="color: #8e44ad;">🐾 Movimento</label><input type="number" id="movimento" value="4"></div>
+        <button type="button" onclick="atualizarNDEsquiva()" style="background-color: #117a65; padding: 12px; margin-bottom: 0;">🔄 Atualizar ND e Mov.</button>
     </div>
-    <button type="button" onclick="recalcularPVPM()" style="background-color: #f39c12; width: auto; padding: 8px 15px;">🔄 Recalcular por Atributos</button>
-
+    <button type="button" onclick="recalcularPVPM()" style="background-color: #7f8c8d; width: auto; padding: 8px 15px; font-size: 0.85em; margin-top: 0;">⚠️ Gerar PV/PM Base (Apenas Nível 1)</button>
+    
 <h3 class="secao-titulo">📊 Atributos</h3>
     <div class="atributos-tabela">
         <div class="atr-row atr-header">
