@@ -5,68 +5,68 @@
             "url_imagem": "https://i.pinimg.com/736x/c7/d2/96/c7d296b5374dcef0463499e10a48fce5.jpg",
             "dados_basicos": {
                 "nome": "Baltazar",
-                "nivel": 3,
-                "xp_atual": 122,
-                "xp_proximo": 150,
+                "nivel": 4,
+                "xp_atual": 187,
+                "xp_proximo": 250,
                 "raca": "Humano",
                 "classe": "Feiticeiro",
                 "arquetipo": "Arcana",
                 "afinidade_elemental": "Gelo/Água"
             },
             "status": {
-                "pv_maximo": 54,
-                "pm_maximo": 50,
+                "pv_maximo": 66,
+                "pm_maximo": 54,
                 "nd_esquiva_base": 10,
                 "rd_armadura": 0
             },
             "atributos": {
                 "poder": {
                     "dado": "d8",
-                    "bruto": 12,
+                    "bruto": 16,
                     "mod": 0,
-                    "total": 12,
-                    "bonus": 1
+                    "total": 16,
+                    "bonus": 2
                 },
                 "vigor": {
                     "dado": "d6",
-                    "bruto": 12,
-                    "mod": 0,
-                    "total": 12,
-                    "bonus": 1
-                },
-                "velocidade": {
-                    "dado": "d8",
                     "bruto": 15,
                     "mod": 0,
                     "total": 15,
                     "bonus": 2
                 },
+                "velocidade": {
+                    "dado": "d8",
+                    "bruto": 19,
+                    "mod": 0,
+                    "total": 19,
+                    "bonus": 2
+                },
                 "magia": {
                     "dado": "d12",
-                    "bruto": 23,
+                    "bruto": 29,
                     "mod": 1,
-                    "total": 24,
-                    "bonus": 2
+                    "total": 30,
+                    "bonus": 3
                 },
                 "precisao": {
                     "dado": "d4",
-                    "bruto": 7,
+                    "bruto": 9,
                     "mod": 0,
-                    "total": 7,
+                    "total": 9,
                     "bonus": 1
                 },
                 "esquiva": {
                     "dado": "d6",
-                    "bruto": 11,
+                    "bruto": 14,
                     "mod": 0,
-                    "total": 11,
-                    "bonus": 1
+                    "total": 14,
+                    "bonus": 2
                 },
                 "defesa_magica": {
                     "dado": "d10",
-                    "bruto": 18,
+                    "bruto": 23,
                     "mod": 1,
-                    "total": 19,
+                    "total": 24,
                     "bonus": 2
                 }
             },
