@@ -71,7 +71,7 @@ function atualizarTotais() {
         const bonus = calcularFibonacci(total);
         
         document.getElementById(a + "_total").innerText = total;
-        document.getElementById(a + "_bonus").innerText = "+" + bonus;
+        document.getElementById(a + "_bonus").innerText = (bonus > 0 ? "+" : "") + bonus;
 
         if (a === 'velocidade') bonusVelocidade = bonus;
         if (a === 'esquiva') bonusEsquiva = bonus;
