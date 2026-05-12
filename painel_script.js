@@ -4,9 +4,10 @@
 
 var bancoDeDados = { personagens: [] };
 
+// Matrizes Corrigidas rigorosamente conforme o Livro de Regras
 const regrasClasses = {
-    "Cavaleiro": { arquetipo: "Combatente", pv_base: 60, pm_base: 8, dados: { poder: "d12", vigor: "d10", magia: "d8", defesa_magica: "d8", velocidade: "d6", esquiva: "d6", precisao: "d4" } },
-    "Construto": { arquetipo: "Combatente", pv_base: 72, pm_base: 6, dados: { poder: "d10", vigor: "d12", precisao: "d8", defesa_magica: "d8", magia: "d6", esquiva: "d6", velocidade: "d4" } },
+    "Cavaleiro": { arquetipo: "Combatente", pv_base: 60, pm_base: 8, dados: { vigor: "d12", poder: "d10", magia: "d8", defesa_magica: "d8", velocidade: "d6", esquiva: "d6", precisao: "d4" } },
+    "Construto": { arquetipo: "Combatente", pv_base: 72, pm_base: 6, dados: { vigor: "d12", poder: "d10", precisao: "d8", defesa_magica: "d8", magia: "d6", esquiva: "d6", velocidade: "d4" } },
     "Espadachim": { arquetipo: "Equilibrada", pv_base: 36, pm_base: 4, dados: { velocidade: "d12", poder: "d10", esquiva: "d8", precisao: "d8", vigor: "d6", defesa_magica: "d6", magia: "d4" } },
     "Selvagem": { arquetipo: "Equilibrada", pv_base: 48, pm_base: 4, dados: { esquiva: "d12", poder: "d10", velocidade: "d8", vigor: "d8", precisao: "d6", defesa_magica: "d6", magia: "d4" } },
     "Mecânico": { arquetipo: "Arcana / Tecnologia", pv_base: 32, pm_base: 20, dados: { precisao: "d12", magia: "d10", defesa_magica: "d8", vigor: "d8", poder: "d6", esquiva: "d6", velocidade: "d4" } },
@@ -25,8 +26,14 @@ window.onload = () => {
         }).catch(() => console.log("Iniciando novo banco de dados."));
 };
 
+// Curva Fibonacci Corrigida e Validada
 function calcularFibonacci(v) { 
-    return v >= 82 ? 5 : v >= 48 ? 4 : v >= 27 ? 3 : v >= 14 ? 2 : v >= 6 ? 1 : 0; 
+    if (v >= 82) return 5;
+    if (v >= 48) return 4;
+    if (v >= 27) return 3;
+    if (v >= 14) return 2;
+    if (v >= 6) return 1;
+    return 0; // Para valores de 1 a 5
 }
 
 function atualizarDadosMatriz() {
@@ -53,7 +60,6 @@ function rolarAtributo(attr) {
     atualizarTotais();
 }
 
-// CORREÇÃO AQUI: Agora guarda a Velocidade com segurança
 function atualizarTotais() {
     const atrs = ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'];
     let bonusVelocidadeDireto = 0; 
@@ -67,16 +73,29 @@ function atualizarTotais() {
         document.getElementById(a + "_total").innerText = total;
         document.getElementById(a + "_bonus").innerText = "+" + bonus;
 
-        // Guarda o bônus de velocidade para a Esquiva
+        // Guarda o bônus de velocidade em segurança
         if (a === 'velocidade') {
             bonusVelocidadeDireto = bonus;
         }
     });
 
-    // Aplica a regra: 8 + Bônus de Velocidade
+    // Atualiza ND Esquiva: 8 + Bônus de Velocidade
     const campoND = document.getElementById("nd_esquiva_base");
     if (campoND) {
         campoND.value = 8 + bonusVelocidadeDireto;
+    }
+
+    // --- NOVO: LÓGICA DE MOVIMENTO ---
+    const cl = document.getElementById("classe").value;
+    const campoMovimento = document.getElementById("movimento");
+    
+    if (campoMovimento && cl && regrasClasses[cl]) {
+        // Pega qual é a face do dado de velocidade (Ex: Espadachim = "d12")
+        const dadoVel = regrasClasses[cl].dados.velocidade; 
+        const faceVel = parseInt(dadoVel.replace('d', '')) || 4; 
+        
+        // Movimento = Face do Dado + Bônus de Fibonacci
+        campoMovimento.value = faceVel + bonusVelocidadeDireto;
     }
 }
 
@@ -90,12 +109,12 @@ function recalcularPVPM() {
     
     document.getElementById("pv_maximo").value = vigorTotal + info.pv_base;
     document.getElementById("pm_maximo").value = magiaTotal + info.pm_base;
+    alert("CUIDADO: PV e PM foram redefinidos para os valores de NÍVEL 1.");
 }
 
-// CORREÇÃO AQUI: Agora aciona apenas o atualizarTotais (que já faz a conta da velocidade)
 function atualizarNDEsquiva() {
     atualizarTotais(); 
-    alert("ND de Esquiva verificado e atualizado com o Bônus de Velocidade atual!");
+    alert("ND de Esquiva e Movimento atualizados com base no bônus de Velocidade e Classe atuais!");
 }
 
 function importarJSON(e) {
@@ -137,11 +156,13 @@ function preencherFormulario(p) {
     document.getElementById("classe").value = p.dados_basicos?.classe || '';
     document.getElementById("url_imagem").value = p.url_imagem || '';
     document.getElementById("afinidade").value = p.dados_basicos?.afinidade_elemental || 'Neutro';
+    
     document.getElementById("pv_maximo").value = p.status?.pv_maximo || 0;
     document.getElementById("pm_maximo").value = p.status?.pm_maximo || 0;
-    
-    // CORREÇÃO AQUI: Mudado de nd_esquiva para nd_esquiva_base
     document.getElementById("nd_esquiva_base").value = p.status?.nd_esquiva_base || 8;
+    
+    const campoMov = document.getElementById("movimento");
+    if(campoMov) campoMov.value = p.status?.movimento || 4;
 
     atualizarDadosMatriz();
 
@@ -287,7 +308,8 @@ function salvarPersonagem() {
             pv_maximo: parseInt(document.getElementById("pv_maximo").value) || 0,
             pm_maximo: parseInt(document.getElementById("pm_maximo").value) || 0,
             nd_esquiva_base: parseInt(document.getElementById("nd_esquiva_base").value) || 8, 
-            rd_armadura: parseInt(document.getElementById("rd_armadura").value) || 0
+            rd_armadura: parseInt(document.getElementById("rd_armadura").value) || 0,
+            movimento: parseInt(document.getElementById("movimento").value) || 4
         },
         atributos: attrs,
         inventario: Array.from(document.querySelectorAll('.item-box')).map(b => ({
