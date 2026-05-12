@@ -1,10 +1,9 @@
 /**
- * CHRONOSFERA RPG - Lógica do Painel Mestre
+ * CHRONOSFERA RPG - Lógica do Painel Mestre (V5.0)
  */
 
 var bancoDeDados = { personagens: [] };
 
-// Matrizes Corrigidas rigorosamente conforme o Livro de Regras
 const regrasClasses = {
     "Cavaleiro": { arquetipo: "Combatente", pv_base: 60, pm_base: 8, dados: { vigor: "d12", poder: "d10", magia: "d8", defesa_magica: "d8", velocidade: "d6", esquiva: "d6", precisao: "d4" } },
     "Construto": { arquetipo: "Combatente", pv_base: 72, pm_base: 6, dados: { vigor: "d12", poder: "d10", precisao: "d8", defesa_magica: "d8", magia: "d6", esquiva: "d6", velocidade: "d4" } },
@@ -26,14 +25,14 @@ window.onload = () => {
         }).catch(() => console.log("Iniciando novo banco de dados."));
 };
 
-// Curva Fibonacci Corrigida e Validada
+// Curva Fibonacci Corrigida (Intervalos: 1-5, 6-13, 14-26, 27-47, 48-81, 82-99)
 function calcularFibonacci(v) { 
     if (v >= 82) return 5;
     if (v >= 48) return 4;
     if (v >= 27) return 3;
     if (v >= 14) return 2;
     if (v >= 6) return 1;
-    return 0; // Para valores de 1 a 5
+    return 0; 
 }
 
 function atualizarDadosMatriz() {
@@ -62,7 +61,8 @@ function rolarAtributo(attr) {
 
 function atualizarTotais() {
     const atrs = ['poder', 'vigor', 'velocidade', 'magia', 'precisao', 'esquiva', 'defesa_magica'];
-    let bonusVelocidadeDireto = 0; 
+    let bonusVelocidade = 0; 
+    let bonusEsquiva = 0;
 
     atrs.forEach(a => {
         const bruto = parseInt(document.getElementById(a + "_bruto").value) || 0;
@@ -73,29 +73,22 @@ function atualizarTotais() {
         document.getElementById(a + "_total").innerText = total;
         document.getElementById(a + "_bonus").innerText = "+" + bonus;
 
-        // Guarda o bônus de velocidade em segurança
-        if (a === 'velocidade') {
-            bonusVelocidadeDireto = bonus;
-        }
+        if (a === 'velocidade') bonusVelocidade = bonus;
+        if (a === 'esquiva') bonusEsquiva = bonus;
     });
 
-    // Atualiza ND Esquiva: 8 + Bônus de Velocidade
-    const campoND = document.getElementById("nd_esquiva_base");
-    if (campoND) {
-        campoND.value = 8 + bonusVelocidadeDireto;
-    }
+    const modArm = parseInt(document.getElementById("mod_armadura").value) || 0;
 
-    // --- NOVO: LÓGICA DE MOVIMENTO ---
+    // Lógica ND Esquiva: 8 + Bônus de Esquiva + Mod. Armadura
+    const campoND = document.getElementById("nd_esquiva_base");
+    if (campoND) campoND.value = 8 + bonusEsquiva + modArm;
+
+    // Lógica Movimento: Face do Dado de Velocidade + Bônus de Velocidade + Mod. Armadura
     const cl = document.getElementById("classe").value;
-    const campoMovimento = document.getElementById("movimento");
-    
-    if (campoMovimento && cl && regrasClasses[cl]) {
-        // Pega qual é a face do dado de velocidade (Ex: Espadachim = "d12")
-        const dadoVel = regrasClasses[cl].dados.velocidade; 
-        const faceVel = parseInt(dadoVel.replace('d', '')) || 4; 
-        
-        // Movimento = Face do Dado + Bônus de Fibonacci
-        campoMovimento.value = faceVel + bonusVelocidadeDireto;
+    const campoMov = document.getElementById("movimento");
+    if (campoMov && cl && regrasClasses[cl]) {
+        const faceVel = parseInt(regrasClasses[cl].dados.velocidade.replace('d', '')) || 4; 
+        campoMov.value = faceVel + bonusVelocidade + modArm;
     }
 }
 
@@ -109,12 +102,11 @@ function recalcularPVPM() {
     
     document.getElementById("pv_maximo").value = vigorTotal + info.pv_base;
     document.getElementById("pm_maximo").value = magiaTotal + info.pm_base;
-    alert("CUIDADO: PV e PM foram redefinidos para os valores de NÍVEL 1.");
+    alert("PV e PM iniciais calculados. Lembre-se: use isso apenas para personagens de NÍVEL 1.");
 }
 
 function atualizarNDEsquiva() {
     atualizarTotais(); 
-    alert("ND de Esquiva e Movimento atualizados com base no bônus de Velocidade e Classe atuais!");
 }
 
 function importarJSON(e) {
@@ -160,9 +152,8 @@ function preencherFormulario(p) {
     document.getElementById("pv_maximo").value = p.status?.pv_maximo || 0;
     document.getElementById("pm_maximo").value = p.status?.pm_maximo || 0;
     document.getElementById("nd_esquiva_base").value = p.status?.nd_esquiva_base || 8;
-    
-    const campoMov = document.getElementById("movimento");
-    if(campoMov) campoMov.value = p.status?.movimento || 4;
+    document.getElementById("movimento").value = p.status?.movimento || 4;
+    document.getElementById("mod_armadura").value = p.status?.mod_armadura || 0;
 
     atualizarDadosMatriz();
 
@@ -196,24 +187,15 @@ function adicionarItem(i = {}) {
     d.innerHTML = `
         <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
         <div style="display: flex; gap: 15px; align-items: flex-end; margin-bottom: 15px;">
-            <div class="form-group" style="flex: 2; margin-bottom: 0;">
-                <label>Nome do Item</label>
-                <input type="text" class="i-nome" value="${i.nome || ''}">
-            </div>
-            <div class="form-group" style="flex: 1; margin-bottom: 0;">
-                <label>Qtd</label>
-                <input type="number" class="i-qtd" value="${i.quantidade || 1}">
-            </div>
+            <div class="form-group" style="flex: 2; margin-bottom: 0;"><label>Item</label><input type="text" class="i-nome" value="${i.nome || ''}"></div>
+            <div class="form-group" style="flex: 1; margin-bottom: 0;"><label>Qtd</label><input type="number" class="i-qtd" value="${i.quantidade || 1}"></div>
             <div class="form-group" style="flex: 1; margin-bottom: 0; text-align: center; padding-bottom: 10px;">
                 <label style="cursor: pointer; display: inline-flex; align-items: center; gap: 5px; color: #27ae60;">
                     <input type="checkbox" class="i-equip" ${isEquipado} style="width: 18px; height: 18px; margin: 0;"> Equipado
                 </label>
             </div>
         </div>
-        <div class="form-group">
-            <label>Descrição / Efeito</label>
-            <textarea class="i-desc" rows="2">${i.desc || ''}</textarea>
-        </div>`;
+        <textarea class="i-desc" rows="2" placeholder="Descrição">${i.desc || ''}</textarea>`;
     document.getElementById('lista-inventario').appendChild(d);
 }
 
@@ -222,8 +204,8 @@ function adicionarLaco(l = {}) {
     d.innerHTML = `
         <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
         <div class="grid-2">
-            <div class="form-group"><label>Vínculo com (Aliado)</label><input type="text" class="l-nome" value="${l.nome || ''}"></div>
-            <div class="form-group"><label>Força do Laço (%)</label><input type="number" class="l-porc" value="${l.porcentagem || 0}"></div>
+            <div class="form-group"><label>Aliado</label><input type="text" class="l-nome" value="${l.nome || ''}"></div>
+            <div class="form-group"><label>%</label><input type="number" class="l-porc" value="${l.porcentagem || 0}"></div>
         </div>`;
     document.getElementById('lista-lacos').appendChild(d);
 }
@@ -233,53 +215,18 @@ function adicionarTech(t = {}) {
     d.innerHTML = `
         <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
         <div class="grid-2">
-            <div class="form-group">
-                <label>Habilidade</label>
-                <input type="text" class="t-nome" placeholder="Ex: Impacto de Égide" value="${t.nome || ''}">
-            </div>
+            <div class="form-group"><label>Habilidade</label><input type="text" class="t-nome" value="${t.nome || ''}"></div>
             <div class="grid-2">
-                <div class="form-group">
-                    <label>Custo (PM)</label>
-                    <input type="text" class="t-custo" placeholder="2 PM" value="${t.custo || ''}">
-                </div>
-                <div class="form-group">
-                    <label>Elemento</label>
-                    <input type="text" class="t-elemento" placeholder="Neutro" value="${t.elemento || ''}">
-                </div>
+                <div class="form-group"><label>Custo</label><input type="text" class="t-custo" value="${t.custo || ''}"></div>
+                <div class="form-group"><label>Elem</label><input type="text" class="t-elemento" value="${t.elemento || ''}"></div>
             </div>
         </div>
         <div class="grid-3">
-            <div class="form-group">
-                <label>Alvo</label>
-                <input type="text" class="t-alvo" placeholder="1 Inimigo" value="${t.alvo || ''}">
-            </div>
-            <div class="form-group">
-                <label>Tipo</label>
-                <select class="t-tipo">
-                    <option value="Dano" ${t.tipo=='Dano'?'selected':''}>Dano</option>
-                    <option value="Cura" ${t.tipo=='Cura'?'selected':''}>Cura</option>
-                    <option value="Bônus" ${t.tipo=='Bônus'?'selected':''}>Bônus</option>
-                    <option value="Escudo" ${t.tipo=='Escudo'?'selected':''}>Escudo</option>
-                    <option value="Especial" ${t.tipo=='Especial'?'selected':''}>Especial</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Valor / Rolagem</label>
-                <input type="text" class="t-valor" placeholder="1d8 + Poder Total" value="${t.valor || ''}">
-            </div>
+            <div class="form-group"><label>Alvo</label><input type="text" class="t-alvo" value="${t.alvo || ''}"></div>
+            <div class="form-group"><label>Tipo</label><select class="t-tipo"><option value="Dano" ${t.tipo=='Dano'?'selected':''}>Dano</option><option value="Cura" ${t.tipo=='Cura'?'selected':''}>Cura</option><option value="Buff" ${t.tipo=='Buff'?'selected':''}>Buff</option><option value="Especial" ${t.tipo=='Especial'?'selected':''}>Especial</option></select></div>
+            <div class="form-group"><label>Valor</label><input type="text" class="t-valor" value="${t.valor || ''}"></div>
         </div>
-        <div class="form-group">
-            <label>Descrição do Efeito</label>
-            <textarea class="t-desc" rows="2" placeholder="O que a habilidade faz...">${t.desc || ''}</textarea>
-        </div>
-        <div class="form-group">
-            <label>Interação Elemental</label>
-            <textarea class="t-inter" rows="2" placeholder="Ex: Dobra dano em alvos lentos...">${t.inter || ''}</textarea>
-        </div>
-        <div class="form-group">
-            <label>Dica de Combo</label>
-            <textarea class="t-combo" rows="2" placeholder="Sugestão de uso conjunto...">${t.combo || ''}</textarea>
-        </div>`;
+        <textarea class="t-desc" rows="2" placeholder="Efeito">${t.desc || ''}</textarea>`;
     document.getElementById('lista-techs').appendChild(d);
 }
 
@@ -309,7 +256,8 @@ function salvarPersonagem() {
             pm_maximo: parseInt(document.getElementById("pm_maximo").value) || 0,
             nd_esquiva_base: parseInt(document.getElementById("nd_esquiva_base").value) || 8, 
             rd_armadura: parseInt(document.getElementById("rd_armadura").value) || 0,
-            movimento: parseInt(document.getElementById("movimento").value) || 4
+            movimento: parseInt(document.getElementById("movimento").value) || 4,
+            mod_armadura: parseInt(document.getElementById("mod_armadura").value) || 0
         },
         atributos: attrs,
         inventario: Array.from(document.querySelectorAll('.item-box')).map(b => ({
@@ -317,15 +265,8 @@ function salvarPersonagem() {
             equipado: b.querySelector('.i-equip').checked, desc: b.querySelector('.i-desc').value
         })),
         techs: Array.from(document.querySelectorAll('.tech-box')).map(b => ({
-            nome: b.querySelector('.t-nome').value,
-            custo: b.querySelector('.t-custo').value,
-            elemento: b.querySelector('.t-elemento').value,
-            alvo: b.querySelector('.t-alvo').value,
-            tipo: b.querySelector('.t-tipo').value,
-            valor: b.querySelector('.t-valor').value,
-            desc: b.querySelector('.t-desc').value,
-            inter: b.querySelector('.t-inter').value,
-            combo: b.querySelector('.t-combo').value
+            nome: b.querySelector('.t-nome').value, custo: b.querySelector('.t-custo').value, elemento: b.querySelector('.t-elemento').value,
+            alvo: b.querySelector('.t-alvo').value, tipo: b.querySelector('.t-tipo').value, valor: b.querySelector('.t-valor').value, desc: b.querySelector('.t-desc').value
         })),
         lacos: Array.from(document.querySelectorAll('.laco-box')).map(b => ({
             nome: b.querySelector('.l-nome').value, porcentagem: parseInt(b.querySelector('.l-porc').value)||0
