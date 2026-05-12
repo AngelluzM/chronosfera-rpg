@@ -711,9 +711,6 @@
         {
             "id": "deniz",
             "url_imagem": "https://i.pinimg.com/736x/4d/d9/cf/4dd9cfa5248b7b1f2a7dbe5b07e28997.jpg",
-            "techs": [],
-            "inventario": [],
-            "lacos": [],
             "dados_basicos": {
                 "nome": "Nimuro Kaysh",
                 "nivel": 1,
@@ -727,7 +724,7 @@
             "status": {
                 "pv_maximo": 40,
                 "pm_maximo": 6,
-                "nd_esquiva_base": 8,
+                "nd_esquiva_base": 9,
                 "rd_armadura": 0
             },
             "atributos": {
@@ -780,7 +777,15 @@
                     "total": 3,
                     "bonus": 0
                 }
-            }
+            },
+            "inventario": [],
+            "techs": [],
+            "lacos": [
+                {
+                    "nome": "0",
+                    "porcentagem": 0
+                }
+            ]
         },
         {
             "id": "cannabis",
