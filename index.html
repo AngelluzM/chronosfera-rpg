@@ -182,7 +182,7 @@
                 let tabelaAtributosHtml = '';
                 Object.keys(nomesAtr).forEach(chave => {
                     const atr = p.atributos[chave] || { dado: "-", bruto: 0, mod: 0, total: 0, bonus: 0 };
-                    tabelaAtributosHtml += `<tr><td>${nomesAtr[chave]}</td><td>${atr.dado}</td><td>${atr.bruto}</td><td>+${atr.mod}</td><td class="atr-destaque">${atr.total}</td><td>+${atr.bonus}</td></tr>`;
+                    tabelaAtributosHtml += `<tr><td>${nomesAtr[chave]}</td><td>${atr.dado}</td><td>${atr.bruto}</td><td>${atr.mod}</td><td class="atr-destaque">${atr.total}</td><td>+${atr.bonus}</td></tr>`;
                 });
 
                 card.innerHTML = `
