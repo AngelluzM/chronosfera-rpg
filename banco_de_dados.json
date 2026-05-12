@@ -778,69 +778,69 @@
             "url_imagem": "https://i.pinimg.com/736x/b5/a8/f8/b5a8f86dd2350fde2a283acb4fa89d1a.jpg",
             "dados_basicos": {
                 "nome": "Kylen Serin",
-                "nivel": 2,
-                "xp_atual": 50,
-                "xp_proximo": 100,
+                "nivel": 3,
+                "xp_atual": 160,
+                "xp_proximo": 250,
                 "raca": "Humano",
                 "classe": "Espadachim",
                 "arquetipo": "Equilibrada",
                 "afinidade_elemental": "Neutro"
             },
             "status": {
-                "pv_maximo": 59,
-                "pm_maximo": 11,
-                "nd_esquiva_base": 10,
+                "pv_maximo": 95,
+                "pm_maximo": 17,
+                "nd_esquiva_base": 11,
                 "rd_armadura": 0
             },
             "atributos": {
                 "poder": {
                     "dado": "d10",
+                    "bruto": 24,
+                    "mod": 0,
+                    "total": 24,
+                    "bonus": 2
+                },
+                "vigor": {
+                    "dado": "d6",
                     "bruto": 14,
                     "mod": 0,
                     "total": 14,
                     "bonus": 2
                 },
-                "vigor": {
-                    "dado": "d6",
-                    "bruto": 8,
-                    "mod": 0,
-                    "total": 8,
-                    "bonus": 1
-                },
                 "velocidade": {
                     "dado": "d12",
-                    "bruto": 16,
+                    "bruto": 28,
                     "mod": 0,
-                    "total": 16,
-                    "bonus": 2
+                    "total": 28,
+                    "bonus": 3
                 },
                 "magia": {
                     "dado": "d4",
-                    "bruto": 6,
+                    "bruto": 10,
                     "mod": 0,
-                    "total": 6,
+                    "total": 10,
                     "bonus": 1
                 },
                 "precisao": {
                     "dado": "d8",
-                    "bruto": 9,
+                    "bruto": 17,
                     "mod": 0,
-                    "total": 9,
-                    "bonus": 1
+                    "total": 17,
+                    "bonus": 2
                 },
                 "esquiva": {
                     "dado": "d8",
+                    "bruto": 19,
+                    "mod": 0,
+                    "total": 19,
+                    "bonus": 2
+                },
+                "defesa_magica": {
+                    "dado": "d6",
                     "bruto": 11,
                     "mod": 0,
                     "total": 11,
                     "bonus": 1
-                },
-                "defesa_magica": {
-                    "dado": "d6",
-                    "bruto": 5,
-                    "mod": 0,
-                    "total": 5,
-                    "bonus": 0
                 }
             },
             "inventario": [
@@ -883,11 +883,11 @@
                 },
                 {
                     "nome": "Orpheu de Lynks",
-                    "porcentagem": 10
+                    "porcentagem": 13
                 },
                 {
                     "nome": "Harry Benimon Greyriat",
-                    "porcentagem": 10
+                    "porcentagem": 13
                 }
             ]
         }
