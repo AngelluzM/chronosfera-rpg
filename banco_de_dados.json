@@ -140,69 +140,69 @@
             "url_imagem": "https://i.pinimg.com/736x/08/9d/e4/089de4dfbd5949d095e81ba3d95b0dac.jpg",
             "dados_basicos": {
                 "nome": "Orpheu de Lynx",
-                "nivel": 3,
-                "xp_atual": 115,
-                "xp_proximo": 150,
+                "nivel": 4,
+                "xp_atual": 245,
+                "xp_proximo": 250,
                 "raca": "Humano",
                 "classe": "Suporte",
                 "arquetipo": "Arcana",
                 "afinidade_elemental": "Luz"
             },
             "status": {
-                "pv_maximo": 53,
-                "pm_maximo": 37,
-                "nd_esquiva_base": 9,
+                "pv_maximo": 65,
+                "pm_maximo": 41,
+                "nd_esquiva_base": 10,
                 "rd_armadura": 2
             },
             "atributos": {
                 "poder": {
                     "dado": "d4",
-                    "bruto": 6,
+                    "bruto": 8,
                     "mod": 0,
-                    "total": 6,
+                    "total": 8,
                     "bonus": 1
                 },
                 "vigor": {
                     "dado": "d6",
-                    "bruto": 11,
+                    "bruto": 14,
                     "mod": 0,
-                    "total": 11,
-                    "bonus": 1
+                    "total": 14,
+                    "bonus": 2
                 },
                 "velocidade": {
                     "dado": "d8",
-                    "bruto": 12,
+                    "bruto": 16,
                     "mod": 1,
-                    "total": 13,
-                    "bonus": 1
+                    "total": 17,
+                    "bonus": 2
                 },
                 "magia": {
                     "dado": "d10",
-                    "bruto": 19,
+                    "bruto": 24,
                     "mod": 0,
-                    "total": 19,
+                    "total": 24,
                     "bonus": 2
                 },
                 "precisao": {
                     "dado": "d8",
-                    "bruto": 17,
+                    "bruto": 21,
                     "mod": 0,
-                    "total": 17,
+                    "total": 21,
                     "bonus": 2
                 },
                 "esquiva": {
                     "dado": "d6",
-                    "bruto": 12,
+                    "bruto": 15,
                     "mod": 0,
-                    "total": 12,
-                    "bonus": 1
+                    "total": 15,
+                    "bonus": 2
                 },
                 "defesa_magica": {
                     "dado": "d12",
-                    "bruto": 23,
+                    "bruto": 29,
                     "mod": 1,
-                    "total": 24,
-                    "bonus": 2
+                    "total": 30,
+                    "bonus": 3
                 }
             },
             "inventario": [
@@ -246,7 +246,7 @@
             "techs": [
                 {
                     "nome": "Bálsamo Restaurador",
-                    "custo": "3",
+                    "custo": "3 PM",
                     "elemento": "Luz",
                     "alvo": "1 Aliado",
                     "tipo": "Cura",
