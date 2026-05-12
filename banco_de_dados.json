@@ -586,69 +586,69 @@
             "url_imagem": "https://i.pinimg.com/736x/1b/26/e6/1b26e697320d3c61da1e9ffc0769105e.jpg",
             "dados_basicos": {
                 "nome": "Harry Benimon Greyriat",
-                "nivel": 2,
-                "xp_atual": 54,
-                "xp_proximo": 100,
+                "nivel": 4,
+                "xp_atual": 199,
+                "xp_proximo": 250,
                 "raca": "Humano",
                 "classe": "Cavaleiro",
                 "arquetipo": "Combatente",
                 "afinidade_elemental": "Fogo"
             },
             "status": {
-                "pv_maximo": 97,
-                "pm_maximo": 15,
-                "nd_esquiva_base": 8,
+                "pv_maximo": 157,
+                "pm_maximo": 19,
+                "nd_esquiva_base": 10,
                 "rd_armadura": 5
             },
             "atributos": {
                 "poder": {
                     "dado": "d12",
-                    "bruto": 15,
+                    "bruto": 25,
                     "mod": 0,
-                    "total": 15,
+                    "total": 25,
                     "bonus": 2
                 },
                 "vigor": {
                     "dado": "d10",
-                    "bruto": 12,
+                    "bruto": 22,
                     "mod": 0,
-                    "total": 12,
-                    "bonus": 1
+                    "total": 22,
+                    "bonus": 2
                 },
                 "velocidade": {
                     "dado": "d6",
-                    "bruto": 6,
+                    "bruto": 16,
                     "mod": -1,
-                    "total": 5,
-                    "bonus": 0
+                    "total": 15,
+                    "bonus": 2
                 },
                 "magia": {
                     "dado": "d8",
-                    "bruto": 9,
+                    "bruto": 17,
                     "mod": 0,
-                    "total": 9,
-                    "bonus": 1
+                    "total": 17,
+                    "bonus": 2
                 },
                 "precisao": {
                     "dado": "d4",
-                    "bruto": 6,
+                    "bruto": 10,
                     "mod": 0,
-                    "total": 6,
+                    "total": 10,
                     "bonus": 1
                 },
                 "esquiva": {
                     "dado": "d6",
-                    "bruto": 5,
+                    "bruto": 11,
                     "mod": 0,
-                    "total": 5,
-                    "bonus": 0
+                    "total": 11,
+                    "bonus": 1
                 },
                 "defesa_magica": {
                     "dado": "d8",
-                    "bruto": 8,
+                    "bruto": 16,
                     "mod": 1,
-                    "total": 9,
-                    "bonus": 1
+                    "total": 17,
+                    "bonus": 2
                 }
             },
             "inventario": [
