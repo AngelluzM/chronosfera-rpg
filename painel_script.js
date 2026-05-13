@@ -229,13 +229,13 @@ function adicionarTech(t = {}) {
                 </div>
                 <div class="form-group">
                     <label>Elemento</label>
-                <select class="t-tipo">
-                    <option value="Neutro" ${t.elemento=='Neutro'?'selected':''}>Neutro</option>
-                    <option value="Fogo" ${t.elemento=='Fogo'?'selected':''}>Fogo</option>
-                    <option value="Gelo/Água" ${t.elemento=='Gelo/Água'?'selected':''}>Gelo/Água</option>
-                    <option value="Luz" ${t.elemento=='Luz'?'selected':''}>Luz</option>
-                    <option value="Sombra" ${t.elemento=='Sombra'?'selected':''}>Sombra</option>
-                </select>
+                        <select class="t-tipo">
+                            <option value="Neutro" ${t.elemento=='Neutro'?'selected':''}>Neutro</option>
+                            <option value="Fogo" ${t.elemento=='Fogo'?'selected':''}>Fogo</option>
+                            <option value="Gelo/Água" ${t.elemento=='Gelo/Água'?'selected':''}>Gelo/Água</option>
+                            <option value="Luz" ${t.elemento=='Luz'?'selected':''}>Luz</option>
+                            <option value="Sombra" ${t.elemento=='Sombra'?'selected':''}>Sombra</option>
+                        </select>
                 </div>
             </div>
         </div>
@@ -275,52 +275,77 @@ function adicionarTech(t = {}) {
 }
 
 function salvarPersonagem() {
-    const id = document.getElementById("id").value;
-    const cl = document.getElementById("classe").value;
-    if(!id || !cl) return alert("ID e Classe são obrigatórios!");
+    const elId = document.getElementById("id");
+    const elClasse = document.getElementById("classe");
     
+    if (!elId || !elClasse || !elId.value || !elClasse.value) {
+        return alert("ID e Classe são obrigatórios para salvar!");
+    }
+
+    const id = elId.value;
+    const cl = elClasse.value;
     const info = regrasClasses[cl];
+    
+    const getVal = (campoId, padrao) => {
+        const el = document.getElementById(campoId);
+        return el ? el.value : padrao;
+    };
+    const getInt = (campoId, padrao) => {
+        const el = document.getElementById(campoId);
+        return el ? (parseInt(el.value) || 0) : padrao;
+    };
+
     const attrs = {};
     ['poder','vigor','velocidade','magia','precisao','esquiva','defesa_magica'].forEach(a => {
-        const b = parseInt(document.getElementById(a+"_bruto").value)||0;
-        const m = parseInt(document.getElementById(a+"_mod").value)||0;
+        const b = getInt(a + "_bruto", 0);
+        const m = getInt(a + "_mod", 0);
         const t = b + m;
         attrs[a] = { dado: info.dados[a], bruto: b, mod: m, total: t, bonus: calcularFibonacci(t) };
     });
 
     const p = {
-        id, url_imagem: document.getElementById("url_imagem").value,
+        id: id, 
+        url_imagem: getVal("url_imagem", ""),
         dados_basicos: {
-            nome: document.getElementById("nome").value, nivel: parseInt(document.getElementById("nivel").value),
-            xp_atual: parseInt(document.getElementById("xp_atual").value), xp_proximo: parseInt(document.getElementById("xp_proximo").value),
-            raca: document.getElementById("raca").value, classe: cl, arquetipo: info.arquetipo, afinidade_elemental: document.getElementById("afinidade").value
+            nome: getVal("nome", ""), 
+            nivel: getInt("nivel", 1),
+            xp_atual: getInt("xp_atual", 0), 
+            xp_proximo: getInt("xp_proximo", 50),
+            raca: getVal("raca", ""), 
+            classe: cl, 
+            arquetipo: info.arquetipo, 
+            afinidade_elemental: getVal("afinidade", "Neutro")
         },
         status: { 
-            pv_maximo: parseInt(document.getElementById("pv_maximo").value) || 0,
-            pm_maximo: parseInt(document.getElementById("pm_maximo").value) || 0,
-            nd_esquiva_base: parseInt(document.getElementById("nd_esquiva_base").value) || 8, 
-            rd_armadura: parseInt(document.getElementById("rd_armadura").value) || 0,
-            movimento: parseInt(document.getElementById("movimento").value) || 4,
-            mod_armadura: parseInt(document.getElementById("mod_armadura").value) || 0
+            pv_maximo: getInt("pv_maximo", 0),
+            pm_maximo: getInt("pm_maximo", 0),
+            nd_esquiva_base: getInt("nd_esquiva_base", 8), 
+            rd_armadura: getInt("rd_armadura", 0),
+            movimento: getInt("movimento", 4),
+            mod_armadura: getInt("mod_armadura", 0)
         },
         atributos: attrs,
         inventario: Array.from(document.querySelectorAll('.item-box')).map(b => ({
-            nome: b.querySelector('.i-nome').value, quantidade: parseInt(b.querySelector('.i-qtd').value)||1,
-            equipado: b.querySelector('.i-equip').checked, desc: b.querySelector('.i-desc').value
+            nome: b.querySelector('.i-nome') ? b.querySelector('.i-nome').value : '', 
+            quantidade: b.querySelector('.i-qtd') ? parseInt(b.querySelector('.i-qtd').value) || 1 : 1,
+            equipado: b.querySelector('.i-equip') ? b.querySelector('.i-equip').checked : false, 
+            desc: b.querySelector('.i-desc') ? b.querySelector('.i-desc').value : ''
         })),
-techs: Array.from(document.querySelectorAll('.tech-box')).map(b => ({
-            nome: b.querySelector('.t-nome').value,
-            custo: b.querySelector('.t-custo').value,
-            elemento: b.querySelector('.t-elemento').value,
-            alvo: b.querySelector('.t-alvo').value,
-            tipo: b.querySelector('.t-tipo').value,
-            valor: b.querySelector('.t-valor').value,
-            desc: b.querySelector('.t-desc').value,
+        techs: Array.from(document.querySelectorAll('.tech-box')).map(b => ({
+            // Agora TODOS os campos da Tech possuem a trava de segurança (?)
+            nome: b.querySelector('.t-nome') ? b.querySelector('.t-nome').value : '',
+            custo: b.querySelector('.t-custo') ? b.querySelector('.t-custo').value : '',
+            elemento: b.querySelector('.t-elemento') ? b.querySelector('.t-elemento').value : '',
+            alvo: b.querySelector('.t-alvo') ? b.querySelector('.t-alvo').value : '',
+            tipo: b.querySelector('.t-tipo') ? b.querySelector('.t-tipo').value : '',
+            valor: b.querySelector('.t-valor') ? b.querySelector('.t-valor').value : '',
+            desc: b.querySelector('.t-desc') ? b.querySelector('.t-desc').value : '',
             inter: b.querySelector('.t-inter') ? b.querySelector('.t-inter').value : '',
             combo: b.querySelector('.t-combo') ? b.querySelector('.t-combo').value : ''
         })),
         lacos: Array.from(document.querySelectorAll('.laco-box')).map(b => ({
-            nome: b.querySelector('.l-nome').value, porcentagem: parseInt(b.querySelector('.l-porc').value)||0
+            nome: b.querySelector('.l-nome') ? b.querySelector('.l-nome').value : '', 
+            porcentagem: b.querySelector('.l-porc') ? parseInt(b.querySelector('.l-porc').value) || 0 : 0
         }))
     };
 
@@ -328,5 +353,8 @@ techs: Array.from(document.querySelectorAll('.tech-box')).map(b => ({
     if(idx > -1) bancoDeDados.personagens[idx] = p; else bancoDeDados.personagens.push(p);
     
     const blob = new Blob([JSON.stringify(bancoDeDados, null, 4)], { type: "application/json" });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "banco_de_dados.json"; a.click();
+    const a = document.createElement('a'); 
+    a.href = URL.createObjectURL(blob); 
+    a.download = "banco_de_dados.json"; 
+    a.click();
 }
