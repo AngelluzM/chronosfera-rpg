@@ -229,7 +229,7 @@ function adicionarTech(t = {}) {
                 </div>
                 <div class="form-group">
                     <label>Elemento</label>
-                        <select class="t-tipo">
+                        <select class="t-elemento">
                             <option value="Neutro" ${t.elemento=='Neutro'?'selected':''}>Neutro</option>
                             <option value="Fogo" ${t.elemento=='Fogo'?'selected':''}>Fogo</option>
                             <option value="Gelo/Água" ${t.elemento=='Gelo/Água'?'selected':''}>Gelo/Água</option>
