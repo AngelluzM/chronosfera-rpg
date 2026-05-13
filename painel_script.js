@@ -86,9 +86,12 @@ function atualizarTotais() {
     // Lógica Movimento: Face do Dado de Velocidade + Bônus de Velocidade + Mod. Armadura
     const cl = document.getElementById("classe").value;
     const campoMov = document.getElementById("movimento");
+
     if (campoMov && cl && regrasClasses[cl]) {
-        const faceVel = parseInt(regrasClasses[cl].dados.velocidade.replace('d', '')) || 4; 
-        campoMov.value = faceVel + bonusVelocidade + modArm;
+        const faceVel = parseInt(regrasClasses[cl].dados.velocidade.replace('d', '')) || 4;  
+        const metadeVel = Math.floor(faceVel / 2);
+
+        campoMov.value = metadeVel + bonusVelocidade + modArm;
     }
 }
 
