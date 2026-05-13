@@ -305,9 +305,16 @@ function salvarPersonagem() {
             nome: b.querySelector('.i-nome').value, quantidade: parseInt(b.querySelector('.i-qtd').value)||1,
             equipado: b.querySelector('.i-equip').checked, desc: b.querySelector('.i-desc').value
         })),
-        techs: Array.from(document.querySelectorAll('.tech-box')).map(b => ({
-            nome: b.querySelector('.t-nome').value, custo: b.querySelector('.t-custo').value, elemento: b.querySelector('.t-elemento').value,
-            alvo: b.querySelector('.t-alvo').value, tipo: b.querySelector('.t-tipo').value, valor: b.querySelector('.t-valor').value, desc: b.querySelector('.t-desc').value
+techs: Array.from(document.querySelectorAll('.tech-box')).map(b => ({
+            nome: b.querySelector('.t-nome').value,
+            custo: b.querySelector('.t-custo').value,
+            elemento: b.querySelector('.t-elemento').value,
+            alvo: b.querySelector('.t-alvo').value,
+            tipo: b.querySelector('.t-tipo').value,
+            valor: b.querySelector('.t-valor').value,
+            desc: b.querySelector('.t-desc').value,
+            inter: b.querySelector('.t-inter') ? b.querySelector('.t-inter').value : '',
+            combo: b.querySelector('.t-combo') ? b.querySelector('.t-combo').value : ''
         })),
         lacos: Array.from(document.querySelectorAll('.laco-box')).map(b => ({
             nome: b.querySelector('.l-nome').value, porcentagem: parseInt(b.querySelector('.l-porc').value)||0
