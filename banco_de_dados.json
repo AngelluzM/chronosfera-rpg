@@ -17,7 +17,9 @@
                 "pv_maximo": 66,
                 "pm_maximo": 54,
                 "nd_esquiva_base": 10,
-                "rd_armadura": 0
+                "rd_armadura": 0,
+                "movimento": 6,
+                "mod_armadura": 0
             },
             "atributos": {
                 "poder": {
@@ -100,7 +102,7 @@
                 {
                     "nome": "Estaca de Gelo",
                     "custo": "2 PM",
-                    "elemento": "",
+                    "elemento": "Gelo/Água",
                     "alvo": "À Distância (1 Alvo)",
                     "tipo": "Dano",
                     "valor": "1d8 + Magia Total",
@@ -526,7 +528,7 @@
                 }
             ]
         },
-		{
+        {
             "id": "deniz",
             "url_imagem": "https://i.pinimg.com/736x/4d/d9/cf/4dd9cfa5248b7b1f2a7dbe5b07e28997.jpg",
             "dados_basicos": {
