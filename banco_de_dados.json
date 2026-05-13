@@ -148,13 +148,15 @@
                 "raca": "Humano",
                 "classe": "Suporte",
                 "arquetipo": "Arcana",
-                "afinidade_elemental": "Luz"
+                "afinidade_elemental": "Neutro"
             },
             "status": {
                 "pv_maximo": 65,
                 "pm_maximo": 41,
                 "nd_esquiva_base": 10,
-                "rd_armadura": 2
+                "rd_armadura": 2,
+                "movimento": 6,
+                "mod_armadura": 0
             },
             "atributos": {
                 "poder": {
@@ -248,8 +250,8 @@
             "techs": [
                 {
                     "nome": "Bálsamo Restaurador",
-                    "custo": "3 PM",
-                    "elemento": "Luz",
+                    "custo": "2 PM",
+                    "elemento": "Neutro",
                     "alvo": "1 Aliado",
                     "tipo": "Cura",
                     "valor": "1d6 + Magia Total",
@@ -258,14 +260,14 @@
                     "combo": ""
                 },
                 {
-                    "nome": "Sutura Fotônica",
-                    "custo": "2 PM",
-                    "elemento": "Luz",
+                    "nome": "Sutura Etérea",
+                    "custo": "3 PM",
+                    "elemento": "Neutro",
                     "alvo": "À Distância (1 Aliado)",
                     "tipo": "Cura",
                     "valor": "1d6 + Magia Total",
-                    "desc": "Concentrando luz pura, Orpheu dispara um feixe de fótons condensados que atua como uma agulha e linha energéticas, \"costurando\" ferimentos à distância de forma quase instantânea. O feixe cauteriza e limpa a ferida imediatamente. Além de curar os PV, a tech remove 1 status físico negativo (como Sangramento ou Envenenamento).\nKarma Negativo: Exaustão Ocular. O esforço visual extremo para alinhar os feixes fotônicos em alvos distantes causa vertigem. Orpheu sofre Desvantagem de Karma no seu próximo teste.",
-                    "inter": "Se o aliado estiver com o status Molhado (Água), as gotículas refratam o feixe curativo, criando uma aura de prisma protetora que concede +1 de Defesa Mágica ao alvo até ao próximo turno. Caso o aliado esteja sob o efeito de debuffs de Sombra/Escuridão (como Cegueira mágica), a intensidade da luz purga a escuridão instantaneamente, dissipando o efeito sem consumir o limite de remoção de status da própria habilidade.",
+                    "desc": "Concentrando mana pura em sua forma mais estável, Orpheu projeta filamentos etéreos quase invisíveis que atuam como agulha e linha energéticas, \"costurando\" ferimentos abertos à distância com precisão microscópica. A mana destilada limpa a ferida enquanto a fecha. Além de curar PV, a tech remove 1 status físico negativo (como Sangramento ou Envenenamento).\n☯️⚠️Karma Negativo: O esforço de precisão manual para controlar os fios à distância causa fadiga. Orpheu sofre Desvantagem de Karma no seu próximo teste de Precisão.",
+                    "inter": "Se o alvo estiver sob o status Molhado, a viscosidade da água estabiliza os fios de mana, concedendo ao alvo +2 de Defesa Mágica até o próximo turno. Se o alvo possuir o status Derrubado, a sutura estimula as fibras musculares, permitindo que ele se levante como uma Ação Livre.",
                     "combo": ""
                 }
             ],
