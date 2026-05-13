@@ -215,18 +215,59 @@ function adicionarTech(t = {}) {
     d.innerHTML = `
         <button class="btn-remover" onclick="this.parentElement.remove()">X</button>
         <div class="grid-2">
-            <div class="form-group"><label>Habilidade</label><input type="text" class="t-nome" value="${t.nome || ''}"></div>
+            <div class="form-group">
+                <label>Habilidade</label>
+                <input type="text" class="t-nome" placeholder="Ex: Impacto de Égide" value="${t.nome || ''}">
+            </div>
             <div class="grid-2">
-                <div class="form-group"><label>Custo</label><input type="text" class="t-custo" value="${t.custo || ''}"></div>
-                <div class="form-group"><label>Elem</label><input type="text" class="t-elemento" value="${t.elemento || ''}"></div>
+                <div class="form-group">
+                    <label>Custo (PM)</label>
+                    <input type="text" class="t-custo" placeholder="2 PM" value="${t.custo || ''}">
+                </div>
+                <div class="form-group">
+                    <label>Elemento</label>
+                <select class="t-tipo">
+                    <option value="Neutro" ${t.elemento=='Neutro'?'selected':''}>Neutro</option>
+                    <option value="Fogo" ${t.elemento=='Fogo'?'selected':''}>Fogo</option>
+                    <option value="Gelo/Água" ${t.elemento=='Gelo/Água'?'selected':''}>Gelo/Água</option>
+                    <option value="Luz" ${t.elemento=='Luz'?'selected':''}>Luz</option>
+                    <option value="Sombra" ${t.elemento=='Sombra'?'selected':''}>Sombra</option>
+                </select>
+                </div>
             </div>
         </div>
         <div class="grid-3">
-            <div class="form-group"><label>Alvo</label><input type="text" class="t-alvo" value="${t.alvo || ''}"></div>
-            <div class="form-group"><label>Tipo</label><select class="t-tipo"><option value="Dano" ${t.tipo=='Dano'?'selected':''}>Dano</option><option value="Cura" ${t.tipo=='Cura'?'selected':''}>Cura</option><option value="Buff" ${t.tipo=='Buff'?'selected':''}>Buff</option><option value="Especial" ${t.tipo=='Especial'?'selected':''}>Especial</option></select></div>
-            <div class="form-group"><label>Valor</label><input type="text" class="t-valor" value="${t.valor || ''}"></div>
+            <div class="form-group">
+                <label>Alvo</label>
+                <input type="text" class="t-alvo" placeholder="1 Inimigo" value="${t.alvo || ''}">
+            </div>
+            <div class="form-group">
+                <label>Tipo</label>
+                <select class="t-tipo">
+                    <option value="Dano" ${t.tipo=='Dano'?'selected':''}>Dano</option>
+                    <option value="Cura" ${t.tipo=='Cura'?'selected':''}>Cura</option>
+                    <option value="Buff/Debuff" ${t.tipo=='Buff/Debuff'?'selected':''}>Buff/Debuff</option>
+                    <option value="Reação" ${t.tipo=='Reação'?'selected':''}>Reação</option>
+                    <option value="Especial" ${t.tipo=='Especial'?'selected':''}>Especial</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Rolagem</label>
+                <input type="text" class="t-valor" placeholder="1d8 + Poder Total" value="${t.valor || ''}">
+            </div>
         </div>
-        <textarea class="t-desc" rows="2" placeholder="Efeito">${t.desc || ''}</textarea>`;
+        <div class="form-group">
+            <label>Descrição do Efeito</label>
+            <textarea class="t-desc" rows="2" placeholder="O que a habilidade faz...">${t.desc || ''}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Interação Elemental</label>
+            <textarea class="t-inter" rows="2" placeholder="Ex: Dobra dano em alvos lentos...">${t.inter || ''}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Dica de Combo</label>
+            <textarea class="t-combo" rows="2" placeholder="Sugestão de uso conjunto...">${t.combo || ''}</textarea>
+        </div>`;
     document.getElementById('lista-techs').appendChild(d);
 }
 
